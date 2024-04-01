@@ -24,6 +24,7 @@ public class Controller {
     @PostMapping("/hello")
     public String post() {
         System.out.println(this.post);
+        log.info(this.post);
         return post;
     }
 
