@@ -13,7 +13,7 @@ statusCard VARCHAR(255) NOT NULL,
 PRIMARY KEY(cardID)
 );
 
-INSERT INTO transportCard(cardID, userName, userSurname, balance, debitCard, creditCard, cutOffBankDept, statusCard) VALUES (UUID(), 'VASYA', 'PUPKIN', 0.0, 'NO', 'YES', 0.0, "blocked");
+INSERT INTO transportCard(cardID, userName, userSurname, balance, debitCard, creditCard, cutOffBankDept, statusCard) VALUES (UUID(), 'VASYA', 'PUPKIN', 0.0, 'NO', 'YES', 0.0, "Active");
 
 SELECT * FROM transportCard;
 DESCRIBE transportCard;

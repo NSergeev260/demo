@@ -1,20 +1,15 @@
 package com.finalproject.transport;
 
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.math.BigDecimal;
+@Getter
+@Setter
+@AllArgsConstructor
 public abstract class Transport {
 
     private BigDecimal travelCost;
 
-    public Transport(BigDecimal travelCost) {
-        this.travelCost = travelCost;
-    }
-
-    public void setTravelCost(BigDecimal travelCost) {
-        this.travelCost = travelCost;
-    }
-
-    public BigDecimal getTravelCost() {
-        return travelCost;
-    }
 }
