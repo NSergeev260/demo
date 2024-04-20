@@ -15,6 +15,7 @@ public class DebitCard implements UsageCard {
 
     private String cardID;
     private BigDecimal balance;
+    private boolean cardActive;
     Transport transport;
 
     public DebitCard(String cardID) {
@@ -27,21 +28,36 @@ public class DebitCard implements UsageCard {
 
     @Override
     public BigDecimal pay(BigDecimal cost) {
-        balance = new BigDecimal(String.valueOf(getBalance())).subtract(cost);
-        log.info("You pay successful: " + cost);
+        if(!cardActive) {
+            balance = new BigDecimal(String.valueOf(getBalance())).subtract(cost);
+            log.info("You pay successful: " + cost);
+            log.info("Your balance is : " + displayBalance());
+            return balance;
+        } else {
+            log.info("Not enough for traveling. Put money on card, please");
+        }
         return balance;
     }
 
     @Override
     public BigDecimal putMoney(BigDecimal money) {
         balance = new BigDecimal(String.valueOf(getBalance())).add(money);
-        log.info("You balance is : " + money);
+        log.info("You put: " + money);
+        log.info("Your balance is : " + displayBalance());
         return balance;
     }
 
     @Override
     public BigDecimal displayBalance() {
-        log.info("Yours balance is " + getBalance());
+        log.info("Your balance is " + getBalance());
         return getBalance();
+    }
+
+    public void testOfStatusCard() {
+        if(BigDecimal.valueOf(balance) < BigDecimal.valueOf(0)) {
+            cardActive = false;
+        } else {
+            cardActive = true;
+        }
     }
 }
