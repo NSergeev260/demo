@@ -15,7 +15,7 @@ public enum TransportCost {
         this.travelCost = travelCost;
     }
 
-    public BigDecimal getTravelCOst() {
+    public BigDecimal getTravelCost() {
         return travelCost;
     }
 }

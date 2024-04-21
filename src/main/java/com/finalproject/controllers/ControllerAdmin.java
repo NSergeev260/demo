@@ -1,45 +1,44 @@
 package com.finalproject.controllers;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Log4j2
-@RestController
-@Getter
+@Controller
 public class ControllerAdmin {
 
+    private String cost;
     private String cardID;
-    private boolean cutOffBankDept;
     private BigDecimal balance;
-    Enum TransportCost;
 
-    public void cardID() {
+    public void getCardId() {
         cardID = UUID.randomUUID().toString();
     }
 
-
-    public BigDecimal pay(BigDecimal cost) {
-        balance = new BigDecimal(String.valueOf(getBalance())).subtract(cost);
+    @PostMapping("/pay")
+    public String pay() {
         log.info("You pay successful: " + cost);
-        log.info("Your balance is : " + displayBalance());
-        return balance;
+        return cost;
     }
 
-
+    @PostMapping("/put")
     public BigDecimal putMoney(BigDecimal money) {
-        balance = new BigDecimal(String.valueOf(getBalance())).add(money);
         log.info("You put: " + money);
-        log.info("Your balance is : " + displayBalance());
-        return balance;
+        return money;
     }
 
-
-    public BigDecimal displayBalance() {
-        log.info("Your balance is " + getBalance());
-        return getBalance();
+    @GetMapping("/balance")
+    public BigDecimal getBalance() {
+        log.info("Your balance is " + balance);
+        return balance;
     }
 }
