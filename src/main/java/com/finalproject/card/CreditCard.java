@@ -29,8 +29,9 @@ public class CreditCard implements UsageCard {
 
     @Override
     public BigDecimal pay(BigDecimal cost) {
-        if(!cardActive) {
-            balance = new BigDecimal(String.valueOf(getBalance())).subtract(cost);
+        testOfStatusCard();
+        if(cardActive) {
+            setBalance(new BigDecimal(String.valueOf(getBalance())).subtract(cost));
             log.info("You pay successful: " + cost);
             log.info("Your balance is : " + displayBalance());
             return balance;
@@ -42,10 +43,9 @@ public class CreditCard implements UsageCard {
 
     @Override
     public BigDecimal putMoney(BigDecimal money) {
-        balance = new BigDecimal(String.valueOf(getBalance())).add(money);
+        setBalance(new BigDecimal(String.valueOf(getBalance())).add(money));
         log.info("You put: " + money);
         log.info("Your balance is : " + displayBalance());
-        testOfStatusCard();
         return balance;
     }
 
@@ -56,7 +56,8 @@ public class CreditCard implements UsageCard {
     }
 
     public void testOfStatusCard() {
-        if(BigDecimal.valueOf(balance) < BigDecimal.valueOf(0) && BigDecimal.valueOf(balance) > cutOffBankDept) {
+        if((balance.compareTo(BigDecimal.ZERO) == 0) ||
+            (balance.compareTo(BigDecimal.ZERO) < 0)) {
             cardActive = false;
         } else {
             cardActive = true;
