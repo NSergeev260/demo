@@ -13,11 +13,11 @@ import java.util.UUID;
 public class ControllerTerminal {
 
     private String cost;
-    private String cardID;
+    private String cardId;
     private BigDecimal balance;
 
     public void getCardId() {
-        cardID = UUID.randomUUID().toString();
+        cardId = UUID.randomUUID().toString() + "C";
     }
 
     @PostMapping("/pay")
@@ -34,7 +34,7 @@ public class ControllerTerminal {
 
     @GetMapping("/balance")
     public BigDecimal getBalance() {
-        log.info("Your balance is " + balance);
+        log.info("Your balance is " + getBalance());
         return balance;
     }
 }

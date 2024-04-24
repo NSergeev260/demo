@@ -23,13 +23,12 @@ public class DebitCard implements UsageCard {
 
     @Override
     public String getCardId() {
-        cardId = UUID.randomUUID().toString();
+        cardId = UUID.randomUUID().toString() + "-D";
         return cardId;
     }
 
     @Override
     public BigDecimal getBalance() {
-        log.info("Your balance is " + getBalance());
         return balance;
     }
 }

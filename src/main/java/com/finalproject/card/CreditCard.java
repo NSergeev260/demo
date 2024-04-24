@@ -16,20 +16,27 @@ public class CreditCard implements UsageCard {
     private String cardId;
     private BigDecimal balance;
     private BigDecimal cutOffBankDept;
+//    private String name;
+//    private String surname;
 
     public CreditCard() {
         this.cardId = getCardId();
     }
 
+//    public CreditCard(String name, String surname) {
+//        this.cardId = getCardId();
+//        this.name = name;
+//        this.surname = surname;
+//    }
+
     @Override
     public String getCardId() {
-        cardId = UUID.randomUUID().toString();
+        cardId = UUID.randomUUID().toString() + "-C";
         return cardId;
     }
 
     @Override
     public BigDecimal getBalance() {
-        log.info("Your balance is " + getBalance());
         return balance;
     }
 }
