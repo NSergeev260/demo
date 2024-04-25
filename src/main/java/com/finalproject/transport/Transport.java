@@ -1,15 +1,20 @@
 package com.finalproject.transport;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
+import lombok.Getter;
+
 @Getter
-@Setter
-@AllArgsConstructor
-public abstract class Transport {
+public enum Transport {
 
-    private BigDecimal travelCost;
+    SUBWAY(49),
+    BUS(44),
+    TROLLEYBUS(43),
+    TRAMWAY(42);
 
+    private final BigDecimal tripCost;
+
+    Transport(int tripCost) {
+        this.tripCost = BigDecimal.valueOf(tripCost);
+    }
 }
+

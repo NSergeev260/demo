@@ -1,34 +1,24 @@
 package com.finalproject.card;
 
-import com.finalproject.transport.Transport;
-import com.finalproject.transport.TransportCost;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
-import java.math.BigDecimal;
-import java.util.UUID;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 @Slf4j
-public class DebitCard implements UsageCard {
 
-    private String cardId;
-    private BigDecimal balance;
+public class DebitCard extends AbstractCard {
 
     public DebitCard() {
-        this.cardId = getCardId();
+        cardId = UUID.randomUUID().toString();
+        log.info("cardId: {}", cardId);
     }
 
     @Override
-    public String getCardId() {
-        cardId = UUID.randomUUID().toString() + "-D";
-        return cardId;
-    }
-
-    @Override
-    public BigDecimal getBalance() {
-        return balance;
+    public CardType getType() {
+        return CardType.DEBIT;
     }
 }
