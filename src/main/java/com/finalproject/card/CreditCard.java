@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Slf4j
-@Component
+
 public class CreditCard extends AbstractCard {
 
     private BigDecimal cutOffBankDept;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Slf4j
-@Component
+
 public class DebitCard extends AbstractCard {
 
     public DebitCard() {

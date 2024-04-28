@@ -1,7 +1,11 @@
 package com.finalproject.services;
 
+import com.finalproject.card.AbstractCard;
 import com.finalproject.card.ICard;
+
 import java.math.BigDecimal;
+import java.util.Optional;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +19,12 @@ import org.springframework.stereotype.Service;
 @Component
 public class PayingService {
 
-    private CardService cardService;
     private static BigDecimal cutOffBankDept = new BigDecimal(100);
-    private ICard card;
+    private CardService cardService;
+    AbstractCard card;
 
     public boolean pay(String cardId, BigDecimal cost) {
-        if (!card.isBlocked() && cardId.equals(card.getCardId())) {
+        if (!card.isBlocked() && card.getCardId() == cardId) {
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).subtract(cost));
             log.info("You pay successful: " + cost);
             log.info("Your balance is : " + card.getBalance());
@@ -31,13 +35,12 @@ public class PayingService {
     }
 
     public boolean putMoney(String cardId, BigDecimal money) {
-        if (cardId.equals(card.getCardId())) {
+        if(card.getCardId() == cardId) {
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
             log.info("You put: " + money);
             log.info("Your balance is : " + card.getBalance());
             return true;
         }
-        log.info("Try again, please. Check card ID");
         return false;
     }
 }

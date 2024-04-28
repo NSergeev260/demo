@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,22 +21,23 @@ public class ControllerTerminal {
 
     private CardService cardService;
     private PayingService payingService;
-    ICard card;
 
     @PostMapping("/pay")
-    public String pay(BigDecimal cost) {
+    public String pay(String cardId, BigDecimal cost) {
         log.info("You pay successful: " + cost);
-        String payMoney = String.valueOf(payingService.pay(card.getCardId(), cost));
+        String payMoney = String.valueOf(payingService.pay(String.valueOf(cardService.findCardById(cardId)), cost));
         return payMoney;
     }
 
     @PostMapping("/put")
-    public String putMoney(BigDecimal money) {
+    public String putMoney(String cardId, BigDecimal money) {
         log.info("You put: " + money);
-        String putMoney = String.valueOf(payingService.putMoney(card.getCardId(), money));
+        String putMoney = String.valueOf(payingService.putMoney(String.valueOf(cardService.findCardById(cardId)), money));
         return putMoney;
     }
 
+//    @GetMapping("/balance/{cardId}")
+//    public String getBalance(@PathVariable String cardId) {
     @GetMapping("/balance")
     public String getBalance(String cardId) {
         Optional<ICard> cardById = cardService.findCardById(cardId);
