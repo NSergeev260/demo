@@ -4,18 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Slf4j
-
+@Component
 public class CreditCard extends AbstractCard {
 
     private BigDecimal cutOffBankDept;
-//    private String name;
+
+    //    private String name;
 //    private String surname;
 
     public CreditCard() {
@@ -33,5 +33,4 @@ public class CreditCard extends AbstractCard {
 //        this.name = name;
 //        this.surname = surname;
 //    }
-
 }

@@ -2,10 +2,8 @@ package com.finalproject.controllers;
 
 import com.finalproject.services.CardService;
 import com.finalproject.card.ICard;
-
 import java.math.BigDecimal;
 import java.util.Optional;
-
 import com.finalproject.services.PayingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,27 +15,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@ComponentScan
+@ComponentScan("com.finalproject")
 public class ControllerTerminal {
 
     private CardService cardService;
     private PayingService payingService;
-    private ICard card;
-    //    private BigDecimal cost;
-    String cardId;
+    ICard card;
 
     @PostMapping("/pay")
     public String pay(BigDecimal cost) {
         log.info("You pay successful: " + cost);
-        payingService.pay(card, cost);
-        return cost.toString();
+        String payMoney = String.valueOf(payingService.pay(card.getCardId(), cost));
+        return payMoney;
     }
 
     @PostMapping("/put")
     public String putMoney(BigDecimal money) {
         log.info("You put: " + money);
-        payingService.putMoney(card, money);
-        return money.toString();
+        String putMoney = String.valueOf(payingService.putMoney(card.getCardId(), money));
+        return putMoney;
     }
 
     @GetMapping("/balance")

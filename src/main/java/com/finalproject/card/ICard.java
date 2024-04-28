@@ -1,9 +1,6 @@
 package com.finalproject.card;
 
-import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
-@Component
 public interface ICard {
 
     String getCardId();
