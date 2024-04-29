@@ -24,7 +24,7 @@ public class PayingService {
     AbstractCard card;
 
     public boolean pay(String cardId, BigDecimal cost) {
-        if (!card.isBlocked() && card.getCardId() == cardId) {
+        if (!card.isBlocked() && cardId.equals(card.getCardId())) {
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).subtract(cost));
             log.info("You pay successful: " + cost);
             log.info("Your balance is : " + card.getBalance());
@@ -34,13 +34,20 @@ public class PayingService {
         return false;
     }
 
-    public boolean putMoney(String cardId, BigDecimal money) {
-        if(card.getCardId() == cardId) {
+    public BigDecimal putMoney(BigDecimal money) {
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
             log.info("You put: " + money);
             log.info("Your balance is : " + card.getBalance());
-            return true;
-        }
-        return false;
+            return card.getBalance();
     }
+
+//    public boolean putMoney(String cardId, BigDecimal money) {
+//        if(cardId.equals(card.getCardId())) {
+//            card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
+//            log.info("You put: " + money);
+//            log.info("Your balance is : " + card.getBalance());
+//            return true;
+//        }
+//        return false;
+//    }
 }

@@ -2,16 +2,15 @@ package com.finalproject.controllers;
 
 import com.finalproject.services.CardService;
 import com.finalproject.card.ICard;
+
 import java.math.BigDecimal;
 import java.util.Optional;
+
 import com.finalproject.services.PayingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -31,15 +30,19 @@ public class ControllerTerminal {
 
     @PostMapping("/put")
     public String putMoney(String cardId, BigDecimal money) {
-        log.info("You put: " + money);
-        String putMoney = String.valueOf(payingService.putMoney(String.valueOf(cardService.findCardById(cardId)), money));
-        return putMoney;
+        Optional<ICard> cardById = cardService.findCardById(cardId);
+        if(cardById.isPresent()) {
+            ICard card = cardById.get();
+            card.setBalance(payingService.putMoney(money));
+//            String putMoney = String.valueOf(payingService.putMoney(money));
+            log.info("You put: " + money);
+            return card.toString();
+        }
+        return "Wrong card Id " + cardId;
     }
 
-//    @GetMapping("/balance/{cardId}")
-//    public String getBalance(@PathVariable String cardId) {
-    @GetMapping("/balance")
-    public String getBalance(String cardId) {
+    @GetMapping("/balance/{cardId}")
+    public String getBalance(@PathVariable String cardId) {
         Optional<ICard> cardById = cardService.findCardById(cardId);
         if (cardById.isPresent()) {
             BigDecimal balance = cardById.get().getBalance();
