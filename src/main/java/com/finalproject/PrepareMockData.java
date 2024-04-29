@@ -18,16 +18,12 @@ public class PrepareMockData {
 
     @EventListener(ContextRefreshedEvent.class)
     void prepareData() {
-        CreditCard card = new CreditCard();
+        CreditCard card = new CreditCard("1");
         card.setBalance(new BigDecimal("2000"));
         cardService.addCard(card);
 
         log.info("Card balance: {}", card.getBalance());
         log.info("Type of card: {}", card.getType());
-        log.info("Status card: {}", card.isBlocked());
-        card.block();
-        log.info("Status card: {}", card.isBlocked());
-        card.unblock();
         log.info("Status card: {}", card.isBlocked());
     }
 }

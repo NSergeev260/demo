@@ -4,7 +4,6 @@ import com.finalproject.card.ICard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
