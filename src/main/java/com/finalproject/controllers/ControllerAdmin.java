@@ -1,19 +1,19 @@
-package com.finalproject.controllers;
-
-import com.finalproject.transport.Transport;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import java.math.BigDecimal;
-import java.util.UUID;
-import org.springframework.web.bind.annotation.RestController;
-
-@Log4j2
-@RestController
-public class ControllerAdmin {
-
+//package com.finalproject.controllers;
+//
+//import com.finalproject.transport.Transport;
+//import lombok.extern.log4j.Log4j2;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.PostMapping;
+//
+//import java.math.BigDecimal;
+//import java.util.UUID;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//@Log4j2
+//@RestController
+//public class ControllerAdmin {
+//
 //    public void getCardId() {
 //        cardID = UUID.randomUUID().toString();
 //    }
@@ -35,4 +35,4 @@ public class ControllerAdmin {
 //        log.info("Your balance is " + balance);
 //        return balance;
 //    }
-}
+//}

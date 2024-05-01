@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import lombok.Getter;
 
 @Getter
-public enum Transport {
+public enum TransportEnum {
 
     SUBWAY(49),
     BUS(44),
@@ -13,7 +13,7 @@ public enum Transport {
 
     private final BigDecimal tripCost;
 
-    Transport(int tripCost) {
+    TransportEnum(int tripCost) {
         this.tripCost = BigDecimal.valueOf(tripCost);
     }
 }
