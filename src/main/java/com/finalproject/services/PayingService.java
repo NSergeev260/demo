@@ -3,6 +3,7 @@ package com.finalproject.services;
 import com.finalproject.card.ICard;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class PayingService {
     private CardService cardService;
 
     public String payMoney(String cardId, TransportEnum typeOfTransport, String terminalId) {
-        log.info("Terminal ID: {}", terminalId);
+        log.info("Terminal ID: {}, Time: {}, Card ID: {}", terminalId, LocalDateTime.now(), cardId);
         List<TransportEnum> transport = List.of(TransportEnum.values());
         if (transport.contains(typeOfTransport)) {
             BigDecimal cost = typeOfTransport.getTripCost();
@@ -40,7 +41,7 @@ public class PayingService {
     }
 
     public String putMoney(String cardId, BigDecimal money, String terminalId) {
-        log.info("Terminal ID: {}", terminalId);
+        log.info("Terminal ID: {}, Time: {}, Card ID: {}", terminalId, LocalDateTime.now(), cardId);
         Optional<ICard> cardById = cardService.findCardById(cardId);
         if (cardById.isPresent()) {
             ICard card = cardById.get();
@@ -54,7 +55,7 @@ public class PayingService {
     }
 
     public String getBalance(String cardId, String terminalId) {
-        log.info("Terminal ID: {}", terminalId);
+        log.info("Terminal ID: {}, Time: {}, Card ID: {}", terminalId, LocalDateTime.now(), cardId);
         Optional<ICard> cardById = cardService.findCardById(cardId);
         if (cardById.isPresent()) {
             BigDecimal balance = cardById.get().getBalance();

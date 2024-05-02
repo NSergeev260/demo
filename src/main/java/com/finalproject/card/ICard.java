@@ -13,7 +13,7 @@ public interface ICard {
 
     boolean isBlocked();
 
-    void block();
+    boolean block();
 
-    void unblock();
+    boolean unblock();
 }

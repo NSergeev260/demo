@@ -23,7 +23,7 @@ public class CreditCard extends AbstractCard {
     public CreditCard(String cardId, String documentId) {
         this.cardId = cardId;
         this.documentId = documentId;
-        log.info("cardId: {}, documentId {}", cardId, documentId);
+        log.info("cardId: {}, documentId: {}", cardId, documentId);
     }
 
     @Override

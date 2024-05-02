@@ -14,11 +14,11 @@ public abstract class AbstractCard implements ICard {
 
     public abstract CardType getType();
 
-    public void block() {
-        blocked = true;
+    public boolean block() {
+        return blocked = true;
     }
 
-    public void unblock() {
-        blocked = false;
+    public boolean unblock() {
+        return blocked = false;
     }
 }
