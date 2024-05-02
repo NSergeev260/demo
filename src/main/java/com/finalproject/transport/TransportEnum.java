@@ -2,6 +2,7 @@ package com.finalproject.transport;
 
 import java.math.BigDecimal;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 @Getter
 public enum TransportEnum {

@@ -30,7 +30,7 @@ public class PayingService {
                 if (!card.isBlocked()) {
                     card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).subtract(cost));
                     log.info("You pay successful: " + cost);
-                    log.info("Your balance is : " + card.getBalance());
+                    log.info("Your balance is " + card.getBalance());
                     return card.getBalance();
                 }
                 log.info("Not enough for traveling. Put money on card, please");
@@ -45,7 +45,7 @@ public class PayingService {
             ICard card = cardById.get();
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
             log.info("You put: " + money);
-            log.info("Your balance is : " + card.getBalance());
+            log.info("Your balance is " + card.getBalance());
             return card.getBalance();
         }
         log.info("Check cardId, please");
