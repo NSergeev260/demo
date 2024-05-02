@@ -1,5 +1,6 @@
 package com.finalproject.services;
 
+import com.finalproject.card.CardType;
 import com.finalproject.card.ICard;
 
 import java.math.BigDecimal;
@@ -29,7 +30,14 @@ public class PayingService {
             if (cardById.isPresent()) {
                 ICard card = cardById.get();
                 if (!card.isBlocked()) {
-                    card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).subtract(cost));
+                    if (card.getType().equals(CardType.CREDIT) ) {
+                        BigDecimal payByCard = new BigDecimal(String.valueOf(card.getBalance())).subtract(cost);
+                        BigDecimal payByCreditCard = payByCard.add(cutOffBankDept);
+                        card.setBalance(payByCreditCard);
+                    } else if (card.getType().equals(CardType.DEBIT) && card.getBalance() >= ) {
+                        card.setBalance(new BigDecimal(String.valueOf(card.getBalance()))
+                            .subtract(cost));
+                    }
                     log.info("You pay successful: {}", cost);
                     log.info("Your balance is {}", card.getBalance());
                     return card.getBalance().toString();
