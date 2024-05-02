@@ -15,20 +15,20 @@ public class ControllerTerminal {
     private PayingService payingService;
 
     @PostMapping("/pay")
-    public String pay(String cardId, TransportEnum typeOfTransport) {
-        String payMoney = String.valueOf(payingService.payMoney(cardId, typeOfTransport));
+    public String pay(String cardId, TransportEnum typeOfTransport, String terminalId) {
+        String payMoney = String.valueOf(payingService.payMoney(cardId, typeOfTransport, terminalId));
         return payMoney;
     }
 
     @PostMapping("/put")
-    public String put(String cardId, BigDecimal money) {
-            String putMoney = String.valueOf(payingService.putMoney(cardId, money));
+    public String put(String cardId, BigDecimal money, String terminalId) {
+            String putMoney = String.valueOf(payingService.putMoney(cardId, money, terminalId));
             return putMoney;
     }
 
     @GetMapping("/balance/{cardId}")
-    public String balanceOfMoney(@PathVariable String cardId) {
-            String balance = String.valueOf(payingService.getBalance(cardId));
+    public String balanceOfMoney(@PathVariable String cardId, String terminalId) {
+            String balance = String.valueOf(payingService.getBalance(cardId, terminalId));
             return balance;
     }
 }

@@ -3,6 +3,7 @@ package com.finalproject.card;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -12,18 +13,17 @@ import java.util.UUID;
 public class CreditCard extends AbstractCard {
 
     private BigDecimal cutOffBankDept;
-
-    //    private String name;
-//    private String surname;
+    private String documentId;
 
     public CreditCard() {
         cardId = UUID.randomUUID().toString();
         log.info("cardId: {}", cardId);
     }
 
-    public CreditCard(String cardId) {
+    public CreditCard(String cardId, String documentId) {
         this.cardId = cardId;
-        log.info("cardId: {}", cardId);
+        this.documentId = documentId;
+        log.info("cardId: {}, documentId {}", cardId, documentId);
     }
 
     @Override
@@ -31,9 +31,4 @@ public class CreditCard extends AbstractCard {
         return CardType.CREDIT;
     }
 
-//    public CreditCard(String name, String surname) {
-//        this.cardId = getCardId();
-//        this.name = name;
-//        this.surname = surname;
-//    }
 }

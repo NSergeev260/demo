@@ -18,7 +18,7 @@ public class PrepareMockData {
 
     @EventListener(ContextRefreshedEvent.class)
     void prepareData() {
-        CreditCard card = new CreditCard("1");
+        CreditCard card = new CreditCard("1", "!!!");
         card.setBalance(new BigDecimal("2000"));
         cardService.addCard(card);
 

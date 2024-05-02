@@ -18,9 +18,9 @@ public class PayingService {
 
     private static BigDecimal cutOffBankDept = new BigDecimal(100);
     private CardService cardService;
-//    TransportEnum transportEnum;
 
-    public BigDecimal payMoney(String cardId, TransportEnum typeOfTransport) {
+    public String payMoney(String cardId, TransportEnum typeOfTransport, String terminalId) {
+        log.info("Terminal ID: {}", terminalId);
         List<TransportEnum> transport = List.of(TransportEnum.values());
         if (transport.contains(typeOfTransport)) {
             BigDecimal cost = typeOfTransport.getTripCost();
@@ -29,37 +29,39 @@ public class PayingService {
                 ICard card = cardById.get();
                 if (!card.isBlocked()) {
                     card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).subtract(cost));
-                    log.info("You pay successful: " + cost);
-                    log.info("Your balance is " + card.getBalance());
-                    return card.getBalance();
+                    log.info("You pay successful: {}", cost);
+                    log.info("Your balance is {}", card.getBalance());
+                    return card.getBalance().toString();
                 }
                 log.info("Not enough for traveling. Put money on card, please");
             }
         }
-        return null;
+        return "Not enough for traveling. Put money on card, please";
     }
 
-    public BigDecimal putMoney(String cardId, BigDecimal money) {
+    public String putMoney(String cardId, BigDecimal money, String terminalId) {
+        log.info("Terminal ID: {}", terminalId);
         Optional<ICard> cardById = cardService.findCardById(cardId);
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
-            log.info("You put: " + money);
-            log.info("Your balance is " + card.getBalance());
-            return card.getBalance();
+            log.info("You put: {}", money);
+            log.info("Your balance is {}", card.getBalance());
+            return card.getBalance().toString();
         }
         log.info("Check cardId, please");
-        return null;
+        return "Check cardId, please";
     }
 
-    public BigDecimal getBalance(String cardId) {
+    public String getBalance(String cardId, String terminalId) {
+        log.info("Terminal ID: {}", terminalId);
         Optional<ICard> cardById = cardService.findCardById(cardId);
         if (cardById.isPresent()) {
             BigDecimal balance = cardById.get().getBalance();
-            log.info("Your balance is " + balance);
-            return balance;
+            log.info("Your balance is {}", balance);
+            return balance.toString();
         }
         log.info("Check cardId, please");
-        return null;
+        return "Check cardId, please";
     }
 }
