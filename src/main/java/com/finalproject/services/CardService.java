@@ -1,7 +1,6 @@
 package com.finalproject.services;
 
 import com.finalproject.card.ICard;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,8 @@ public class CardService {
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             card.block();
-            log.info("Blocking card transactions: {}, Time: {}", cardId, LocalDateTime.now());
+            log.info("CardId: {}", cardId);
+            log.info("Card is blocked! Time: {}", LocalDateTime.now());
             return "true";
         }
         log.info("Check cardId, please");
@@ -44,8 +44,9 @@ public class CardService {
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             card.unblock();
-            log.info("Unblocking card transactions: {}, Time: {}", cardId, LocalDateTime.now());
-            return "false";
+            log.info("CardId: {}", cardId);
+            log.info("Card is unblocked! Time: {}", LocalDateTime.now());
+            return "true";
         }
         log.info("Check cardId, please");
         return "Check cardId, please";
@@ -55,7 +56,8 @@ public class CardService {
         Optional<ICard> cardById = findCardById(cardId);
         if (cardById.isPresent()) {
             ICard card = cardById.get();
-            log.info("Is card blocked? {}, Time: {}", cardId, LocalDateTime.now());
+            log.info("CardId: {}", cardId);
+            log.info("Card is blocked: {}, Time: {}", card.isBlocked(), LocalDateTime.now());
             return String.valueOf(card.isBlocked());
         }
         log.info("Check cardId, please");

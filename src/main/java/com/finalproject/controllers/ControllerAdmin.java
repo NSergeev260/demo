@@ -1,6 +1,5 @@
 package com.finalproject.controllers;
 
-import com.finalproject.card.AbstractCard;
 import com.finalproject.services.CardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,7 @@ public class ControllerAdmin {
     private ControllerTerminal controllerTerminal;
     private CardService cardService;
 
-    @PatchMapping("/block")
+    @PostMapping("/block")
     public String block(String cardId) {
         cardService.block(cardId);
         return "true";
@@ -23,7 +22,7 @@ public class ControllerAdmin {
     @PostMapping("/unblock")
     public String unblock(String cardId) {
         cardService.unblock(cardId);
-        return "false";
+        return "true";
     }
 
     @GetMapping("/isBlocked")
