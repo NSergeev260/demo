@@ -16,19 +16,18 @@ public class ControllerAdmin {
 
     @PatchMapping("/block")
     public String block(String cardId) {
-        String block = String.valueOf(cardService.block(cardId));
-        return block;
+        cardService.block(cardId);
+        return "true";
     }
 
     @PostMapping("/unblock")
     public String unblock(String cardId) {
-        String unblock = String.valueOf(cardService.unblock(cardId));
-        return unblock;
+        cardService.unblock(cardId);
+        return "false";
     }
 
     @GetMapping("/isBlocked")
     public String isBlocked(String cardId) {
-        String isUnblocked = String.valueOf(cardService.isBlocked(cardId));
-        return isUnblocked;
+        return cardService.isBlocked(cardId).toString();
     }
 }

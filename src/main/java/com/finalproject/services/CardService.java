@@ -33,7 +33,7 @@ public class CardService {
             ICard card = cardById.get();
             card.block();
             log.info("Blocking card transactions: {}, Time: {}", cardId, LocalDateTime.now());
-            return String.valueOf(card.isBlocked());
+            return "true";
         }
         log.info("Check cardId, please");
         return "Check cardId, please";
@@ -45,7 +45,7 @@ public class CardService {
             ICard card = cardById.get();
             card.unblock();
             log.info("Unblocking card transactions: {}, Time: {}", cardId, LocalDateTime.now());
-            return String.valueOf(card.isBlocked());
+            return "false";
         }
         log.info("Check cardId, please");
         return "Check cardId, please";

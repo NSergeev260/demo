@@ -1,6 +1,7 @@
 package com.finalproject.card;
 
 import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,11 +15,11 @@ public abstract class AbstractCard implements ICard {
 
     public abstract CardType getType();
 
-    public boolean block() {
-        return blocked = true;
+    public void block() {
+        blocked = true;
     }
 
-    public boolean unblock() {
-        return blocked = false;
+    public void unblock() {
+        blocked = false;
     }
 }
