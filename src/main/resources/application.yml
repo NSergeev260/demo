@@ -1,8 +1,0 @@
-logging:
-  level:
-    root: INFO
-  file:
-    name: ${user.dir}/logs/java.log
-server:
-  port: 80
-hello: Spring
