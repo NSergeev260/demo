@@ -12,7 +12,7 @@
 - просмотр баланса
 - блокировка карты
 
-Необходимо хранить историю операций по картам
+Необходимо хранить историю операций по картам в БД
 Подробное логирование событий
 
 Написать эмулятор обращения к сервису
@@ -20,19 +20,24 @@
                 Принцип работы приложения
 
 - Созданная карта вносится в БД
-- БД имеет две таблицы: User и Card
-- User userName, userSurname
-- Card:cardID VARCHAR(36) NOT NULL,         //UUID()
+- БД имеет две таблицы: Card и History
+- Card:
+       cardId VARCHAR(36) NOT NULL,         //UUID()
        balance DECIMAL(8, 2) NOT NULL,
-       debitCard VARCHAR(3),
-       creditCard VARCHAR(3),
+       type VARCHAR(6),
        cutOffBankDept DECIMAL(5, 2) NOT NULL,
-       statusCard VARCHAR(255) NOT NULL,
-       PRIMARY KEY(cardID)
-- User:cardID VARCHAR(36) NOT NULL,         //UUID()
-       userName VARCHAR(255) NOT NULL,
-       userSurname VARCHAR(255) NOT NULL,
-       PRIMARY KEY(cardID)
+       isBlocked BOOLEAN NOT NULL,
+       PRIMARY KEY(cardID);
+
+- History:
+        cardId VARCHAR(255) NOT NULL,
+        operation VARCHAR(36) NOT NULL,
+        result BOOLEAN NOT NULL,
+        amount VARCHAR(255) NOT NULL,
+        date VARCHAR(255) NOT NULL,
+        balanceAfterOperation VARCHAR(255) NOT NULL,
+        PRIMARY KEY(cardID);
+
 JOIN по cardID
 - В зависимости от вида транспорта будет списываться определенная сумма
 - Карты, в зависимости от их типа(кредитные или дебетовые), будут иметь опцию поездок в долг
@@ -45,3 +50,24 @@ JOIN по cardID
   оплату проезда, поездки в долг, пополнение счета, предоставление баланса, хранение истории
   операций и блокировку карт
 - ID терминала хранить в истории
+
+
+Уже сделано:
+Абстрактный класс реализующий интерфейс
+Enum с видами карт
+Классы карт, расширяющие абстрактный класс
+Enum транспорта со стоимостью проезда
+Класс сервиса карт
+Класс сервиса оплаты
+Класс, временно заменяющий БД
+Контроллер Терминал
+Контроллер Админ
+MySQL файл со скриптами
+
+
+- Создать 10 тестовых карт
+- Использовать JDBC
+- Добавить тесты
+- Поменять JDBC на Hibernate
+- Написать эмулятор
+
