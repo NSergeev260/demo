@@ -5,33 +5,36 @@ USE сardDB;
 CREATE TABLE IF NOT EXISTS transportCard(
 cardId VARCHAR(36) NOT NULL,
 balance DECIMAL(8, 2) NOT NULL,
-type VARCHAR(6),
+typeOfCard VARCHAR(6) NOT NULL,
 cutOffBankDept DECIMAL(5, 2) NOT NULL,
 isBlocked BOOLEAN NOT NULL,
 documentId VARCHAR(36) NOT NULL,
 PRIMARY KEY(cardId)
 );
 
-INSERT INTO transportCard(cardId, balance, type, cutOffBankDept, isBlocked, documentId) VALUES (UUID(), 50, 'CREDIT', 100, FALSE, UUID());
+INSERT INTO transportCard(cardId, balance, typeOfCard, cutOffBankDept, isBlocked, documentId)
+VALUES (UUID(), 50, 'CREDIT', 100, FALSE, UUID());
 
 SELECT * FROM transportCard;
 DESCRIBE transportCard;
 
-
-CREATE TABLE IF NOT EXISTS history(
+CREATE TABLE IF NOT EXISTS cardHistory(
+numberOfHistory int NOT NULL AUTO_INCREMENT,
 cardId VARCHAR(36) NOT NULL,
 operation VARCHAR(36) NOT NULL,
 result BOOLEAN NOT NULL,
-amount VARCHAR(255) NOT NULL,
+amount DECIMAL(8, 2) NOT NULL,
 dateOfOperation date NOT NULL,
-balanceAfterOperation VARCHAR(255) NOT NULL,
-PRIMARY KEY(cardID)
+balanceAfterOperation DECIMAL(8, 2) NOT NULL,
+PRIMARY KEY(numberOfHistory),
+FOREIGN KEY(cardId) REFERENCES transportCard(cardId)
 );
 
-INSERT INTO history(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation) VALUES (UUID());
+INSERT INTO cardHistory(numberOfHistory, operation, result, amount, dateOfOperation, balanceAfterOperation)
+VALUES ('1', 'pay', TRUE, 40, '2008-10-29', 90);
+INSERT INTO cardHistory(cardId) select cardId from transportCard;
 
-SELECT * FROM history;
-DESCRIBE history;
 
-ALTER TABLE history ADD FOREIGN KEY(cardId) REFERENCES transportCard(cardId);
-SELECT * FROM transportCard CROSS JOIN history ON history.cardId = transportCard.cardId;
+SELECT * FROM cardHistory;
+DESCRIBE cardHistory;
+SELECT * FROM transportCard CROSS JOIN cardHistory ON cardHistory.cardId = transportCard.cardId;
