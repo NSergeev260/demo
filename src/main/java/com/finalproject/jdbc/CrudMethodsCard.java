@@ -4,8 +4,7 @@ import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
-import com.finalproject.services.CardService;
-
+import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Component
 public class CrudMethodsCard {
 
     private static String GET_CARD = "SELECT * FROM transportCard WHERE cardId = ?";
@@ -31,7 +30,7 @@ public class CrudMethodsCard {
             while (resultSet.next()) {
                 String cardId = resultSet.getString("cardId");
                 BigDecimal balance = resultSet.getBigDecimal("balance");
-                String typeOfCard = resultSet.getString(("typeOfCard"));
+                CardType typeOfCard = CardType.valueOf(resultSet.getString(("typeOfCard")));
                 boolean isBlocked = resultSet.getBoolean("isBlocked");
                 String documentId = resultSet.getString("documentId");
 
@@ -55,7 +54,7 @@ public class CrudMethodsCard {
             insertedStatement.setString(3, String.valueOf(card.getType()));
             insertedStatement.setBoolean(4, card.isBlocked());
             if (card.getType().equals(CardType.CREDIT)) {
-                insertedStatement.setString(5, card.getDocumentId());
+                insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
             }
             insertedStatement.executeUpdate();
             return getCardsData(connection);
@@ -100,13 +99,13 @@ public class CrudMethodsCard {
             while (resultSet.next()) {
                 String cardId = resultSet.getString("cardId");
                 BigDecimal balance = resultSet.getBigDecimal("balance");
-                String typeOfCard = resultSet.getString("typeOfCard");
+                CardType typeOfCard = CardType.valueOf(resultSet.getString("typeOfCard"));
                 boolean isBlocked = resultSet.getBoolean("isBlocked");
                 String documentId = resultSet.getString("documentId");
                 if (typeOfCard.equals(CardType.CREDIT)) {
-                    return new ICard(cardId, balance, typeOfCard, isBlocked, documentId);
+                    return new CreditCard(cardId, balance, typeOfCard, isBlocked, documentId);
                 } else if (typeOfCard.equals(CardType.DEBIT)) {
-                    return new ICard(cardId, balance, typeOfCard, isBlocked);
+                    return new DebitCard(cardId, balance, typeOfCard, isBlocked);
                 }
             }
         } catch (SQLException e) {

@@ -1,7 +1,7 @@
 package com.finalproject.jdbc;
 
 import com.finalproject.card.CardHistory;
-
+import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CrudMethodsHistory {
 
     private static String GET_HISTORY = "SELECT * FROM cardHistory WHERE cardId = ?";

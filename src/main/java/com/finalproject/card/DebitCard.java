@@ -1,5 +1,6 @@
 package com.finalproject.card;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DebitCard extends AbstractCard {
 
-    public DebitCard() {
+    public DebitCard(String cardId, BigDecimal balance, CardType typeOfCard, boolean isBlocked) {
+        super(cardId, balance, typeOfCard, isBlocked);
+        log.info("cardId: {}", cardId);
+    }
+
+    public DebitCard(BigDecimal balance, CardType typeOfCard, boolean isBlocked) {
+        super(balance, typeOfCard, isBlocked);
         cardId = UUID.randomUUID().toString();
         log.info("cardId: {}", cardId);
     }

@@ -1,4 +1,3 @@
-
 CREATE DATABASE сardDB;
 USE сardDB;
 
@@ -7,7 +6,7 @@ cardId VARCHAR(36) NOT NULL,
 balance DECIMAL(8, 2) NOT NULL,
 typeOfCard VARCHAR(6) NOT NULL,
 isBlocked BOOLEAN NOT NULL,
-documentId VARCHAR(36) NOT NULL,
+documentId VARCHAR(36),
 PRIMARY KEY(cardId)
 );
 
