@@ -11,7 +11,7 @@ import java.util.UUID;
 @Slf4j
 public class CreditCard extends AbstractCard {
 
-    private BigDecimal cutOffBankDept;
+    public static final BigDecimal CUT_OFF_BANK_DEPT = new BigDecimal(100);
     private String documentId;
 
     public CreditCard() {

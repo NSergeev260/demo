@@ -1,6 +1,7 @@
 package com.finalproject.services;
 
 import com.finalproject.card.CardType;
+import com.finalproject.card.CreditCard;
 import com.finalproject.card.ICard;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class PayingService {
 
-    private static BigDecimal cutOffBankDept = new BigDecimal(100);
     private CardService cardService;
 
     public String payMoney(String cardId, TransportEnum typeOfTransport, String terminalId) {
@@ -32,7 +32,7 @@ public class PayingService {
                         .subtract(cost);
 
                     if ((card.getType().equals(CardType.CREDIT)) && (card.getBalance()
-                        .add(cutOffBankDept).compareTo(cost) >= 0)) {
+                        .add(CreditCard.CUT_OFF_BANK_DEPT).compareTo(cost) >= 0)) {
                         card.setBalance(payByCard);
                     } else if ((card.getType().equals(CardType.DEBIT)) && (card.getBalance().compareTo(cost) >= 0)) {
                         card.setBalance(payByCard);
