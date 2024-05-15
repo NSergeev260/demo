@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.finalproject.card.ICard;
-import com.finalproject.jdbc.ConnectionToBD;
+import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.services.CardService;
 import lombok.AllArgsConstructor;
@@ -28,11 +28,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class PrepareMockData {
 
-    private ConnectionToBD connectionToDB;
-
     @EventListener(ContextRefreshedEvent.class)
     void prepareData() {
-        try (Connection connection = connectionToDB.getConnection()) {
+        try (Connection connection = ConnectionToDB.getConnection()) {
             Statement statement = connection.createStatement();
             Path path = Paths.get("src\\main\\resources\\DBTransportCard.sql").toAbsolutePath();
             List<String> lines = Files.lines(Path.of(String.valueOf(path)))
@@ -42,7 +40,7 @@ public class PrepareMockData {
                 statement.executeUpdate(str);
             }
 
-            List<ICard> cards = CrudMethodsCard.getCardsData(connection);
+            List<ICard> cards = CrudMethodsCard.getCardsCollection(connection);
             log.info("Get cards data {}", cards.toString());
         } catch (SQLException | IOException e) {
             e.printStackTrace();

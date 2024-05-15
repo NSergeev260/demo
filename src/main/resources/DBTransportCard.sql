@@ -1,3 +1,4 @@
+drop database сardDB;
 CREATE DATABASE сardDB;
 USE сardDB;
 

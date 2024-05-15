@@ -13,13 +13,13 @@ public class DebitCard extends AbstractCard {
 
     public DebitCard(String cardId, BigDecimal balance, CardType typeOfCard, boolean isBlocked) {
         super(cardId, balance, typeOfCard, isBlocked);
-        log.info("cardId: {}", cardId);
+//        log.info("cardId: {}", cardId);
     }
 
     public DebitCard(BigDecimal balance, CardType typeOfCard, boolean isBlocked) {
         super(balance, typeOfCard, isBlocked);
         cardId = UUID.randomUUID().toString();
-        log.info("cardId: {}", cardId);
+//        log.info("cardId: {}", cardId);
     }
 
     @Override

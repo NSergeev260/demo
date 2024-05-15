@@ -17,14 +17,14 @@ public class CreditCard extends AbstractCard {
     public CreditCard(String cardId, BigDecimal balance, CardType typeOfCard, boolean isBlocked, String documentId) {
         super(cardId, balance, typeOfCard, isBlocked);
         this.documentId = documentId;
-        log.info("cardId: {}", cardId);
+//        log.info("cardId: {}", cardId);
     }
 
     public CreditCard(BigDecimal balance, CardType typeOfCard, boolean isBlocked, String documentId) {
         super(balance, typeOfCard, isBlocked);
         cardId = UUID.randomUUID().toString();
         this.documentId = documentId;
-        log.info("cardId: {}", cardId);
+//        log.info("cardId: {}", cardId);
     }
 
     @Override

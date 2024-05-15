@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 public class CrudMethodsCard {
 
     private static String GET_CARD = "SELECT * FROM transportCard WHERE cardId = ?";
@@ -21,7 +21,7 @@ public class CrudMethodsCard {
     private static String UPDATE_CARD = "UPDATE transportCard SET balance = ? WHERE cardId = ?";
     private static String DELETE_CARD = "DELETE FROM transportCard WHERE cardId = ?";
 
-    public static List<ICard> getCardsData(Connection connection) {
+    public static List<ICard> getCardsCollection(Connection connection) {
         List<ICard> transportCards = new ArrayList<>();
         try {
             PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transportCard");
@@ -57,7 +57,7 @@ public class CrudMethodsCard {
                 insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
             }
             insertedStatement.executeUpdate();
-            return getCardsData(connection);
+            return getCardsCollection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class CrudMethodsCard {
             updatedStatement.setString(1, balance);
             updatedStatement.setString(2, id);
             updatedStatement.executeUpdate();
-            return getCardsData(connection);
+            return getCardsCollection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class CrudMethodsCard {
             PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD);
             deletedStatement.setString(1, id);
             deletedStatement.executeUpdate();
-            return getCardsData(connection);
+            return getCardsCollection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
