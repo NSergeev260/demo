@@ -11,7 +11,7 @@ import java.sql.SQLException;
 //@Component
 public class ConnectionToDB {
 
-    private static final String URL = "jdbc:mysql://localhost:3306";
+    private static final String URL = "jdbc:mysql://localhost:3306/сarddb";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "roottest";

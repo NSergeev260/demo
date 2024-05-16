@@ -4,6 +4,7 @@ import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.ICard;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -44,26 +45,32 @@ public class JDBCRunner {
                     temp = temp + str;
                 }
             }
-
-            List<ICard> cards = CrudMethodsCard.getCards(connection);
-            log.info("Get cards {}", cards);
-
-            ICard newCard = new CreditCard("1", new BigDecimal(50),
-                CardType.CREDIT, false, UUID.randomUUID().toString());
-            CrudMethodsCard.insertCard(connection, newCard);
-
-            CrudMethodsCard.getCards(connection);
-            log.info("Get cards {}", cards);
-
-//            log.info(String.valueOf(CrudMethodsCard.updateCard(connection, "1",
-//                String.valueOf(new BigDecimal(100)))));
-//
-//            ICard card = CrudMethodsCard.getCard(connection, "1");
-//            log.info(String.valueOf(card));
-//
-//            log.info(String.valueOf(CrudMethodsCard.deleteCard(connection, "1")));
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+
+        List<ICard> cards = CrudMethodsCard.getCards();
+        log.info("Get cards {}", cards);
+
+        ICard newCard = new CreditCard("1", new BigDecimal(50),
+            CardType.CREDIT, true, UUID.randomUUID().toString());
+        CrudMethodsCard.insertCard(newCard);
+
+        System.out.println("getCard============================");
+        ICard card = CrudMethodsCard.getCard("1");
+        log.info(String.valueOf(card));
+
+        System.out.println("UpdateCard============================");
+        CrudMethodsCard.updateCard("1", BigDecimal.valueOf(100), false, "1");
+
+        System.out.println("getCard============================");
+        card = CrudMethodsCard.getCard("1");
+        log.info(String.valueOf(card));
+
+        System.out.println("getCards============================");
+        cards = CrudMethodsCard.getCards();
+        log.info("Get cards {}", cards);
+
+        CrudMethodsCard.deleteCard("1");
     }
 }

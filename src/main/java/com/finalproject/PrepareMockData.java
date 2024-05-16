@@ -36,7 +36,7 @@ public class PrepareMockData {
                 statement.executeUpdate(str);
             }
 
-            List<ICard> cards = CrudMethodsCard.getCards(connection);
+            List<ICard> cards = CrudMethodsCard.getCards();
             log.info("Get cards data {}", cards.toString());
         } catch (SQLException | IOException e) {
             e.printStackTrace();

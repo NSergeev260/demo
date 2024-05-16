@@ -20,10 +20,11 @@ public class CrudMethodsCard {
 
     private static String GET_CARD = "SELECT * FROM transportCard WHERE cardId = ?";
     private static String INSERT_CARD = "INSERT INTO transportCard(cardId, balance, typeOfCard, isBlocked , documentId) VALUES (?, ?, ?, ?, ?)";
-    private static String UPDATE_CARD = "UPDATE transportCard SET balance = ? WHERE cardId = ?";
+    private static String UPDATE_CARD = "UPDATE transportCard SET balance = ?, isBlocked = ?, documentId = ? WHERE cardId = ?";
     private static String DELETE_CARD = "DELETE FROM transportCard WHERE cardId = ?";
+    private static Connection connection = ConnectionToDB.getConnection();
 
-    public static List<ICard> getCards(Connection connection) {
+    public static List<ICard> getCards() {
         List<ICard> transportCards = new ArrayList<>();
         try {
             PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transportCard");
@@ -48,7 +49,7 @@ public class CrudMethodsCard {
         return transportCards;
     }
 
-    public static void insertCard(Connection connection, ICard card) {
+    public static void insertCard(ICard card) {
         try {
             PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD);
             insertedStatement.setString(1, card.getCardId());
@@ -59,38 +60,38 @@ public class CrudMethodsCard {
                 insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
             }
             insertedStatement.executeUpdate();
-            log.info("Card {} is added successfully", card.getCardId());
+            log.info("Card with id {} is added successfully", card.getCardId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static List<ICard> updateCard(Connection connection, String id, String balance) {
+    public static void updateCard(String id, BigDecimal balance, boolean isBlocked, String documentId) {
         try {
             PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD);
-            updatedStatement.setString(1, balance);
-            updatedStatement.setString(2, id);
+            updatedStatement.setBigDecimal(1, balance);
+            updatedStatement.setBoolean(2, isBlocked);
+            updatedStatement.setString(3, documentId);
+            updatedStatement.setString(4, id);
             updatedStatement.executeUpdate();
-            return getCards(connection);
+            log.info("Card with id {} is updated successfully", id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
     }
 
-    public static List<ICard> deleteCard(Connection connection, String id) {
+    public static void deleteCard(String id) {
         try {
             PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD);
             deletedStatement.setString(1, id);
             deletedStatement.executeUpdate();
-            return getCards(connection);
+            log.info("Card with id {} is deleted successfully", id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
     }
 
-    public static ICard getCard(Connection connection, String id) {
+    public static ICard getCard(String id) {
         ICard card = null;
         try {
             PreparedStatement selectStatement = connection.prepareStatement(GET_CARD);
