@@ -2,7 +2,7 @@ package com.finalproject.controllers;
 
 import java.math.BigDecimal;
 import com.finalproject.services.PayingService;
-import com.finalproject.transport.TransportEnum;
+import com.finalproject.transport.Transport;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class ControllerTerminal {
     private PayingService payingService;
 
     @PostMapping("/pay")
-    public String pay(String cardId, TransportEnum typeOfTransport, String terminalId) {
+    public String pay(String cardId, Transport typeOfTransport, String terminalId) {
         return payingService.payMoney(cardId, typeOfTransport, terminalId);
     }
 

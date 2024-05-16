@@ -4,7 +4,8 @@ import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //@Component
+@Slf4j
 public class CrudMethodsCard {
 
     private static String GET_CARD = "SELECT * FROM transportCard WHERE cardId = ?";
@@ -21,7 +23,7 @@ public class CrudMethodsCard {
     private static String UPDATE_CARD = "UPDATE transportCard SET balance = ? WHERE cardId = ?";
     private static String DELETE_CARD = "DELETE FROM transportCard WHERE cardId = ?";
 
-    public static List<ICard> getCardsCollection(Connection connection) {
+    public static List<ICard> getCards(Connection connection) {
         List<ICard> transportCards = new ArrayList<>();
         try {
             PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transportCard");
@@ -46,7 +48,7 @@ public class CrudMethodsCard {
         return transportCards;
     }
 
-    public static List<ICard> insertCard(Connection connection, ICard card) {
+    public static void insertCard(Connection connection, ICard card) {
         try {
             PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD);
             insertedStatement.setString(1, card.getCardId());
@@ -57,11 +59,10 @@ public class CrudMethodsCard {
                 insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
             }
             insertedStatement.executeUpdate();
-            return getCardsCollection(connection);
+            log.info("Card {} is added successfully", card.getCardId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
     }
 
     public static List<ICard> updateCard(Connection connection, String id, String balance) {
@@ -70,7 +71,7 @@ public class CrudMethodsCard {
             updatedStatement.setString(1, balance);
             updatedStatement.setString(2, id);
             updatedStatement.executeUpdate();
-            return getCardsCollection(connection);
+            return getCards(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,7 +83,7 @@ public class CrudMethodsCard {
             PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD);
             deletedStatement.setString(1, id);
             deletedStatement.executeUpdate();
-            return getCardsCollection(connection);
+            return getCards(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }

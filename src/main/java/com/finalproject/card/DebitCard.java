@@ -26,4 +26,14 @@ public class DebitCard extends AbstractCard {
     public CardType getType() {
         return CardType.DEBIT;
     }
+
+    @Override
+    public String toString() {
+        return "DebitCard{" +
+            "cardId=" + getCardId() + ", " + '\'' +
+            "balance= " + getBalance() + ", " + '\'' +
+            "cardType= " + getType() + ", "  + '\'' +
+            "isBlocked= " + isBlocked() + ", "  + '\'' +
+            '}';
+    }
 }

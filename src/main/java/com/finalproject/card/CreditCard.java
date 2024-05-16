@@ -32,4 +32,14 @@ public class CreditCard extends AbstractCard {
         return CardType.CREDIT;
     }
 
+    @Override
+    public String toString() {
+        return "CreditCard{" +
+            "cardId=" + getCardId() + ", " + '\'' +
+            "balance= " + getBalance() + ", " + '\'' +
+            "cardType= " + getType() + ", "  + '\'' +
+            "isBlocked= " + isBlocked() + ", "  + '\'' +
+            "documentId=" + documentId + '\'' +
+            '}';
+    }
 }

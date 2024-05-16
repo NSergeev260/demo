@@ -1,9 +1,6 @@
 package com.finalproject;
 
-import com.finalproject.card.CreditCard;
-
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,7 +13,6 @@ import java.util.stream.Collectors;
 import com.finalproject.card.ICard;
 import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCard;
-import com.finalproject.services.CardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -40,7 +36,7 @@ public class PrepareMockData {
                 statement.executeUpdate(str);
             }
 
-            List<ICard> cards = CrudMethodsCard.getCardsCollection(connection);
+            List<ICard> cards = CrudMethodsCard.getCards(connection);
             log.info("Get cards data {}", cards.toString());
         } catch (SQLException | IOException e) {
             e.printStackTrace();

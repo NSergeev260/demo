@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import com.finalproject.transport.TransportEnum;
+import com.finalproject.transport.Transport;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,9 +19,9 @@ public class PayingService {
 
     private CardService cardService;
 
-    public String payMoney(String cardId, TransportEnum typeOfTransport, String terminalId) {
+    public String payMoney(String cardId, Transport typeOfTransport, String terminalId) {
         log.info("Terminal ID: {}, Time: {}, Card ID: {}", terminalId, LocalDateTime.now(), cardId);
-        List<TransportEnum> transport = List.of(TransportEnum.values());
+        List<Transport> transport = List.of(Transport.values());
         if (transport.contains(typeOfTransport)) {
             BigDecimal cost = typeOfTransport.getTripCost();
             Optional<ICard> cardById = cardService.findCardById(cardId);
