@@ -23,6 +23,7 @@ public class CrudMethodsCard {
     private static String UPDATE_CARD = "UPDATE transportCard SET balance = ?, isBlocked = ?, documentId = ? WHERE cardId = ?";
     private static String DELETE_CARD = "DELETE FROM transportCard WHERE cardId = ?";
     private static Connection connection = ConnectionToDB.getConnection();
+    public static boolean result;
 
     public static List<ICard> getCards() {
         List<ICard> transportCards = new ArrayList<>();
@@ -49,7 +50,7 @@ public class CrudMethodsCard {
         return transportCards;
     }
 
-    public static void insertCard(ICard card) {
+    public static boolean insertCard(ICard card) {
         try {
             PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD);
             insertedStatement.setString(1, card.getCardId());
@@ -61,12 +62,14 @@ public class CrudMethodsCard {
             }
             insertedStatement.executeUpdate();
             log.info("Card with id {} is added successfully", card.getCardId());
+            return result = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return result = false;
     }
 
-    public static void updateCard(String id, BigDecimal balance, boolean isBlocked, String documentId) {
+    public static boolean updateCard(String id, BigDecimal balance, boolean isBlocked, String documentId) {
         try {
             PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD);
             updatedStatement.setBigDecimal(1, balance);
@@ -75,9 +78,11 @@ public class CrudMethodsCard {
             updatedStatement.setString(4, id);
             updatedStatement.executeUpdate();
             log.info("Card with id {} is updated successfully", id);
+            return result = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return result = false;
     }
 
     public static void deleteCard(String id) {

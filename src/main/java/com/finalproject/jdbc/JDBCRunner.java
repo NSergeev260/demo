@@ -3,6 +3,8 @@ package com.finalproject.jdbc;
 import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.ICard;
+import com.finalproject.history.History;
+import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -55,6 +58,8 @@ public class JDBCRunner {
         ICard newCard = new CreditCard("1", new BigDecimal(50),
             CardType.CREDIT, true, UUID.randomUUID().toString());
         CrudMethodsCard.insertCard(newCard);
+        CrudMethodsHistory.insertHistory(newCard.getCardId(), History.INSERT , Transport.SUBWAY,
+            CrudMethodsCard.result , LocalDateTime.now(), newCard.getBalance());
 
         System.out.println("getCard============================");
         ICard card = CrudMethodsCard.getCard("1");

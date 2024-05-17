@@ -1,4 +1,4 @@
-package com.finalproject.card;
+package com.finalproject.history;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

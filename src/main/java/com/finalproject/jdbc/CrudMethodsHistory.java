@@ -1,25 +1,33 @@
 package com.finalproject.jdbc;
 
-import com.finalproject.card.CardHistory;
+import com.finalproject.history.CardHistory;
+import com.finalproject.card.ICard;
+import com.finalproject.history.History;
+import com.finalproject.transport.Transport;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 public class CrudMethodsHistory {
 
     private static String GET_HISTORY = "SELECT * FROM cardHistory WHERE cardId = ?";
-    private static String INSERT_HISTORY = "INSERT INTO cardHistory(id, cardId, operation, result, amount, dateOfOperation, balanceAfterOperation) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static String INSERT_HISTORY = "INSERT INTO cardHistory(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation) VALUES (?, ?, ?, ?, ?, ?)";
+    private static Connection connection = ConnectionToDB.getConnection();
 
-    public static List<CardHistory> getHistoryData(Connection connection) {
+    public static List<CardHistory> getHistory() {
         List<CardHistory> history = new ArrayList<>();
         try {
-            PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM Students");
+            PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM cardHistory");
             ResultSet resultSet = shownStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -38,25 +46,23 @@ public class CrudMethodsHistory {
         return history;
     }
 
-    public static List<CardHistory> insertHistory(Connection connection, CardHistory history) {
+    public static void insertHistory(ICard card, String operation, Transport typeOfTransport) {
         try {
             PreparedStatement insertedStatement = connection.prepareStatement(INSERT_HISTORY);
-            insertedStatement.setInt(1, history.getId());
-            insertedStatement.setString(2, history.getCardId());
-            insertedStatement.setString(3, history.getOperation());
-            insertedStatement.setBoolean(4, history.isResult());
-            insertedStatement.setBigDecimal(5, history.getAmount());
-            insertedStatement.setString(6, history.getDateOfOperation());
-            insertedStatement.setBigDecimal(7, history.getBalanceAfterOperation());
+            insertedStatement.setString(1, card.getCardId());
+            insertedStatement.setString(2, String.valueOf(History.valueOf(operation)));
+            insertedStatement.setBoolean(3, CrudMethodsCard.result);
+            insertedStatement.setBigDecimal(4, Transport.valueOf(String.valueOf(typeOfTransport)).getTripCost());
+            insertedStatement.setString(5, String.valueOf(LocalDateTime.now()));
+            insertedStatement.setBigDecimal(6, card.getBalance());
             insertedStatement.executeUpdate();
-            return getHistoryData(connection);
+            log.info("History record for card with id {} is added successfully", card.getCardId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
     }
 
-    public static CardHistory getHistory(Connection connection, String cardID) {
+    public static CardHistory getHistory(String cardID) {
         CardHistory history = null;
         try {
             PreparedStatement selectStatement = connection.prepareStatement(GET_HISTORY);
