@@ -5,6 +5,7 @@ import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -14,8 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Component
 @Slf4j
+@Component
 public class CrudMethodsCard {
 
     private static String GET_CARD = "SELECT * FROM transportCard WHERE cardId = ?";
@@ -25,7 +26,7 @@ public class CrudMethodsCard {
     private static Connection connection = ConnectionToDB.getConnection();
     public static boolean result;
 
-    public static List<ICard> getCards() {
+    public List<ICard> getCards() {
         List<ICard> transportCards = new ArrayList<>();
         try {
             PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transportCard");
@@ -39,9 +40,9 @@ public class CrudMethodsCard {
                 String documentId = resultSet.getString("documentId");
 
                 if (typeOfCard.equals(CardType.CREDIT)) {
-                    transportCards.add(new CreditCard(cardId, balance, typeOfCard, isBlocked, documentId));
+                    transportCards.add(new CreditCard(cardId, balance, isBlocked, documentId));
                 } else if (typeOfCard.equals(CardType.DEBIT)) {
-                    transportCards.add(new DebitCard(cardId, balance, typeOfCard, isBlocked));
+                    transportCards.add(new DebitCard(cardId, balance, isBlocked));
                 }
             }
         } catch (SQLException e) {
@@ -50,7 +51,7 @@ public class CrudMethodsCard {
         return transportCards;
     }
 
-    public static boolean insertCard(ICard card) {
+    public boolean insertCard(ICard card) {
         try {
             PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD);
             insertedStatement.setString(1, card.getCardId());
@@ -59,6 +60,8 @@ public class CrudMethodsCard {
             insertedStatement.setBoolean(4, card.isBlocked());
             if (card.getType().equals(CardType.CREDIT)) {
                 insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
+            } else {
+                insertedStatement.setString(5, null);
             }
             insertedStatement.executeUpdate();
             log.info("Card with id {} is added successfully", card.getCardId());
@@ -69,7 +72,7 @@ public class CrudMethodsCard {
         return result = false;
     }
 
-    public static boolean updateCard(String id, BigDecimal balance, boolean isBlocked, String documentId) {
+    public boolean updateCard(String id, BigDecimal balance, boolean isBlocked, String documentId) {
         try {
             PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD);
             updatedStatement.setBigDecimal(1, balance);
@@ -85,7 +88,7 @@ public class CrudMethodsCard {
         return result = false;
     }
 
-    public static void deleteCard(String id) {
+    public void deleteCard(String id) {
         try {
             PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD);
             deletedStatement.setString(1, id);
@@ -96,7 +99,7 @@ public class CrudMethodsCard {
         }
     }
 
-    public static ICard getCard(String id) {
+    public ICard getCard(String id) {
         ICard card = null;
         try {
             PreparedStatement selectStatement = connection.prepareStatement(GET_CARD);
@@ -110,9 +113,9 @@ public class CrudMethodsCard {
                 boolean isBlocked = resultSet.getBoolean("isBlocked");
                 String documentId = resultSet.getString("documentId");
                 if (typeOfCard.equals(CardType.CREDIT)) {
-                    return new CreditCard(cardId, balance, typeOfCard, isBlocked, documentId);
+                    return new CreditCard(cardId, balance, isBlocked, documentId);
                 } else if (typeOfCard.equals(CardType.DEBIT)) {
-                    return new DebitCard(cardId, balance, typeOfCard, isBlocked);
+                    return new DebitCard(cardId, balance, isBlocked);
                 }
             }
         } catch (SQLException e) {

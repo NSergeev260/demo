@@ -38,7 +38,8 @@ public class CrudMethodsHistory {
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String dateOfOperation = resultSet.getString("dateOfOperation");
                 BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balanceAfterOperation");
-                history.add(new CardHistory(id, cardId, operation, result, amount, dateOfOperation, balanceAfterOperation));
+                history.add(new CardHistory(id, cardId, operation,
+                    result, amount, dateOfOperation, balanceAfterOperation));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,17 +47,17 @@ public class CrudMethodsHistory {
         return history;
     }
 
-    public static void insertHistory(ICard card, String operation, Transport typeOfTransport) {
+    public static void insertHistory(CardHistory history) {
         try {
             PreparedStatement insertedStatement = connection.prepareStatement(INSERT_HISTORY);
-            insertedStatement.setString(1, card.getCardId());
-            insertedStatement.setString(2, String.valueOf(History.valueOf(operation)));
-            insertedStatement.setBoolean(3, CrudMethodsCard.result);
-            insertedStatement.setBigDecimal(4, Transport.valueOf(String.valueOf(typeOfTransport)).getTripCost());
-            insertedStatement.setString(5, String.valueOf(LocalDateTime.now()));
-            insertedStatement.setBigDecimal(6, card.getBalance());
+            insertedStatement.setString(1, history.getCardId());
+            insertedStatement.setString(2, String.valueOf(history.getOperation()));
+            insertedStatement.setBoolean(3, history.isResult());
+            insertedStatement.setBigDecimal(4, history.getAmount());
+            insertedStatement.setString(5, history.getDateOfOperation());
+            insertedStatement.setBigDecimal(6, history.getBalanceAfterOperation());
             insertedStatement.executeUpdate();
-            log.info("History record for card with id {} is added successfully", card.getCardId());
+            log.info("History record for card with id {} is added successfully", history.getCardId());
         } catch (SQLException e) {
             e.printStackTrace();
         }

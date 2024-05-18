@@ -1,6 +1,6 @@
-drop database сarddb;
-CREATE DATABASE сarddb;
-USE сarddb;
+
+CREATE DATABASE carddb;
+USE carddb;
 
 CREATE TABLE IF NOT EXISTS transportCard(
 cardId VARCHAR(36) NOT NULL,

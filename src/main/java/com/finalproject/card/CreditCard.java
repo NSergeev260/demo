@@ -14,14 +14,14 @@ public class CreditCard extends AbstractCard {
     public static final BigDecimal CUT_OFF_BANK_DEPT = new BigDecimal(100);
     private String documentId;
 
-    public CreditCard(String cardId, BigDecimal balance, CardType typeOfCard, boolean isBlocked, String documentId) {
-        super(cardId, balance, typeOfCard, isBlocked);
+    public CreditCard(String cardId, BigDecimal balance, boolean isBlocked, String documentId) {
+        super(cardId, balance, CardType.CREDIT, isBlocked);
         this.documentId = documentId;
 //        log.info("cardId: {}", cardId);
     }
 
-    public CreditCard(BigDecimal balance, CardType typeOfCard, boolean isBlocked, String documentId) {
-        super(balance, typeOfCard, isBlocked);
+    public CreditCard(BigDecimal balance, boolean isBlocked, String documentId) {
+        super(balance, CardType.CREDIT, isBlocked);
         cardId = UUID.randomUUID().toString();
         this.documentId = documentId;
 //        log.info("cardId: {}", cardId);

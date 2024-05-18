@@ -1,5 +1,6 @@
 package com.finalproject.controllers;
 
+import com.finalproject.MockData;
 import com.finalproject.services.CardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,23 +11,27 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class ControllerAdmin {
 
-    private ControllerTerminal controllerTerminal;
     private CardService cardService;
+    private MockData mockData;
 
     @PostMapping("/block")
     public String block(String cardId) {
-        cardService.block(cardId);
-        return "true";
+        return cardService.block(cardId);
     }
 
     @PostMapping("/unblock")
     public String unblock(String cardId) {
-        cardService.unblock(cardId);
-        return "true";
+        return cardService.unblock(cardId);
     }
 
     @GetMapping("/isBlocked")
     public String isBlocked(String cardId) {
-        return cardService.isBlocked(cardId).toString();
+        return cardService.isBlocked(cardId);
+    }
+
+    @PostMapping("/generateMockData")
+    public String generate(long numberOfRecords) {
+        mockData.generateMockData(numberOfRecords);
+        return "Data was generated";
     }
 }

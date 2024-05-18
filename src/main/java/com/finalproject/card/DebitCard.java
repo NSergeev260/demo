@@ -11,13 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DebitCard extends AbstractCard {
 
-    public DebitCard(String cardId, BigDecimal balance, CardType typeOfCard, boolean isBlocked) {
-        super(cardId, balance, typeOfCard, isBlocked);
+    public DebitCard(String cardId, BigDecimal balance, boolean isBlocked) {
+        super(cardId, balance, CardType.DEBIT, isBlocked);
 //        log.info("cardId: {}", cardId);
     }
 
-    public DebitCard(BigDecimal balance, CardType typeOfCard, boolean isBlocked) {
-        super(balance, typeOfCard, isBlocked);
+    public DebitCard(BigDecimal balance, boolean isBlocked) {
+        super(balance, CardType.DEBIT, isBlocked);
         cardId = UUID.randomUUID().toString();
 //        log.info("cardId: {}", cardId);
     }
