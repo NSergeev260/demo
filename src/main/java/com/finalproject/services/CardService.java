@@ -1,10 +1,13 @@
 package com.finalproject.services;
 
 import com.finalproject.card.ICard;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.finalproject.jdbc.CrudMethodsCard;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class CardService {
 
+    private CrudMethodsCard crudMethodsCard;
     private final List<ICard> cards = new ArrayList<>();
 
     public void addCard(ICard card) {
@@ -21,9 +25,10 @@ public class CardService {
     }
 
     public Optional<ICard> findCardById(String cardId) {
-        return cards.stream()
-            .filter(x -> x.getCardId().equals(cardId))
-            .findFirst();
+        return Optional.ofNullable(crudMethodsCard.getCard(cardId));
+//        return cards.stream()
+//            .filter(x -> x.getCardId().equals(cardId))
+//            .findFirst();
     }
 
     public String block(String cardId) {
@@ -33,6 +38,7 @@ public class CardService {
             card.block();
             log.info("CardId: {}", cardId);
             log.info("Card is blocked! Time: {}", LocalDateTime.now());
+            crudMethodsCard.updateCard(card,cardId);
             return "true";
         }
         log.info("Check cardId, please");
@@ -46,6 +52,7 @@ public class CardService {
             card.unblock();
             log.info("CardId: {}", cardId);
             log.info("Card is unblocked! Time: {}", LocalDateTime.now());
+            crudMethodsCard.updateCard(card,cardId);
             return "true";
         }
         log.info("Check cardId, please");

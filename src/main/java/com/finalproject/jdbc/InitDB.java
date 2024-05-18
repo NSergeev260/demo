@@ -28,7 +28,7 @@ public class InitDB {
                     continue;
                 }
                 if (str.contains(";")) {
-                    if (temp.contains("")) {
+                    if (!temp.isEmpty()) {
                         statement.executeUpdate(temp + str);
                         temp = "";
                     } else {

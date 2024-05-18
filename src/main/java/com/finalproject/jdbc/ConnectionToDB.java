@@ -42,6 +42,7 @@ public class ConnectionToDB {
             Class.forName(DRIVER).getDeclaredConstructor().newInstance();
             InitDB initDB = new InitDB();
             initDB.initializationDB(connection);
+            initPerformed = true;
             log.info("DB is initialized");
         } catch (Exception e) {
             e.printStackTrace();

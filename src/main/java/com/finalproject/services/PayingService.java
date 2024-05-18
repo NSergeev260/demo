@@ -3,10 +3,13 @@ package com.finalproject.services;
 import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.ICard;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.transport.Transport;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class PayingService {
 
     private CardService cardService;
+    private CrudMethodsCard crudMethodsCard;
 
     public String payMoney(String cardId, Transport typeOfTransport, String terminalId) {
         log.info("Terminal ID: {}, Time: {}, Card ID: {}", terminalId, LocalDateTime.now(), cardId);
@@ -42,6 +46,7 @@ public class PayingService {
 
                     log.info("Trip cost is: {}", cost);
                     log.info("Your balance is {}", card.getBalance());
+                    crudMethodsCard.updateCard(card,cardId);
                     return card.getBalance().toString();
                 }
                 log.info("Not enough for traveling. Put money on card, please");
@@ -58,6 +63,7 @@ public class PayingService {
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
             log.info("You put: {}", money);
             log.info("Your balance is {}", card.getBalance());
+            crudMethodsCard.updateCard(card,cardId);
             return card.getBalance().toString();
         }
         log.info("Check cardId, please");

@@ -28,8 +28,7 @@ public class CrudMethodsCard {
 
     public List<ICard> getCards() {
         List<ICard> transportCards = new ArrayList<>();
-        try {
-            PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transportCard");
+        try (PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transportCard")) {
             ResultSet resultSet = shownStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -52,8 +51,7 @@ public class CrudMethodsCard {
     }
 
     public boolean insertCard(ICard card) {
-        try {
-            PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD);
+        try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD)) {
             insertedStatement.setString(1, card.getCardId());
             insertedStatement.setBigDecimal(2, card.getBalance());
             insertedStatement.setString(3, String.valueOf(card.getType()));
@@ -64,33 +62,36 @@ public class CrudMethodsCard {
                 insertedStatement.setString(5, null);
             }
             insertedStatement.executeUpdate();
-            log.info("Card with id {} is added successfully", card.getCardId());
-            return result = true;
+            log.info("{} with id {} is added successfully",card.getType(), card.getCardId());
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result = false;
+        return false;
     }
 
-    public boolean updateCard(String id, BigDecimal balance, boolean isBlocked, String documentId) {
-        try {
-            PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD);
-            updatedStatement.setBigDecimal(1, balance);
-            updatedStatement.setBoolean(2, isBlocked);
-            updatedStatement.setString(3, documentId);
-            updatedStatement.setString(4, id);
+    public boolean updateCard(ICard updateCard, String id) {
+        ICard card = updateCard;
+        try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
+            updatedStatement.setBigDecimal(1, card.getBalance());
+            updatedStatement.setBoolean(2, card.isBlocked());
+            if (card.getType().equals(CardType.CREDIT)) {
+                updatedStatement.setString(3, ((CreditCard) card).getDocumentId());
+            } else {
+                updatedStatement.setString(3, null);
+            }
+            updatedStatement.setString(4, card.getCardId());
             updatedStatement.executeUpdate();
-            log.info("Card with id {} is updated successfully", id);
-            return result = true;
+            log.info("{} with id {} is updated successfully", card.getType(), card.getCardId());
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result = false;
+        return false;
     }
 
     public void deleteCard(String id) {
-        try {
-            PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD);
+        try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD)) {
             deletedStatement.setString(1, id);
             deletedStatement.executeUpdate();
             log.info("Card with id {} is deleted successfully", id);
@@ -101,8 +102,7 @@ public class CrudMethodsCard {
 
     public ICard getCard(String id) {
         ICard card = null;
-        try {
-            PreparedStatement selectStatement = connection.prepareStatement(GET_CARD);
+        try (PreparedStatement selectStatement = connection.prepareStatement(GET_CARD)) {
             selectStatement.setString(1, id);
             ResultSet resultSet = selectStatement.executeQuery();
 
@@ -114,7 +114,7 @@ public class CrudMethodsCard {
                 String documentId = resultSet.getString("documentId");
                 if (typeOfCard.equals(CardType.CREDIT)) {
                     return new CreditCard(cardId, balance, isBlocked, documentId);
-                } else if (typeOfCard.equals(CardType.DEBIT)) {
+                } else {
                     return new DebitCard(cardId, balance, isBlocked);
                 }
             }
