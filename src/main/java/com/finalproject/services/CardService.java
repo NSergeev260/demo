@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.finalproject.history.History;
 import com.finalproject.jdbc.CrudMethodsCard;
+import com.finalproject.jdbc.CrudMethodsHistory;
+import com.finalproject.transport.Transport;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class CardService {
 
     private CrudMethodsCard crudMethodsCard;
+    private CrudMethodsHistory crudMethodsHistory;
     private final List<ICard> cards = new ArrayList<>();
 
     public void addCard(ICard card) {
@@ -39,6 +43,7 @@ public class CardService {
             log.info("CardId: {}", cardId);
             log.info("Card is blocked! Time: {}", LocalDateTime.now());
             crudMethodsCard.updateCard(card,cardId);
+            crudMethodsHistory.insertHistory(card, cardId, String.valueOf(History.BLOCK));
             return "true";
         }
         log.info("Check cardId, please");
@@ -53,6 +58,7 @@ public class CardService {
             log.info("CardId: {}", cardId);
             log.info("Card is unblocked! Time: {}", LocalDateTime.now());
             crudMethodsCard.updateCard(card,cardId);
+            crudMethodsHistory.insertHistory(card, cardId, String.valueOf(History.UNBLOCK));
             return "true";
         }
         log.info("Check cardId, please");

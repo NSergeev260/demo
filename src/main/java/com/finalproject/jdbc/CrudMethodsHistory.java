@@ -3,6 +3,7 @@ package com.finalproject.jdbc;
 import com.finalproject.history.CardHistory;
 import com.finalproject.card.ICard;
 import com.finalproject.history.History;
+import com.finalproject.services.PayingService;
 import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,14 +21,14 @@ import java.util.List;
 @Component
 public class CrudMethodsHistory {
 
-    private static String GET_HISTORY = "SELECT * FROM cardHistory WHERE cardId = ?";
-    private static String INSERT_HISTORY = "INSERT INTO cardHistory(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation) VALUES (?, ?, ?, ?, ?, ?)";
-    private static Connection connection = ConnectionToDB.getConnection();
+    private String GET_HISTORY = "SELECT * FROM cardHistory WHERE cardId = ?";
+    private String INSERT_HISTORY = "INSERT INTO cardHistory(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation) VALUES (?, ?, ?, ?, ?, ?)";
+    private Connection connection = ConnectionToDB.getConnection();
+    private PayingService payingService;
 
-    public static List<CardHistory> getHistory() {
+    public List<CardHistory> getHistory() {
         List<CardHistory> history = new ArrayList<>();
-        try {
-            PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM cardHistory");
+        try (PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM cardHistory")) {
             ResultSet resultSet = shownStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -47,26 +48,25 @@ public class CrudMethodsHistory {
         return history;
     }
 
-    public static void insertHistory(CardHistory history) {
-        try {
-            PreparedStatement insertedStatement = connection.prepareStatement(INSERT_HISTORY);
-            insertedStatement.setString(1, history.getCardId());
-            insertedStatement.setString(2, String.valueOf(history.getOperation()));
-            insertedStatement.setBoolean(3, history.isResult());
-            insertedStatement.setBigDecimal(4, history.getAmount());
-            insertedStatement.setString(5, history.getDateOfOperation());
-            insertedStatement.setBigDecimal(6, history.getBalanceAfterOperation());
+    public void insertHistory(ICard card, String cardId, String operation) {
+        Transport transport = null;
+        try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_HISTORY)) {
+            insertedStatement.setString(1, card.getCardId());
+            insertedStatement.setString(2, String.valueOf(History.valueOf(operation)));
+            insertedStatement.setBoolean(3, CrudMethodsCard.result);
+            insertedStatement.setBigDecimal(4, transport.getTripCost());
+            insertedStatement.setString(5, String.valueOf(LocalDateTime.now()));
+            insertedStatement.setBigDecimal(6, new BigDecimal(payingService.getBalance(card.getCardId(), cardId)));
             insertedStatement.executeUpdate();
-            log.info("History record for card with id {} is added successfully", history.getCardId());
+            log.info("History record for card with id {} is added successfully", card.getCardId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static CardHistory getHistory(String cardID) {
+    public CardHistory getHistory(String cardID) {
         CardHistory history = null;
-        try {
-            PreparedStatement selectStatement = connection.prepareStatement(GET_HISTORY);
+        try (PreparedStatement selectStatement = connection.prepareStatement(GET_HISTORY)) {
             selectStatement.setString(1, cardID);
             ResultSet resultSet = selectStatement.executeQuery();
 
@@ -78,7 +78,7 @@ public class CrudMethodsHistory {
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String dateOfOperation = resultSet.getString("dateOfOperation");
                 BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balanceAfterOperation");
-                return new CardHistory(id, cardId, operation, result, amount, dateOfOperation, balanceAfterOperation);
+                return new CardHistory(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -8,6 +8,7 @@ import com.finalproject.transport.Transport;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -22,26 +23,34 @@ public class CardHistory {
     private BigDecimal amount;
     private String dateOfOperation;
     private BigDecimal balanceAfterOperation;
-
+    private ICard card;
     private PayingService payingService;
+    private Transport transport;
 
-    public CardHistory(ICard card, String operation, Transport typeOfTransport, PayingService balance) {
+    public CardHistory(ICard card, String cardId, String operation, boolean result, BigDecimal amount,
+                       String dateOfOperation, BigDecimal balanceAfterOperation) {
         this.cardId = card.getCardId();
         this.operation = String.valueOf(History.valueOf(operation));
-        this.result = CrudMethodsCard.result;
-        this.amount = Transport.valueOf(String.valueOf(typeOfTransport)).getTripCost();
+        this.result = PayingService.result;
+        this.amount = Transport.valueOf(String.valueOf(transport.getTripCost())).getTripCost();
         this.dateOfOperation = String.valueOf(LocalDateTime.now());
-        this.balanceAfterOperation = new BigDecimal(payingService.getBalance(card.getCardId(), "1"));
+        this.balanceAfterOperation = new BigDecimal(payingService.getBalance(card.getCardId(), terminalId));
     }
 
-    public CardHistory(int id, String cardId, String operation, boolean result, BigDecimal amount,
+    public CardHistory(String cardId, String operation, boolean result, BigDecimal amount,
                        String dateOfOperation, BigDecimal balanceAfterOperation) {
-        this.id = id;
-        this.cardId = cardId;
-        this.operation = operation;
-        this.result = result;
-        this.amount = amount;
-        this.dateOfOperation = dateOfOperation;
-        this.balanceAfterOperation = balanceAfterOperation;
+        this.cardId = ICard.getCardId();
+        this.operation = String.valueOf(History.valueOf(operation));
+        this.result = PayingService.result;
+        this.amount = Transport.valueOf(String.valueOf(transport.getTripCost())).getTripCost();
+        this.dateOfOperation = String.valueOf(LocalDateTime.now());
+        this.balanceAfterOperation = new BigDecimal(payingService.getBalance(card.getCardId(), terminalId));
+    }
+
+    public CardHistory(ICard card, String cardId, String operation) {
+        this.cardId = card.getCardId();
+        this.operation = String.valueOf(History.valueOf(operation));
+        this.dateOfOperation = String.valueOf(LocalDateTime.now());
+
     }
 }
