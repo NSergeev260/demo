@@ -18,6 +18,7 @@ public class CardService {
 
     private CrudMethodsCard crudMethodsCard;
     private CrudMethodsHistory crudMethodsHistory;
+    private static final String MESSAGE = "Check cardId, please";
 
     public Optional<ICard> findCardById(String cardId) {
         return Optional.ofNullable(crudMethodsCard.getCard(cardId));
@@ -34,8 +35,8 @@ public class CardService {
             crudMethodsHistory.insertHistory(card, String.valueOf(Operation.BLOCK), result, null);
             return "true";
         }
-        log.info("Check cardId, please");
-        return "Check cardId, please";
+        log.info(MESSAGE);
+        return MESSAGE;
     }
 
     public String unblock(String cardId) {
@@ -49,8 +50,8 @@ public class CardService {
             crudMethodsHistory.insertHistory(card, String.valueOf(Operation.UNBLOCK), result, null);
             return "true";
         }
-        log.info("Check cardId, please");
-        return "Check cardId, please";
+        log.info(MESSAGE);
+        return MESSAGE;
     }
 
     public String isBlocked(String cardId) {
@@ -61,7 +62,7 @@ public class CardService {
             log.info("Card is blocked: {}, Time: {}", card.isBlocked(), LocalDateTime.now());
             return String.valueOf(card.isBlocked());
         }
-        log.info("Check cardId, please");
-        return "Check cardId, please";
+        log.info(MESSAGE);
+        return MESSAGE;
     }
 }

@@ -2,7 +2,6 @@ package com.finalproject.jdbc;
 
 import com.finalproject.history.CardHistory;
 import com.finalproject.card.ICard;
-import com.finalproject.services.PayingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
@@ -18,10 +17,9 @@ import java.util.List;
 @Component
 public class CrudMethodsHistory {
 
-    private String GET_HISTORY = "SELECT * FROM cardHistory WHERE cardId = ?";
-    private String INSERT_HISTORY = "INSERT INTO cardHistory(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation) VALUES (?, ?, ?, ?, ?, ?)";
-    private Connection connection = ConnectionToDB.getConnection();
-    private PayingService payingService;
+    private static final String GET_HISTORY = "SELECT * FROM cardHistory WHERE cardId = ?";
+    private static final String INSERT_HISTORY = "INSERT INTO cardHistory(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final Connection connection = ConnectionToDB.getConnection();
 
     public void insertHistory(ICard card, String operation, boolean result, BigDecimal amount) {
         try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_HISTORY)) {
@@ -74,7 +72,7 @@ public class CrudMethodsHistory {
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String dateOfOperation = resultSet.getString("dateOfOperation");
                 BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balanceAfterOperation");
-                return new CardHistory(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation);
+                return new CardHistory(id, cardId, operation, result, amount, dateOfOperation, balanceAfterOperation);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -36,4 +36,14 @@ public class CardHistory {
         this.balanceAfterOperation = balanceAfterOperation;
     }
 
+    public CardHistory(int id, String cardId, String operation, boolean result, BigDecimal amount,
+                       String dateOfOperation, BigDecimal balanceAfterOperation) {
+        this.id = id;
+        this.cardId = cardId;
+        this.operation = Operation.valueOf(operation);
+        this.result = result;
+        this.amount = amount;
+        this.dateOfOperation = dateOfOperation;
+        this.balanceAfterOperation = balanceAfterOperation;
+    }
 }

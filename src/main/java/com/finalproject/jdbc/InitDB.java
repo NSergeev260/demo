@@ -1,6 +1,7 @@
 package com.finalproject.jdbc;
 
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,18 +10,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class InitDB {
     public String initializationDB(Connection connection) {
 
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             Path path = Paths.get("src\\main\\resources\\DBTransportCard.sql").toAbsolutePath();
             List<String> lines = Files.lines(Path.of(String.valueOf(path)))
                 .filter(x -> !x.isBlank())
-                .collect(Collectors.toList());
+                .toList();
 
             String temp = "";
             for (String str : lines) {

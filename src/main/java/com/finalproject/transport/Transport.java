@@ -17,4 +17,3 @@ public enum Transport {
         this.tripCost = BigDecimal.valueOf(tripCost);
     }
 }
-

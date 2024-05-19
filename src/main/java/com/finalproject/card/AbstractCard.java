@@ -9,23 +9,21 @@ public abstract class AbstractCard implements ICard {
     protected String cardId;
     @Setter
     private BigDecimal balance;
-    private CardType typeOfCard;
     protected boolean blocked;
+    private final CardType cardType;
 
-    public AbstractCard(String cardId, BigDecimal balance, CardType typeOfCard, boolean blocked) {
+    protected AbstractCard(String cardId, BigDecimal balance, CardType cardType, boolean blocked) {
         this.cardId = cardId;
         this.balance = balance;
-        this.typeOfCard = typeOfCard;
+        this.cardType = cardType;
         this.blocked = blocked;
     }
 
-    public AbstractCard(BigDecimal balance, CardType typeOfCard, boolean blocked) {
+    protected AbstractCard(BigDecimal balance, CardType cardType, boolean blocked) {
         this.balance = balance;
-        this.typeOfCard = typeOfCard;
+        this.cardType = cardType;
         this.blocked = blocked;
     }
-
-    public abstract CardType getType();
 
     public void block() {
         blocked = true;
