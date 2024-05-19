@@ -3,10 +3,12 @@ package com.finalproject.services;
 import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.ICard;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 import com.finalproject.history.Operation;
 import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.jdbc.CrudMethodsHistory;
@@ -27,6 +29,7 @@ public class PayingService {
     public String payMoney(String cardId, Transport typeOfTransport, String terminalId) {
         log.info("Terminal ID: {}, Time: {}, Card ID: {}", terminalId, LocalDateTime.now(), cardId);
         List<Transport> transport = List.of(Transport.values());
+        boolean result;
         if (transport.contains(typeOfTransport)) {
             BigDecimal cost = typeOfTransport.getTripCost();
             Optional<ICard> cardById = cardService.findCardById(cardId);
@@ -43,15 +46,17 @@ public class PayingService {
                         card.setBalance(payByCard);
                     } else {
                         log.info("Not enough money for trip");
+                        cardService.block(cardId);
+                        result = crudMethodsCard.updateCard(card);
                     }
 
                     log.info("Trip cost is: {}", cost);
                     log.info("Your balance is {}", card.getBalance());
-                    boolean result = crudMethodsCard.updateCard(card);
-                    crudMethodsHistory.insertHistory(card,String.valueOf(Operation.PAY), result, cost);
+                    result = crudMethodsCard.updateCard(card);
+                    crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PAY), result, cost);
                     return card.getBalance().toString();
                 }
-                log.info("Not enough for traveling. Put money on card, please");
+                log.info("Card is blocked!");
             }
         }
         return "Not enough for traveling. Put money on card, please";
@@ -65,6 +70,9 @@ public class PayingService {
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
             log.info("You put: {}", money);
             log.info("Your balance is {}", card.getBalance());
+            if (card.isBlocked()) {
+                cardService.unblock(cardId);
+            }
             boolean result = crudMethodsCard.updateCard(card);
             crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PUT), result, money);
             return card.getBalance().toString();

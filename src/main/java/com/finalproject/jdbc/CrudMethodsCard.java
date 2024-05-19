@@ -24,6 +24,26 @@ public class CrudMethodsCard {
     private static String DELETE_CARD = "DELETE FROM transportCard WHERE cardId = ?";
     private static Connection connection = ConnectionToDB.getConnection();
 
+    public boolean insertCard(ICard card) {
+        try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD)) {
+            insertedStatement.setString(1, card.getCardId());
+            insertedStatement.setBigDecimal(2, card.getBalance());
+            insertedStatement.setString(3, String.valueOf(card.getType()));
+            insertedStatement.setBoolean(4, card.isBlocked());
+            if (card.getType().equals(CardType.CREDIT)) {
+                insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
+            } else {
+                insertedStatement.setString(5, null);
+            }
+            insertedStatement.executeUpdate();
+            log.info("{} with id {} is added successfully",card.getType(), card.getCardId());
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public List<ICard> getCards() {
         List<ICard> transportCards = new ArrayList<>();
         try (PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transportCard")) {
@@ -48,55 +68,6 @@ public class CrudMethodsCard {
         return transportCards;
     }
 
-    public boolean insertCard(ICard card) {
-        try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD)) {
-            insertedStatement.setString(1, card.getCardId());
-            insertedStatement.setBigDecimal(2, card.getBalance());
-            insertedStatement.setString(3, String.valueOf(card.getType()));
-            insertedStatement.setBoolean(4, card.isBlocked());
-            if (card.getType().equals(CardType.CREDIT)) {
-                insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
-            } else {
-                insertedStatement.setString(5, null);
-            }
-            insertedStatement.executeUpdate();
-            log.info("{} with id {} is added successfully",card.getType(), card.getCardId());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean updateCard(ICard card) {
-        try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
-            updatedStatement.setBigDecimal(1, card.getBalance());
-            updatedStatement.setBoolean(2, card.isBlocked());
-            if (card.getType().equals(CardType.CREDIT)) {
-                updatedStatement.setString(3, ((CreditCard) card).getDocumentId());
-            } else {
-                updatedStatement.setString(3, null);
-            }
-            updatedStatement.setString(4, card.getCardId());
-            updatedStatement.executeUpdate();
-            log.info("{} with id {} is updated successfully", card.getType(), card.getCardId());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public void deleteCard(String id) {
-        try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD)) {
-            deletedStatement.setString(1, id);
-            deletedStatement.executeUpdate();
-            log.info("Card with id {} is deleted successfully", id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public ICard getCard(String id) {
         ICard card = null;
         try (PreparedStatement selectStatement = connection.prepareStatement(GET_CARD)) {
@@ -119,5 +90,36 @@ public class CrudMethodsCard {
             e.printStackTrace();
         }
         return card;
+    }
+
+    public boolean updateCard(ICard card) {
+        try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
+            updatedStatement.setBigDecimal(1, card.getBalance());
+            updatedStatement.setBoolean(2, card.isBlocked());
+            if (card.getType().equals(CardType.CREDIT)) {
+                updatedStatement.setString(3, ((CreditCard) card).getDocumentId());
+            } else {
+                updatedStatement.setString(3, null);
+            }
+            updatedStatement.setString(4, card.getCardId());
+            updatedStatement.executeUpdate();
+            log.info("{} with id {} is updated successfully", card.getType(), card.getCardId());
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deleteCard(String id) {
+        try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD)) {
+            deletedStatement.setString(1, id);
+            deletedStatement.executeUpdate();
+            log.info("Card with id {} is deleted successfully", id);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
