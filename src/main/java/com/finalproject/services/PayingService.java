@@ -42,17 +42,20 @@ public class PayingService {
                     if ((card.getType().equals(CardType.CREDIT)) && (card.getBalance()
                         .add(CreditCard.CUT_OFF_BANK_DEPT).compareTo(cost) >= 0)) {
                         card.setBalance(payByCard);
+                        result = true;
                     } else if ((card.getType().equals(CardType.DEBIT)) && (card.getBalance().compareTo(cost) >= 0)) {
                         card.setBalance(payByCard);
+                        result = true;
                     } else {
                         log.info("Not enough money for trip");
                         card.block();
-                        result = crudMethodsCard.updateCard(card);
+                        result = false;
+                        crudMethodsCard.updateCard(card);
                     }
 
                     log.info("Trip cost is: {}", cost);
                     log.info("Your balance is {}", card.getBalance());
-                    result = crudMethodsCard.updateCard(card);
+                    crudMethodsCard.updateCard(card);
                     crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PAY), result, cost);
                     return card.getBalance().toString();
                 }
