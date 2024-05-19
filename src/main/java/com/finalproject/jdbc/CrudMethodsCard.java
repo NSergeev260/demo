@@ -6,7 +6,6 @@ import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +23,6 @@ public class CrudMethodsCard {
     private static String UPDATE_CARD = "UPDATE transportCard SET balance = ?, isBlocked = ?, documentId = ? WHERE cardId = ?";
     private static String DELETE_CARD = "DELETE FROM transportCard WHERE cardId = ?";
     private static Connection connection = ConnectionToDB.getConnection();
-    public static boolean result;
 
     public List<ICard> getCards() {
         List<ICard> transportCards = new ArrayList<>();
@@ -70,8 +68,7 @@ public class CrudMethodsCard {
         return false;
     }
 
-    public boolean updateCard(ICard updateCard, String id) {
-        ICard card = updateCard;
+    public boolean updateCard(ICard card) {
         try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
             updatedStatement.setBigDecimal(1, card.getBalance());
             updatedStatement.setBoolean(2, card.isBlocked());

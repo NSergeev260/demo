@@ -3,13 +3,11 @@ package com.finalproject.services;
 import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.ICard;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import com.finalproject.history.History;
+import com.finalproject.history.Operation;
 import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.jdbc.CrudMethodsHistory;
 import com.finalproject.transport.Transport;
@@ -25,7 +23,6 @@ public class PayingService {
     private CardService cardService;
     private CrudMethodsCard crudMethodsCard;
     private CrudMethodsHistory crudMethodsHistory;
-    public static boolean result;
 
     public String payMoney(String cardId, Transport typeOfTransport, String terminalId) {
         log.info("Terminal ID: {}, Time: {}, Card ID: {}", terminalId, LocalDateTime.now(), cardId);
@@ -50,16 +47,13 @@ public class PayingService {
 
                     log.info("Trip cost is: {}", cost);
                     log.info("Your balance is {}", card.getBalance());
-                    result = true;
-                    crudMethodsCard.updateCard(card,cardId);
-                    crudMethodsHistory.insertHistory(card, cardId, String.valueOf(History.PAY), result, cost,
-                        String.valueOf(LocalDateTime.now()), card.getBalance(cardId, terminalId));
+                    boolean result = crudMethodsCard.updateCard(card);
+                    crudMethodsHistory.insertHistory(card,String.valueOf(Operation.PAY), result, cost);
                     return card.getBalance().toString();
                 }
                 log.info("Not enough for traveling. Put money on card, please");
             }
         }
-        result = false;
         return "Not enough for traveling. Put money on card, please";
     }
 
@@ -71,13 +65,10 @@ public class PayingService {
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
             log.info("You put: {}", money);
             log.info("Your balance is {}", card.getBalance());
-            result = true;
-            crudMethodsCard.updateCard(card,cardId);
-            crudMethodsHistory.insertHistory(card, cardId, String.valueOf(History.PUT), result, money,
-            String.valueOf(LocalDateTime.now()), getBalance(cardId, terminalId));
+            boolean result = crudMethodsCard.updateCard(card);
+            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PUT), result, money);
             return card.getBalance().toString();
         }
-        result = false;
         log.info("Check cardId, please");
         return "Check cardId, please";
     }
