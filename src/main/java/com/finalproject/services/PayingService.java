@@ -46,7 +46,7 @@ public class PayingService {
                         card.setBalance(payByCard);
                     } else {
                         log.info("Not enough money for trip");
-                        cardService.block(cardId);
+                        card.block();
                         result = crudMethodsCard.updateCard(card);
                     }
 
@@ -71,7 +71,7 @@ public class PayingService {
             log.info("You put: {}", money);
             log.info("Your balance is {}", card.getBalance());
             if (card.isBlocked()) {
-                cardService.unblock(cardId);
+                card.unblock();
             }
             boolean result = crudMethodsCard.updateCard(card);
             crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PUT), result, money);
