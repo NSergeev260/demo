@@ -25,6 +25,7 @@ result BOOLEAN NOT NULL,
 amount DECIMAL(8, 2),
 dateOfOperation date NOT NULL,
 balanceAfterOperation DECIMAL(8, 2) NOT NULL,
+terminalId VARCHAR(36) NOT NULL,
 PRIMARY KEY(id),
 FOREIGN KEY(cardId) REFERENCES transportCard(cardId)
 );

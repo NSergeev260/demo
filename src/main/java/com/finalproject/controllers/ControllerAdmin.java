@@ -15,13 +15,13 @@ public class ControllerAdmin {
     private MockData mockData;
 
     @PostMapping("/block")
-    public String block(String cardId) {
-        return cardService.block(cardId);
+    public String block(String cardId, String terminalId) {
+        return cardService.block(cardId, terminalId);
     }
 
     @PostMapping("/unblock")
-    public String unblock(String cardId) {
-        return cardService.unblock(cardId);
+    public String unblock(String cardId, String terminalId) {
+        return cardService.unblock(cardId, terminalId);
     }
 
     @GetMapping("/isBlocked")

@@ -24,7 +24,7 @@ public class CardService {
         return Optional.ofNullable(crudMethodsCard.getCard(cardId));
     }
 
-    public String block(String cardId) {
+    public String block(String cardId, String terminalId) {
         Optional<ICard> cardById = findCardById(cardId);
         if (cardById.isPresent()) {
             ICard card = cardById.get();
@@ -32,14 +32,14 @@ public class CardService {
             log.info("CardId: {}", cardId);
             log.info("Card is blocked! Time: {}", LocalDateTime.now());
             boolean result = crudMethodsCard.updateCard(card);
-            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.BLOCK), result, null);
+            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.BLOCK), result, null, terminalId);
             return "true";
         }
         log.info(MESSAGE);
         return MESSAGE;
     }
 
-    public String unblock(String cardId) {
+    public String unblock(String cardId, String terminalId) {
         Optional<ICard> cardById = findCardById(cardId);
         if (cardById.isPresent()) {
             ICard card = cardById.get();
@@ -47,7 +47,7 @@ public class CardService {
             log.info("CardId: {}", cardId);
             log.info("Card is unblocked! Time: {}", LocalDateTime.now());
             boolean result = crudMethodsCard.updateCard(card);
-            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.UNBLOCK), result, null);
+            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.UNBLOCK), result, null, terminalId);
             return "true";
         }
         log.info(MESSAGE);

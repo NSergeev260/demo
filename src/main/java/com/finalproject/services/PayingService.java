@@ -56,7 +56,7 @@ public class PayingService {
                     log.info("Trip cost is: {}", cost);
                     log.info("Your balance is {}", card.getBalance());
                     crudMethodsCard.updateCard(card);
-                    crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PAY), result, cost);
+                    crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PAY), result, cost, terminalId);
                     return card.getBalance().toString();
                 }
                 log.info("Card is blocked!");
@@ -77,7 +77,7 @@ public class PayingService {
                 card.unblock();
             }
             boolean result = crudMethodsCard.updateCard(card);
-            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PUT), result, money);
+            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PUT), result, money, terminalId);
             return card.getBalance().toString();
         }
         log.info(CHECK_CARD_ID_PLEASE);
