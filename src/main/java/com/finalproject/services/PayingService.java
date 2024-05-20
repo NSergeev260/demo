@@ -2,11 +2,14 @@ package com.finalproject.services;
 
 import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
+import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 import com.finalproject.history.Operation;
 import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.jdbc.CrudMethodsHistory;
@@ -91,6 +94,28 @@ public class PayingService {
             BigDecimal balance = cardById.get().getBalance();
             log.info("Your balance is {}", balance);
             return balance.toString();
+        }
+        log.info(CHECK_CARD_ID_PLEASE);
+        return CHECK_CARD_ID_PLEASE;
+    }
+
+    public String getInfoOfCard(String cardId) {
+        log.info("Info about card with ID: {}, Time: {}", cardId, LocalDateTime.now());
+        Optional<ICard> cardById = cardService.findCardById(cardId);
+        if (cardById.isPresent()) {
+            ICard card = cardById.get();
+            String documentId = null;
+            String id = cardId;
+            BigDecimal balance = card.getBalance();
+            boolean blocked = card.isBlocked();
+            if (card.getType().equals(CardType.CREDIT)) {
+                documentId = ((CreditCard) card).getDocumentId();
+                card = new CreditCard(cardId, balance, blocked, documentId);
+            } else {
+                card = new DebitCard(cardId, balance, blocked);
+            }
+            log.info("INFO card: {}", card);
+            return card.toString();
         }
         log.info(CHECK_CARD_ID_PLEASE);
         return CHECK_CARD_ID_PLEASE;

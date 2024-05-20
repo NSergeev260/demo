@@ -31,6 +31,6 @@ public class DebitCard extends AbstractCard {
             "cardId=" + getCardId() + ", " +
             "balance= " + getBalance() + ", " +
             "cardType= " + getType() + ", " +
-            "isBlocked= " + isBlocked() + ", " + '}';
+            "isBlocked= " + isBlocked() + '}';
     }
 }

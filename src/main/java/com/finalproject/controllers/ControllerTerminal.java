@@ -28,4 +28,9 @@ public class ControllerTerminal {
     public String balanceOfMoney(@PathVariable String cardId, String terminalId) {
         return payingService.getBalance(cardId, terminalId);
     }
+
+    @GetMapping("/getInfo")
+    public String getInfo(String cardId) {
+        return payingService.getInfoOfCard(cardId);
+    }
 }
