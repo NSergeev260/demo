@@ -1,6 +1,8 @@
 package com.finalproject.controllers;
 
 import java.math.BigDecimal;
+
+import com.finalproject.card.CardType;
 import com.finalproject.services.PayingService;
 import com.finalproject.transport.Transport;
 import lombok.AllArgsConstructor;
@@ -32,5 +34,10 @@ public class ControllerTerminal {
     @GetMapping("/getInfo")
     public String getInfo(String cardId) {
         return payingService.getInfoOfCard(cardId);
+    }
+
+    @PostMapping("/activate")
+    public String activateCard(CardType cardType, String terminalId) {
+        return payingService.insertNewCard(cardType, terminalId);
     }
 }

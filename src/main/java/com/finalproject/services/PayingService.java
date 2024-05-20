@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.finalproject.history.Operation;
 import com.finalproject.jdbc.CrudMethodsCard;
@@ -119,5 +120,25 @@ public class PayingService {
         }
         log.info(CHECK_CARD_ID_PLEASE);
         return CHECK_CARD_ID_PLEASE;
+    }
+
+    public String insertNewCard(CardType cardType, String terminalId) {
+        log.info("Insert new {} card, Time: {}", cardType, LocalDateTime.now());
+        String cardId = UUID.randomUUID().toString();
+        BigDecimal balance = new BigDecimal(200);
+        boolean blocked = false;
+        BigDecimal amount = new BigDecimal(0);
+        String documentId = UUID.randomUUID().toString();
+        ICard card;
+        if (cardType.equals(CardType.CREDIT)) {
+            card = new CreditCard(balance, blocked, documentId);
+        } else {
+            card = new DebitCard(balance, blocked);
+        }
+        boolean result = crudMethodsCard.insertCard(card);
+        crudMethodsHistory.insertHistory(card, String.valueOf(Operation.INSERT), result,
+            amount, terminalId);
+        log.info("New card with id {} was created", card.getCardId());
+        return "New card was created";
     }
 }
