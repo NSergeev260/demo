@@ -33,10 +33,10 @@ public class CreditCard extends AbstractCard {
     @Override
     public String toString() {
         return "CreditCard{" +
-            "cardId=" + getCardId() + ", " +
+            "cardId= " + getCardId() + ", " +
             "balance= " + getBalance() + ", " +
             "cardType= " + getType() + ", " +
             "isBlocked= " + isBlocked() + ", " +
-            "documentId=" + documentId + '}';
+            "documentId= " + documentId + '}';
     }
 }

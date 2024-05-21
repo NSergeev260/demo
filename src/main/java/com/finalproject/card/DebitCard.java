@@ -28,7 +28,7 @@ public class DebitCard extends AbstractCard {
     @Override
     public String toString() {
         return "DebitCard{" +
-            "cardId=" + getCardId() + ", " +
+            "cardId= " + getCardId() + ", " +
             "balance= " + getBalance() + ", " +
             "cardType= " + getType() + ", " +
             "isBlocked= " + isBlocked() + '}';
