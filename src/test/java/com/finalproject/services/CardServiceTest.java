@@ -3,7 +3,6 @@ package com.finalproject.services;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
-import com.finalproject.history.Operation;
 import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.jdbc.CrudMethodsHistory;
 import org.junit.jupiter.api.Assertions;
@@ -13,16 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
-public class CardServiceTest {
+class CardServiceTest {
 
     @InjectMocks
     private CardService cardService;
@@ -50,14 +43,31 @@ public class CardServiceTest {
     }
 
     @Test
-    void cardShouldBlockedTest() {
+    void methodShouldGetIsBlocked() {
+        CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(100), true, "1a");
+        Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
+        ICard card = crudMethodsCard.getCard("1");
+        Assertions.assertEquals(creditCard, card);
+        System.out.println(card);
+
+        Mockito.when(card.isBlocked()).thenReturn(true);
+        boolean isBlocked = card.isBlocked();
+        Assertions.assertEquals(true, isBlocked);
+        System.out.println(isBlocked);
+    }
+
+
+    @Test
+    void cardShouldBeBlockedTest() {
         CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(100), false, "1a");
         Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
+        ICard card = crudMethodsCard.getCard("1");
+        Assertions.assertEquals(creditCard, card);
         Mockito.when(cardService.block("1", "Rabbit")).thenReturn("true");
         Assertions.assertEquals("true", "true");
 
-        Mockito.doNothing().when(crudMethodsHistory).insertHistory(creditCard, "BLOCK", true, null, "Rabbit");
-        crudMethodsHistory.insertHistory(creditCard, "BLOCK", true, null, "Rabbit");
-        Mockito.verify(crudMethodsHistory).insertHistory(creditCard, "BLOCK", true, null, "Rabbit");
+        Mockito.doNothing().when(crudMethodsHistory).insertHistory(card, "BLOCK", true, null, "Rabbit");
+//        crudMethodsHistory.insertHistory(creditCard, "BLOCK", true, null, "Rabbit");
+        Mockito.verify(crudMethodsHistory).insertHistory(card, "BLOCK", true, null, "Rabbit");
     }
 }
