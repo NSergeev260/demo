@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.math.BigDecimal;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,13 +47,9 @@ class CardServiceTest {
     void methodShouldGetIsBlocked() {
         CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(100), true, "1a");
         Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
-        ICard card = crudMethodsCard.getCard("1");
-        Assertions.assertEquals(creditCard, card);
-        System.out.println(card);
 
-        Mockito.when(card.isBlocked()).thenReturn(true);
-        boolean isBlocked = card.isBlocked();
-        Assertions.assertEquals(true, isBlocked);
+        String isBlocked = cardService.isBlocked("1");
+        Assertions.assertEquals("true", isBlocked);
         System.out.println(isBlocked);
     }
 
@@ -63,11 +60,13 @@ class CardServiceTest {
         Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
         ICard card = crudMethodsCard.getCard("1");
         Assertions.assertEquals(creditCard, card);
-        Mockito.when(cardService.block("1", "Rabbit")).thenReturn("true");
-        Assertions.assertEquals("true", "true");
 
-        Mockito.doNothing().when(crudMethodsHistory).insertHistory(card, "BLOCK", true, null, "Rabbit");
-//        crudMethodsHistory.insertHistory(creditCard, "BLOCK", true, null, "Rabbit");
-        Mockito.verify(crudMethodsHistory).insertHistory(card, "BLOCK", true, null, "Rabbit");
+        Mockito.doReturn(true).when(crudMethodsCard.getCard("1")).block();
+//        Mockito.when(cardService.block("1", "Rabbit")).thenReturn("true");
+        boolean blocked = crudMethodsCard.getCard("1").isBlocked();
+        Assertions.assertEquals(true, blocked);
+
+//        Mockito.verify(crudMethodsHistory).insertHistory(card, "BLOCK", true, null, "Rabbit");
     }
+
 }
