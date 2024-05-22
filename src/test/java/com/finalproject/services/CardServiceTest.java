@@ -1,22 +1,29 @@
 package com.finalproject.services;
 
+import static org.mockito.Mockito.mockStatic;
+
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
+import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.jdbc.CrudMethodsHistory;
+import java.math.BigDecimal;
+import java.util.Optional;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
-
 @ExtendWith(MockitoExtension.class)
 class CardServiceTest {
+
+    static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @InjectMocks
     private CardService cardService;
@@ -25,38 +32,41 @@ class CardServiceTest {
     @Mock
     private CrudMethodsHistory crudMethodsHistory;
 
-    @Test
-    void CreditCardShouldBeFindByIdTest() {
-        CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(100), false, "1a");
-        Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
-        ICard card = crudMethodsCard.getCard("1");
-        Assertions.assertEquals(creditCard, card);
-        System.out.println(card);
+    @AfterAll
+    static void tearDown() {
+        mockedStatic.close();
     }
 
     @Test
-    void DebitCardShouldBeFindByIdTest() {
+    void creditCardShouldBeFoundByIdTest() {
+        CreditCard creditCard = getCreditCard(false);
+        Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
+        Optional<ICard> card = cardService.findCardById("1");
+        Assertions.assertTrue(card.isPresent());
+        Assertions.assertEquals(creditCard, card.get());
+    }
+
+    @Test
+    void debitCardShouldBeFoundByIdTest() {
         DebitCard debitCard = new DebitCard("2", BigDecimal.valueOf(200), false);
         Mockito.when(crudMethodsCard.getCard("2")).thenReturn(debitCard);
-        ICard card = crudMethodsCard.getCard("2");
-        Assertions.assertEquals(debitCard, card);
-        System.out.println(card);
+        Optional<ICard> card = cardService.findCardById("2");
+        Assertions.assertTrue(card.isPresent());
+        Assertions.assertEquals(debitCard, card.get());
     }
 
     @Test
-    void methodShouldGetIsBlocked() {
-        CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(100), true, "1a");
+    void methodShouldGetBlockedStatusTest() {
+        CreditCard creditCard = getCreditCard(true);
         Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
-
         String isBlocked = cardService.isBlocked("1");
         Assertions.assertEquals("true", isBlocked);
-        System.out.println(isBlocked);
     }
 
 
     @Test
     void cardShouldBeBlockedTest() {
-        CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(100), false, "1a");
+        CreditCard creditCard = getCreditCard(false);
         Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
         ICard card = crudMethodsCard.getCard("1");
         Assertions.assertEquals(creditCard, card);
@@ -69,4 +79,8 @@ class CardServiceTest {
 //        Mockito.verify(crudMethodsHistory).insertHistory(card, "BLOCK", true, null, "Rabbit");
     }
 
+
+    private static CreditCard getCreditCard(boolean isBlocked) {
+        return new CreditCard("1", BigDecimal.valueOf(100), isBlocked, "1a");
+    }
 }
