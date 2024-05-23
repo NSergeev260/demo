@@ -5,7 +5,6 @@ import static org.mockito.Mockito.mockStatic;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
-import com.finalproject.history.CardHistory;
 import com.finalproject.history.Operation;
 import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCard;
@@ -79,31 +78,22 @@ class CardServiceTest {
     void cardShouldBeBlockedTest() {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
-        System.out.println(creditCard);
+        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(true);
         String blocked = cardService.block("1", "Rabbit");
         Assertions.assertEquals("true", blocked);
-        System.out.println(creditCard);
-
-        boolean update = crudMethodsCard.updateCard(creditCard);
-        Assertions.assertEquals(false, update);
-        Mockito.verify(crudMethodsHistory).insertHistory(creditCard, String.valueOf(Operation.BLOCK), false, null, "Rabbit");
+        Mockito.verify(crudMethodsHistory).insertHistory(creditCard, String.valueOf(Operation.BLOCK), true, null, "Rabbit");
     }
 
     @Test
     void cardShouldBeUnBlockedTest() {
         DebitCard debitCard = getDebitCard(true);
-        Mockito.when(crudMethodsCard.getCard("1")).thenReturn(debitCard);
-        System.out.println(debitCard);
-        String unblocked = cardService.unblock("1", "Rabbit");
+        Mockito.when(crudMethodsCard.getCard("2")).thenReturn(debitCard);
+        Mockito.when(crudMethodsCard.updateCard(debitCard)).thenReturn(true);
+        String unblocked = cardService.unblock("2", "Rabbit");
         Assertions.assertEquals("true", unblocked);
-        System.out.println(debitCard);
-
-        boolean update = crudMethodsCard.updateCard(debitCard);
-        Assertions.assertEquals(false, update);
-        Mockito.verify(crudMethodsHistory).insertHistory(debitCard, String.valueOf(Operation.UNBLOCK), false, null, "Rabbit");
+        Mockito.verify(crudMethodsHistory).insertHistory(debitCard, String.valueOf(Operation.UNBLOCK), true, null, "Rabbit");
 
     }
-
 
     private static CreditCard getCreditCard(boolean isBlocked) {
         return new CreditCard("1", BigDecimal.valueOf(100), isBlocked, "1a");

@@ -36,7 +36,7 @@ public class CrudMethodsCard {
                 insertedStatement.setString(5, null);
             }
             insertedStatement.executeUpdate();
-            log.info("{} with id {} is added successfully",card.getType(), card.getCardId());
+            log.info("{} with id {} is added successfully", card.getType(), card.getCardId());
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,7 +74,7 @@ public class CrudMethodsCard {
             selectStatement.setString(1, id);
             ResultSet resultSet = selectStatement.executeQuery();
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 String cardId = resultSet.getString("cardId");
                 BigDecimal balance = resultSet.getBigDecimal("balance");
                 CardType typeOfCard = CardType.valueOf(resultSet.getString("typeOfCard"));

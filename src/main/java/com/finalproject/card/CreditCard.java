@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -38,5 +39,20 @@ public class CreditCard extends AbstractCard {
             "cardType= " + getType() + ", " +
             "isBlocked= " + isBlocked() + ", " +
             "documentId= " + documentId + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CreditCard that = (CreditCard) o;
+
+        return Objects.equals(documentId, that.documentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return documentId != null ? documentId.hashCode() : 0;
     }
 }

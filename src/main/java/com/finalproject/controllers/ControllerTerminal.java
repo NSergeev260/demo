@@ -3,6 +3,7 @@ package com.finalproject.controllers;
 import java.math.BigDecimal;
 
 import com.finalproject.card.CardType;
+import com.finalproject.card.ICard;
 import com.finalproject.services.PayingService;
 import com.finalproject.transport.Transport;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,8 @@ public class ControllerTerminal {
     }
 
     @GetMapping("/getInfo")
-    public String getInfo(String cardId) {
-        return payingService.getInfoOfCard(cardId);
+    public ICard getInfo(String cardId) {
+        return payingService.getCardInfo(cardId);
     }
 
     @PostMapping("/activate")

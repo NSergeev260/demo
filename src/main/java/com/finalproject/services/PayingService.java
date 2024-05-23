@@ -32,41 +32,39 @@ public class PayingService {
 
     public String payMoney(String cardId, Transport typeOfTransport, String terminalId) {
         log.info(DETAIL_INFO, terminalId, LocalDateTime.now(), cardId);
-        List<Transport> transport = List.of(Transport.values());
-        boolean result;
-        if (transport.contains(typeOfTransport)) {
-            BigDecimal cost = typeOfTransport.getTripCost();
-            Optional<ICard> cardById = cardService.findCardById(cardId);
-            if (cardById.isPresent()) {
-                ICard card = cardById.get();
-                if (!card.isBlocked()) {
-                    BigDecimal payByCard = new BigDecimal(String.valueOf(card.getBalance()))
-                        .subtract(cost);
-
-                    if ((card.getType().equals(CardType.CREDIT)) && ((card.getBalance()
-                        .add(CreditCard.CUT_OFF_BANK_DEPT)).compareTo(cost) >= 0)) {
-                        card.setBalance(payByCard);
-                        result = true;
-                    } else if ((card.getType().equals(CardType.DEBIT)) && (card.getBalance().compareTo(cost) >= 0)) {
-                        card.setBalance(payByCard);
-                        result = true;
-                    } else {
-                        log.info("Not enough money for trip");
-                        card.block();
-                        result = false;
-                        crudMethodsCard.updateCard(card);
-                    }
-
-                    log.info("Trip cost is: {}", cost);
-                    log.info("Your balance is {}", card.getBalance());
-                    crudMethodsCard.updateCard(card);
-                    crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PAY), result, cost, terminalId);
-                    return card.getBalance().toString();
-                }
-                log.info("Card is blocked!");
+        BigDecimal cost = typeOfTransport.getTripCost();
+        Optional<ICard> cardById = cardService.findCardById(cardId);
+        if (cardById.isPresent()) {
+            ICard card = cardById.get();
+            if (!card.isBlocked()) {
+                BigDecimal payByCard = new BigDecimal(String.valueOf(card.getBalance()))
+                    .subtract(cost);
+                return returnBalance(terminalId, card, cost, payByCard);
             }
+            log.info("Card is blocked!");
         }
         return "Not enough for traveling. Put money on card, please";
+    }
+
+    private String returnBalance(String terminalId, ICard card, BigDecimal cost, BigDecimal payByCard) {
+        boolean result = true;
+        if ((card.getType().equals(CardType.CREDIT)) && ((card.getBalance()
+            .add(CreditCard.CUT_OFF_BANK_DEPT)).compareTo(cost) >= 0)) {
+            card.setBalance(payByCard);
+        } else if ((card.getType().equals(CardType.DEBIT)) && (card.getBalance().compareTo(cost) >= 0)) {
+            card.setBalance(payByCard);
+        } else {
+            log.info("Not enough money for trip");
+            card.block();
+            result = false;
+            crudMethodsCard.updateCard(card);
+        }
+
+        log.info("Trip cost is: {}", cost);
+        log.info("Your balance is {}", card.getBalance());
+        crudMethodsCard.updateCard(card);
+        crudMethodsHistory.insertHistory(card, String.valueOf(Operation.PAY), result, cost, terminalId);
+        return card.getBalance().toString();
     }
 
     public String putMoney(String cardId, BigDecimal money, String terminalId) {
@@ -100,26 +98,15 @@ public class PayingService {
         return CHECK_CARD_ID_PLEASE;
     }
 
-    public String getInfoOfCard(String cardId) {
-        log.info("Info about card with ID: {}, Time: {}", cardId, LocalDateTime.now());
+    public ICard getCardInfo(String cardId) {
         Optional<ICard> cardById = cardService.findCardById(cardId);
         if (cardById.isPresent()) {
             ICard card = cardById.get();
-            String documentId = null;
-            String id = cardId;
-            BigDecimal balance = card.getBalance();
-            boolean blocked = card.isBlocked();
-            if (card.getType().equals(CardType.CREDIT)) {
-                documentId = ((CreditCard) card).getDocumentId();
-                card = new CreditCard(cardId, balance, blocked, documentId);
-            } else {
-                card = new DebitCard(cardId, balance, blocked);
-            }
-            log.info("INFO card: {}", card);
-            return card.toString();
+            log.info("Info card: {}, Time: {}", card, LocalDateTime.now());
+            return card;
         }
         log.info(CHECK_CARD_ID_PLEASE);
-        return CHECK_CARD_ID_PLEASE;
+        return null;
     }
 
     public String insertNewCard(CardType cardType, String terminalId) {
