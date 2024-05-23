@@ -45,9 +45,7 @@ class MockDataTest {
     void classShouldGenerateNCardTest() {
         int n = 100;
         ArgumentCaptor<ICard> cardCaptor = ArgumentCaptor.forClass(ICard.class);
-
         mockData.generateMockData(n);
-
         Mockito.verify(crudMethodsCard, times(n)).insertCard(cardCaptor.capture());
 
         cardCaptor.getAllValues().forEach(card -> {

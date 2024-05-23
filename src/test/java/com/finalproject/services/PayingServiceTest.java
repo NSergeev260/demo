@@ -4,17 +4,16 @@ import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
+import com.finalproject.history.Operation;
 import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.jdbc.CrudMethodsHistory;
+import com.finalproject.transport.Transport;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -41,28 +40,56 @@ public class PayingServiceTest {
         mockedStatic.close();
     }
 
+    @Test
+    void methodShouldPayBlockedCardTest() {
+        CreditCard creditCard = getCreditCard(true);
+        Mockito.when(cardService.findCardById("1")).thenReturn(Optional.of(creditCard));
+        String balance = payingService.payMoney("1", Transport.SUBWAY, "Rabbit");
+       Assertions.assertEquals("Not enough for traveling. Put money on card, please", balance);
+    }
 
     @Test
     void methodShouldPayTest() {
-
+        CreditCard creditCard = getCreditCard(false);
+        Mockito.when(cardService.findCardById("1")).thenReturn(Optional.of(creditCard));
+        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(true);
+        String balance = payingService.payMoney("1", Transport.SUBWAY, "Rabbit");
+        Mockito.verify(crudMethodsHistory).insertHistory(creditCard, String.valueOf(Operation.PAY),
+            true, new BigDecimal(49), "Rabbit");
+        Assertions.assertEquals("51",balance);
     }
 
+    @Test
+    void methodDontShouldPayTest() {
+        CreditCard creditCard = getPoorCreditCard(false);
+        Mockito.when(cardService.findCardById("1")).thenReturn(Optional.of(creditCard));
+        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(true);
+        String balance = payingService.payMoney("1", Transport.SUBWAY, "Rabbit");
+        Mockito.verify(crudMethodsHistory).insertHistory(creditCard, String.valueOf(Operation.PAY),
+            false, new BigDecimal(49), "Rabbit");
+    }
     @Test
     void methodShouldPutMoneyOnBlockedCardTest() {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(cardService.findCardById("1")).thenReturn(Optional.of(creditCard));
-        payingService.putMoney("1", new BigDecimal("500"), "1a");
+        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(true);
+        payingService.putMoney("1", new BigDecimal("500"), "Rabbit");
         String balance = String.valueOf(creditCard.getBalance());
         Assertions.assertEquals("600", balance);
+        Mockito.verify(crudMethodsHistory).insertHistory(creditCard, String.valueOf(Operation.PUT),
+            true, new BigDecimal(500), "Rabbit");
     }
 
     @Test
     void methodShouldPutMoneyOnUnBlockedCardTest() {
         CreditCard creditCard = getCreditCard(true);
         Mockito.when(cardService.findCardById("1")).thenReturn(Optional.of(creditCard));
-        payingService.putMoney("1", new BigDecimal("500"), "1a");
+        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(true);
+        payingService.putMoney("1", new BigDecimal("500"), "Rabbit");
         String balance = String.valueOf(creditCard.getBalance());
         Assertions.assertEquals("600", balance);
+        Mockito.verify(crudMethodsHistory).insertHistory(creditCard, String.valueOf(Operation.PUT),
+            true, new BigDecimal(500), "Rabbit");
     }
 
     @Test
@@ -89,25 +116,44 @@ public class PayingServiceTest {
         Assertions.assertEquals(debitCard, card);
     }
 
-
     @Test
     void methodShouldInsertNewCreditCardTest() {
-        String newCard = payingService.insertNewCard(CardType.CREDIT, "Rabbit");
-        Assertions.assertEquals(true, true);
-//        Mockito.when(payingService.insertNewCard(CardType.CREDIT, "Rabbit")
-//            .thenReturn(new CreditCard("1",200,false, "1a"));
-//        Mockito.verify(crudMethodsHistory).insertHistory(card, String.valueOf(Operation.INSERT), false, new BigDecimal(0), "Rabbit");
+        ICard newCard = payingService.insertNewCard(CardType.CREDIT, "Rabbit");
+        ArgumentCaptor<ICard> cardCaptor = ArgumentCaptor.forClass(ICard.class);
+        Mockito.verify(crudMethodsCard).insertCard(cardCaptor.capture());
+        cardCaptor.getAllValues().forEach(card -> {
+            Assertions.assertNotNull(card);
+            Assertions.assertNotNull(card.getCardId());
+            Assertions.assertTrue(card.getBalance().signum() >= 0);
+            Assertions.assertNotNull(card.getType());
+            Assertions.assertFalse((card.isBlocked()));
+        });
+        Mockito.verify(crudMethodsHistory).insertHistory(newCard, String.valueOf(Operation.INSERT),
+            false, new BigDecimal(0), "Rabbit");
     }
 
     @Test
     void methodShouldInsertNewDebitCardTest() {
-        String newCard = payingService.insertNewCard(CardType.DEBIT, "Rabbit");
-        Assertions.assertEquals(true, true);
-//        Mockito.verify(crudMethodsHistory).insertHistory(debitCard, String.valueOf(Operation.INSERT), false, new BigDecimal(0), "Rabbit");
+        ICard newCard = payingService.insertNewCard(CardType.DEBIT, "Rabbit");
+        ArgumentCaptor<ICard> cardCaptor = ArgumentCaptor.forClass(ICard.class);
+        Mockito.verify(crudMethodsCard).insertCard(cardCaptor.capture());
+        cardCaptor.getAllValues().forEach(card -> {
+            Assertions.assertNotNull(card);
+            Assertions.assertNotNull(card.getCardId());
+            Assertions.assertTrue(card.getBalance().signum() >= 0);
+            Assertions.assertNotNull(card.getType());
+            Assertions.assertFalse((card.isBlocked()));
+        });
+        Mockito.verify(crudMethodsHistory).insertHistory(newCard, String.valueOf(Operation.INSERT),
+            false, new BigDecimal(0), "Rabbit");
     }
 
     private static CreditCard getCreditCard(boolean isBlocked) {
         return new CreditCard("1", BigDecimal.valueOf(100), isBlocked, "1a");
+    }
+
+    private static CreditCard getPoorCreditCard(boolean isBlocked) {
+        return new CreditCard("1", BigDecimal.valueOf(-52), isBlocked, "1a");
     }
 
     private static DebitCard getDebitCard(boolean isBlocked) {

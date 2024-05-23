@@ -40,6 +40,7 @@ public class PayingService {
                 BigDecimal payByCard = new BigDecimal(String.valueOf(card.getBalance()))
                     .subtract(cost);
                 return returnBalance(terminalId, card, cost, payByCard);
+
             }
             log.info("Card is blocked!");
         }
@@ -109,7 +110,7 @@ public class PayingService {
         return null;
     }
 
-    public String insertNewCard(CardType cardType, String terminalId) {
+    public ICard insertNewCard(CardType cardType, String terminalId) {
         log.info("Insert new {} card, Time: {}", cardType, LocalDateTime.now());
         String cardId = UUID.randomUUID().toString();
         BigDecimal balance = new BigDecimal(200);
@@ -126,6 +127,6 @@ public class PayingService {
         crudMethodsHistory.insertHistory(card, String.valueOf(Operation.INSERT), result,
             amount, terminalId);
         log.info("New card with id {} was created", card.getCardId());
-        return "New card was created";
+        return card;
     }
 }

@@ -38,7 +38,7 @@ public class ControllerTerminal {
     }
 
     @PostMapping("/activate")
-    public String activateCard(CardType cardType, String terminalId) {
+    public ICard activateCard(CardType cardType, String terminalId) {
         return payingService.insertNewCard(cardType, terminalId);
     }
 }
