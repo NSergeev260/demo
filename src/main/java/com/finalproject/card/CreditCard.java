@@ -48,11 +48,11 @@ public class CreditCard extends AbstractCard {
 
         CreditCard that = (CreditCard) o;
 
-        return Objects.equals(documentId, that.documentId);
+        return documentId.equals(that.documentId);
     }
 
     @Override
     public int hashCode() {
-        return documentId != null ? documentId.hashCode() : 0;
+        return documentId.hashCode();
     }
 }
