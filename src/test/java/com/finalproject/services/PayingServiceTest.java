@@ -93,7 +93,7 @@ public class PayingServiceTest {
     }
 
     @Test
-    void methodShouldReturnBalance() {
+    void methodShouldGetBalanceTest() {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(cardService.findCardById("1")).thenReturn(Optional.of(creditCard));
         String balance = payingService.getBalance("1", "Rabbit");
