@@ -3,6 +3,7 @@ package com.finalproject.card;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
@@ -47,12 +48,21 @@ public class CreditCard extends AbstractCard {
         if (o == null || getClass() != o.getClass()) return false;
 
         CreditCard that = (CreditCard) o;
-
-        return documentId.equals(that.documentId);
+        if (super.blocked != that.blocked) {return false;}
+        if (!super.cardId.equals(that.cardId)) {return false;}
+        if (!super.getBalance().equals(that.getBalance())) {return false;}
+        if (!super.getCardType().equals(that.getCardType())) {return false;}
+        if (!documentId.equals(that.documentId)) {return false;}
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return documentId.hashCode();
+        int result = (super.cardId).hashCode();
+        result = 31 * result + (super.getBalance()).hashCode();
+        result = 31 * result + ((super.blocked) ? 1 : 0);
+        result = 31 * result + (super.getCardType()).hashCode();
+        result = 31 * result + documentId.hashCode();
+        return result;
     }
 }

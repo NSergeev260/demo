@@ -43,7 +43,8 @@ public abstract class AbstractCard implements ICard {
         if (blocked != that.blocked) return false;
         if (!cardId.equals(that.cardId)) return false;
         if (!balance.equals(that.balance)) return false;
-        return cardType == that.cardType;
+        if (!cardType.equals(that.cardType)) return false;
+        return true;
     }
 
     @Override
