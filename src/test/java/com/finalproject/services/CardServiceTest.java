@@ -1,7 +1,5 @@
 package com.finalproject.services;
 
-import static org.mockito.Mockito.mockStatic;
-
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
@@ -9,10 +7,8 @@ import com.finalproject.history.Operation;
 import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCard;
 import com.finalproject.jdbc.CrudMethodsHistory;
-
 import java.math.BigDecimal;
 import java.util.Optional;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,18 +18,19 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.Mockito.mockStatic;
 
 @ExtendWith(MockitoExtension.class)
 class CardServiceTest {
 
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
-    @InjectMocks
-    private CardService cardService;
     @Mock
     private CrudMethodsCard crudMethodsCard;
     @Mock
     private CrudMethodsHistory crudMethodsHistory;
+    @InjectMocks
+    private CardService cardService;
 
     @AfterAll
     static void tearDown() {

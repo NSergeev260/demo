@@ -15,25 +15,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.math.BigDecimal;
 import java.util.Optional;
-
 import static org.mockito.Mockito.mockStatic;
 
 @ExtendWith(MockitoExtension.class)
-public class PayingServiceTest {
+class PayingServiceTest {
 
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
-    @InjectMocks
-    private PayingService payingService;
     @Mock
     private CardService cardService;
     @Mock
     private CrudMethodsCard crudMethodsCard;
     @Mock
     private CrudMethodsHistory crudMethodsHistory;
+    @InjectMocks
+    private PayingService payingService;
 
     @AfterAll
     static void tearDown() {
@@ -60,7 +58,7 @@ public class PayingServiceTest {
     }
 
     @Test
-    void methodDontShouldPayTest() {
+    void methodDoNotShouldPayTest() {
         CreditCard creditCard = getPoorCreditCard(false);
         Mockito.when(cardService.findCardById("1")).thenReturn(Optional.of(creditCard));
         Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(true);

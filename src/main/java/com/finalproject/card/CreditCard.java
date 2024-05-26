@@ -48,20 +48,21 @@ public class CreditCard extends AbstractCard {
         if (o == null || getClass() != o.getClass()) return false;
 
         CreditCard that = (CreditCard) o;
-        if (super.blocked != that.blocked) {return false;}
-        if (!super.cardId.equals(that.cardId)) {return false;}
-        if (!super.getBalance().equals(that.getBalance())) {return false;}
-        if (!super.getCardType().equals(that.getCardType())) {return false;}
-        if (!documentId.equals(that.documentId)) {return false;}
+        if (!super.equals(o)) return false;
+        if (!documentId.equals(that.documentId)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (super.cardId).hashCode();
-        result = 31 * result + (super.getBalance()).hashCode();
-        result = 31 * result + ((super.blocked) ? 1 : 0);
-        result = 31 * result + (super.getCardType()).hashCode();
+//        int result = (super.cardId).hashCode();
+//        result = 31 * result + (super.getBalance()).hashCode();
+//        result = 31 * result + ((super.blocked) ? 1 : 0);
+//        result = 31 * result + (super.getCardType()).hashCode();
+
+        int result = super.hashCode();
         result = 31 * result + documentId.hashCode();
         return result;
     }

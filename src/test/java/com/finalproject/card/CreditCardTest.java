@@ -2,46 +2,48 @@ package com.finalproject.card;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 
-public class CreditCardTest {
+class CreditCardTest {
 
     @Test
     void twoCardsEquals() {
-        CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(200), false, "1a");
-        CreditCard anotherCreditCard = new CreditCard("1", BigDecimal.valueOf(200), false, "1a");
+        CreditCard creditCard = getCreditCard(BigDecimal.valueOf(200));
+        CreditCard anotherCreditCard = getCreditCard(BigDecimal.valueOf(200));
         boolean isTheSame = creditCard.equals(anotherCreditCard);
-        Assertions.assertEquals(true, isTheSame);
-    }
-
-    @Test
-    void twoCardsNotEquals() {
-        CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(200), false, "1a");
-        CreditCard anotherCreditCard = new CreditCard("1", BigDecimal.valueOf(100000), false, "1a");
-        boolean isTheSame = creditCard.equals(anotherCreditCard);
-        Assertions.assertEquals(false, isTheSame);
+        Assertions.assertTrue(isTheSame);
     }
 
     @Test
     void twoCardsEqualsByHashCode() {
-        CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(200), false, "1a");
-        CreditCard anotherCreditCard = new CreditCard("1", BigDecimal.valueOf(200), false, "1a");
+        CreditCard creditCard = getCreditCard(BigDecimal.valueOf(200));
+        CreditCard anotherCreditCard = getCreditCard(BigDecimal.valueOf(200));
         int resultCreditCard  = creditCard.hashCode();
         int resultAnotherCreditCard = anotherCreditCard.hashCode();
         boolean isTheSame = (resultCreditCard == resultAnotherCreditCard);
-        Assertions.assertEquals(true, isTheSame);
+        Assertions.assertTrue(isTheSame);
+    }
 
+    @Test
+    void twoCardsNotEquals() {
+        CreditCard creditCard = getCreditCard(BigDecimal.valueOf(200));
+        CreditCard anotherCreditCard = getCreditCard(BigDecimal.valueOf(100_000));
+        boolean isTheSame = creditCard.equals(anotherCreditCard);
+        Assertions.assertFalse(isTheSame);
     }
 
     @Test
     void twoCardsNotEqualsByHashCode() {
-        CreditCard creditCard = new CreditCard("1", BigDecimal.valueOf(200), false, "1a");
-        CreditCard anotherCreditCard = new CreditCard("1", BigDecimal.valueOf(100000), false, "1a");
+        CreditCard creditCard = getCreditCard(BigDecimal.valueOf(200));
+        CreditCard anotherCreditCard = getCreditCard(BigDecimal.valueOf(100_000));
         int resultCreditCard  = creditCard.hashCode();
         int resultAnotherCreditCard = anotherCreditCard.hashCode();
         boolean isTheSame = (resultCreditCard == resultAnotherCreditCard);
-        Assertions.assertEquals(false, isTheSame);
+        Assertions.assertFalse(isTheSame);
+    }
 
+    private static CreditCard getCreditCard(BigDecimal balance) {
+        CreditCard creditCard = new CreditCard("1", balance, false, "1a");
+        return creditCard;
     }
 }

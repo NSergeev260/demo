@@ -23,10 +23,10 @@ class MockDataTest {
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @Mock
-    CrudMethodsCard crudMethodsCard;
+    private CrudMethodsCard crudMethodsCard;
 
     @InjectMocks
-    MockData mockData;
+    private MockData mockData;
 
     @AfterAll
     static void tearDown() {
