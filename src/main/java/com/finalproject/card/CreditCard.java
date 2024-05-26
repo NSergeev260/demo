@@ -57,11 +57,6 @@ public class CreditCard extends AbstractCard {
 
     @Override
     public int hashCode() {
-//        int result = (super.cardId).hashCode();
-//        result = 31 * result + (super.getBalance()).hashCode();
-//        result = 31 * result + ((super.blocked) ? 1 : 0);
-//        result = 31 * result + (super.getCardType()).hashCode();
-
         int result = super.hashCode();
         result = 31 * result + documentId.hashCode();
         return result;
