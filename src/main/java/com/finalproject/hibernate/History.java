@@ -2,7 +2,6 @@ package com.finalproject.hibernate;
 
 import com.finalproject.history.Operation;
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 
 @Entity
@@ -10,7 +9,7 @@ import java.math.BigDecimal;
 public class History {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private int id;
     @Column(name="cardId")
@@ -29,6 +28,19 @@ public class History {
     private String terminalId;
 
     public History() {
+    }
+
+    public History(int id, String cardId, Operation operation, boolean result,
+                   BigDecimal amount, String dateOfOperation, BigDecimal balanceAfterOperation,
+                   String terminalId) {
+        this.id = id;
+        this.cardId = cardId;
+        this.operation = operation;
+        this.result = result;
+        this.amount = amount;
+        this.dateOfOperation = dateOfOperation;
+        this.balanceAfterOperation = balanceAfterOperation;
+        this.terminalId = terminalId;
     }
 
     public int getId() {
