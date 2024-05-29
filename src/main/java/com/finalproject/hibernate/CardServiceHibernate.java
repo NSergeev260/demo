@@ -6,7 +6,7 @@ public interface CardServiceHibernate {
 
     boolean insertCard(ICard card);
 
-//    List<ICard> getCards();
+    List<ICard> getCards();
 //
 //    ICard getCard(String cardId);
 //

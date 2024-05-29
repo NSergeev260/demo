@@ -2,6 +2,7 @@ package com.finalproject.hibernate;
 
 import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
+import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,11 +30,25 @@ public class CardServiceLogic implements CardServiceHibernate {
         return true;
     }
 
-//    @Override
-//    public List<ICard> getCards() {
-//        return cardRepository.findAll();
-//    }
-//
+    @Override
+    public List<ICard> getCards() {
+        List<CardEntity> cardsList = cardRepository.findAll();
+        List<ICard> cards = cardsList.stream().map(x -> toICard(x)).toList();
+        return cards;
+    }
+
+    public ICard toICard(CardEntity cardEntity) {
+        ICard card;
+        if (cardEntity.getCardType().equals(CardType.CREDIT)) {
+            card = new CreditCard(cardEntity.getCardId(), cardEntity.getBalance(),
+                cardEntity.isBlocked(), cardEntity.getDocumentId());
+        } else {
+            card = new DebitCard(cardEntity.getCardId(), cardEntity.getBalance(),
+                cardEntity.isBlocked());
+        }
+        return card;
+    }
+
 //    @Override
 //    public ICard getCard(String cardId) {
 //        Optional<ICard> card = cardRepository.findById(cardId);

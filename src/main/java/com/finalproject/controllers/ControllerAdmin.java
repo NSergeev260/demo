@@ -1,12 +1,15 @@
 package com.finalproject.controllers;
 
 import com.finalproject.MockData;
+import com.finalproject.card.CardType;
 import com.finalproject.card.ICard;
 import com.finalproject.hibernate.CardServiceLogic;
 import com.finalproject.services.CardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -44,5 +47,12 @@ public class ControllerAdmin {
         cardServiceLogic.insertCard(card);
         log.info(String.valueOf(card));
         return "Card was created" + card;
+    }
+
+    @PostMapping("/getCards")
+    public String getCards() {
+        cardServiceLogic.getCards();
+//        log.info(String.valueOf(card));
+        return cardServiceLogic.getCards().toString();
     }
 }

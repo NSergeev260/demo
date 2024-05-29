@@ -1,26 +1,29 @@
 package com.finalproject.hibernate;
 
 import com.finalproject.card.CardType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name="transportCard")
 public class CardEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column(name="cardId")
-    protected String cardId;
+    private UUID cardId;
     @Column(name="balance")
     private BigDecimal balance;
     @Column(name="typeOfCard")
+    @Enumerated(EnumType.STRING)
     private CardType cardType;
     @Column(name="isBlocked")
-    protected boolean blocked;
+    private boolean blocked;
     @Column(name="documentId")
     private String documentId;
 
@@ -28,7 +31,7 @@ public class CardEntity {
     }
 
     public CardEntity(String cardId, BigDecimal balance, CardType cardType, boolean blocked, String documentId) {
-        this.cardId = cardId;
+        this.cardId = UUID.fromString(cardId);
         this.balance = balance;
         this.cardType = cardType;
         this.blocked = blocked;
@@ -36,11 +39,11 @@ public class CardEntity {
     }
 
     public String getCardId() {
-        return cardId;
+        return cardId.toString();
     }
 
     public void setCardId(String cardId) {
-        this.cardId = cardId;
+        this.cardId = UUID.fromString(cardId);
     }
 
     public BigDecimal getBalance() {

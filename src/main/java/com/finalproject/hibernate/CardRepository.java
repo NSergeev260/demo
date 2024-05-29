@@ -4,13 +4,12 @@ import com.finalproject.card.ICard;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-interface CardRepository extends JpaRepository<CardEntity, String> {
+interface CardRepository extends JpaRepository<CardEntity, UUID> {
 
-//  CardEntity insert(CardEntity card);
 
-//  List<ICard> getCards();
-//
 //  ICard getCard(String cardId);
 //
 //  @Modifying
