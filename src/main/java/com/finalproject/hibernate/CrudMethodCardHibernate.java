@@ -50,23 +50,23 @@ public class CrudMethodCardHibernate implements ICardCrud {
     }
 
     @Override
-    public boolean updateCard(ICard card) {
-        ICard necessaryCard = getCard(card.getCardId());
+    public boolean updateCard(String cardId, BigDecimal balance, boolean isBlocked, String documentId) {
+        ICard necessaryCard = getCard(cardId);
+        updateFieldsCard(necessaryCard, cardId, balance, isBlocked, documentId);
         return true;
     }
 
-    public ICard updateFieldsCard(String cardId, double balance, boolean isBlocked, String documentId) {
-        ICard necessaryCard = getCard(cardId);
-        if(necessaryCard.getType().equals(CardType.CREDIT)){
-            necessaryCard.setBalance(BigDecimal.valueOf(balance));
-            necessaryCard.isBlocked();
-            ((CreditCard)necessaryCard).setDocumentId(documentId);
+    private ICard updateFieldsCard(ICard card, String cardId, BigDecimal balance, boolean isBlocked, String documentId) {
+        if (card.getType().equals(CardType.CREDIT)) {
+            card.setBalance(balance);
+            card.isBlocked();
+            ((CreditCard) card).setDocumentId(documentId);
         } else {
-            necessaryCard.setBalance(BigDecimal.valueOf(balance));
-            necessaryCard.isBlocked();
-            ((CreditCard)necessaryCard).setDocumentId(null);
+            card.setBalance(balance);
+            card.isBlocked();
+            ((CreditCard) card).setDocumentId(null);
         }
-        return necessaryCard;
+        return card;
     }
 
     @Override

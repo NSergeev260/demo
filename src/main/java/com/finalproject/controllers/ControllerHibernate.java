@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @RestController
 @AllArgsConstructor
@@ -40,11 +42,10 @@ public class ControllerHibernate {
     }
 
     @PostMapping("/update")
-    public String updateCard(String cardId, double balance, boolean isBlocked, String documentId) {
-        crudMethodCardHibernate.updateCard(cardId);
-
-        log.info("Card was updated");
-        return "Card was updated";
+    public String updateCard(String cardId, BigDecimal balance, boolean isBlocked, String documentId) {
+        crudMethodCardHibernate.updateCard(cardId, balance, isBlocked, documentId);
+        log.info("Card with id {} was updated", cardId);
+        return "Card was updated: " + cardId;
     }
 
     @PostMapping("/delete")
