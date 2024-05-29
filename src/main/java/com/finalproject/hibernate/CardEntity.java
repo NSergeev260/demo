@@ -23,18 +23,18 @@ public class CardEntity {
     @Enumerated(EnumType.STRING)
     private CardType cardType;
     @Column(name="isBlocked")
-    private boolean blocked;
+    private boolean isBlocked;
     @Column(name="documentId")
     private String documentId;
 
     public CardEntity() {
     }
 
-    public CardEntity(String cardId, BigDecimal balance, CardType cardType, boolean blocked, String documentId) {
+    public CardEntity(String cardId, BigDecimal balance, CardType cardType, boolean isBlocked, String documentId) {
         this.cardId = UUID.fromString(cardId);
         this.balance = balance;
         this.cardType = cardType;
-        this.blocked = blocked;
+        this.isBlocked = isBlocked;
         this.documentId = documentId;
     }
 
@@ -63,11 +63,11 @@ public class CardEntity {
     }
 
     public boolean isBlocked() {
-        return blocked;
+        return isBlocked;
     }
 
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
+    public void setBlocked(boolean isBlocked) {
+        this.isBlocked = isBlocked;
     }
 
     public String getDocumentId() {
@@ -84,7 +84,7 @@ public class CardEntity {
             "cardId='" + cardId + '\'' +
             ", balance=" + balance +
             ", cardType=" + cardType +
-            ", blocked=" + blocked +
+            ", blocked=" + isBlocked +
             ", documentId='" + documentId + '\'' +
             '}';
     }

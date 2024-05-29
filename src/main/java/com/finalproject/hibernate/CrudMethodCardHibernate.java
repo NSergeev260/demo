@@ -5,6 +5,7 @@ import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -50,23 +51,18 @@ public class CrudMethodCardHibernate implements ICardCrud {
     }
 
     @Override
-    public boolean updateCard(String cardId, BigDecimal balance, boolean isBlocked, String documentId) {
-        ICard necessaryCard = getCard(cardId);
-        updateFieldsCard(necessaryCard, cardId, balance, isBlocked, documentId);
-        return true;
-    }
+    public boolean updateCard(BigDecimal balance, boolean isBlocked, String documentId, String cardId) {
+//        cardRepository.updateCard(balance, isBlocked, documentId, cardId);
 
-    private ICard updateFieldsCard(ICard card, String cardId, BigDecimal balance, boolean isBlocked, String documentId) {
-        if (card.getType().equals(CardType.CREDIT)) {
+        Optional<CardEntity> cardEntity = cardRepository.findById(UUID.fromString(cardId));
+        if (cardEntity.isPresent()) {
+            CardEntity card = cardEntity.get();
             card.setBalance(balance);
             card.isBlocked();
-            ((CreditCard) card).setDocumentId(documentId);
-        } else {
-            card.setBalance(balance);
-            card.isBlocked();
-            ((CreditCard) card).setDocumentId(null);
+            card.setDocumentId("1b");
+            cardRepository.save(card);
         }
-        return card;
+            return true;
     }
 
     @Override

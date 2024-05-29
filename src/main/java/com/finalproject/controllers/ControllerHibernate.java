@@ -42,8 +42,8 @@ public class ControllerHibernate {
     }
 
     @PostMapping("/update")
-    public String updateCard(String cardId, BigDecimal balance, boolean isBlocked, String documentId) {
-        crudMethodCardHibernate.updateCard(cardId, balance, isBlocked, documentId);
+    public String updateCard(BigDecimal balance, boolean isBlocked, String documentId, String cardId) {
+        crudMethodCardHibernate.updateCard(balance, isBlocked, documentId, cardId);
         log.info("Card with id {} was updated", cardId);
         return "Card was updated: " + cardId;
     }
