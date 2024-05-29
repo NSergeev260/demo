@@ -5,16 +5,16 @@ import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
-public class CardServiceLogic implements CardServiceHibernate {
+public class CrudMethodCardHibernate implements ICardCrud {
+
     @Autowired
     CardRepository cardRepository;
 
@@ -37,7 +37,45 @@ public class CardServiceLogic implements CardServiceHibernate {
         return cards;
     }
 
-    public ICard toICard(CardEntity cardEntity) {
+    @Override
+    public ICard getCard(String cardId) {
+        CardEntity cardEntity;
+        ICard card = null;
+        Optional<CardEntity> cardById = cardRepository.findById(UUID.fromString(cardId));
+        if (cardById.isPresent()) {
+            cardEntity = cardById.get();
+            card = toICard(cardEntity);
+        }
+        return card;
+    }
+
+    @Override
+    public boolean updateCard(ICard card) {
+        ICard necessaryCard = getCard(card.getCardId());
+        return true;
+    }
+
+    public ICard updateFieldsCard(String cardId, double balance, boolean isBlocked, String documentId) {
+        ICard necessaryCard = getCard(cardId);
+        if(necessaryCard.getType().equals(CardType.CREDIT)){
+            necessaryCard.setBalance(BigDecimal.valueOf(balance));
+            necessaryCard.isBlocked();
+            ((CreditCard)necessaryCard).setDocumentId(documentId);
+        } else {
+            necessaryCard.setBalance(BigDecimal.valueOf(balance));
+            necessaryCard.isBlocked();
+            ((CreditCard)necessaryCard).setDocumentId(null);
+        }
+        return necessaryCard;
+    }
+
+    @Override
+    public boolean deleteCard(String cardId) {
+        cardRepository.deleteById(UUID.fromString(cardId));
+        return true;
+    }
+
+    private ICard toICard(CardEntity cardEntity) {
         ICard card;
         if (cardEntity.getCardType().equals(CardType.CREDIT)) {
             card = new CreditCard(cardEntity.getCardId(), cardEntity.getBalance(),
@@ -48,31 +86,4 @@ public class CardServiceLogic implements CardServiceHibernate {
         }
         return card;
     }
-
-//    @Override
-//    public ICard getCard(String cardId) {
-//        Optional<ICard> card = cardRepository.findById(cardId);
-//        if (card.isPresent()) {
-//            return card.get();
-//        } else {
-//            return null;
-//        }
-//    }
-
-//    public boolean chooseCardForUpdate(String cardId) {
-//        Optional<ICard> card = cardRepository.findById(cardId);
-//        if (card.isPresent()) {
-//            ICard newCard = card.get();
-//            cardRepository.updateCard(cardId, newCard.setBalance(), isBlocked, documentId);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
-//    @Override
-//    public boolean deleteCard(String cardId) {
-//        cardRepository.deleteById(cardId);
-//        return true;
-//    }
 }
