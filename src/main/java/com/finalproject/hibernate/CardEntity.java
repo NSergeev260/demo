@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name="transportCard")
-public class Card {
+public class CardEntity {
 
     @Id
     @Column(name="cardId")
@@ -24,7 +24,15 @@ public class Card {
     @Column(name="documentId")
     private String documentId;
 
-    public Card() {
+    public CardEntity() {
+    }
+
+    public CardEntity(String cardId, BigDecimal balance, CardType cardType, boolean blocked, String documentId) {
+        this.cardId = cardId;
+        this.balance = balance;
+        this.cardType = cardType;
+        this.blocked = blocked;
+        this.documentId = documentId;
     }
 
     public String getCardId() {

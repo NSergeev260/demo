@@ -1,6 +1,8 @@
 package com.finalproject.controllers;
 
 import com.finalproject.MockData;
+import com.finalproject.card.ICard;
+import com.finalproject.hibernate.CardServiceLogic;
 import com.finalproject.services.CardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class ControllerAdmin {
 
+    private CardServiceLogic cardServiceLogic;
     private CardService cardService;
     private MockData mockData;
 
@@ -33,5 +36,13 @@ public class ControllerAdmin {
     public String generate(long numberOfRecords) {
         mockData.generateMockData(numberOfRecords);
         return "Data was generated";
+    }
+
+    @PostMapping("/insertTest")
+    public String insert() {
+        ICard card = mockData.getRandomCard();
+        cardServiceLogic.insertCard(card);
+        log.info(String.valueOf(card));
+        return "Card was created" + card;
     }
 }

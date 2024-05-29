@@ -22,7 +22,7 @@ public class ConnectionToDB {
 
         try {
             Class.forName(DRIVER).getDeclaredConstructor().newInstance();
-            connection = DriverManager.getConnection(URL + "/carddb", USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(URL + "/card_db", USERNAME, PASSWORD);
             log.info("Registering JDBC driver...");
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException | SQLException e) {

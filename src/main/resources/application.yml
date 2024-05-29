@@ -10,15 +10,11 @@ dbAdapter:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:80/carddb
+    url: jdbc:mysql://localhost:3306/card_db
     username: root
     password: roottest
-    driver-class-name: com.mysql.cj.jdbs.Driver
   jpa:
-    hibernate:
-      ddl-auto: create
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     properties:
       hibernate:

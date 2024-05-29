@@ -1,35 +1,35 @@
 
-CREATE DATABASE carddb;
-USE carddb;
+CREATE DATABASE card_db;
+USE card_db;
 
-CREATE TABLE IF NOT EXISTS transportCard(
-cardId VARCHAR(36) NOT NULL,
+CREATE TABLE IF NOT EXISTS transport_card(
+card_id VARCHAR(36) NOT NULL,
 balance DECIMAL(8, 2) NOT NULL,
-typeOfCard VARCHAR(6) NOT NULL,
-isBlocked BOOLEAN NOT NULL,
-documentId VARCHAR(36),
-PRIMARY KEY(cardId)
+type_of_card VARCHAR(6) NOT NULL,
+is_blocked BOOLEAN NOT NULL,
+document_id VARCHAR(36),
+PRIMARY KEY(card_id)
 );
 
-INSERT INTO transportCard(cardId, balance, typeOfCard, isBlocked, documentId)
+INSERT INTO transport_card(card_id, balance, type_of_card, is_blocked, document_id)
 VALUES (UUID(), 100, 'CREDIT', FALSE, UUID());
 
-SELECT * FROM transportCard;
-DESCRIBE transportCard;
+SELECT * FROM transport_card;
+DESCRIBE transport_card;
 
-CREATE TABLE IF NOT EXISTS cardHistory(
+CREATE TABLE IF NOT EXISTS card_history(
 id int NOT NULL AUTO_INCREMENT,
-cardId VARCHAR(36) NOT NULL,
+card_id VARCHAR(36) NOT NULL,
 operation VARCHAR(36) NOT NULL,
 result BOOLEAN NOT NULL,
 amount DECIMAL(8, 2),
-dateOfOperation date NOT NULL,
-balanceAfterOperation DECIMAL(8, 2) NOT NULL,
-terminalId VARCHAR(36) NOT NULL,
+date_of_operation date NOT NULL,
+balance_after_operation DECIMAL(8, 2) NOT NULL,
+terminal_id VARCHAR(36) NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(cardId) REFERENCES transportCard(cardId)
+FOREIGN KEY(card_id) REFERENCES transport_card(card_id)
 );
 
-SELECT * FROM cardHistory;
-DESCRIBE cardHistory;
-SELECT * FROM transportCard LEFT JOIN cardHistory ON cardHistory.cardId = transportCard.cardId;
+SELECT * FROM card_history;
+DESCRIBE card_history;
+SELECT * FROM transport_card LEFT JOIN card_history ON card_history.card_id = transport_card.card_id;

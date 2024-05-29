@@ -1,5 +1,7 @@
 package com.finalproject.hibernate;
 
+import com.finalproject.card.CardType;
+import com.finalproject.card.CreditCard;
 import com.finalproject.card.ICard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,35 +19,45 @@ public class CardServiceLogic implements CardServiceHibernate {
 
     @Override
     public boolean insertCard(ICard card) {
-        cardRepository.save(card);
-        return true;
-    }
+        CardEntity cardEntity = new CardEntity(card.getCardId(), card.getBalance(),
+            card.getType(), card.isBlocked(), null);
 
-    @Override
-    public List<ICard> getCards() {
-        return cardRepository.findAll();
-    }
-
-    @Override
-    public ICard getCard(String cardId) {
-        Optional<ICard> card = cardRepository.findById(cardId);
-        if (card.isPresent()) {
-            return card.get();
-        } else {
-            return null;
+        if (card.getType().equals(CardType.CREDIT)) {
+            cardEntity.setDocumentId(((CreditCard) card).getDocumentId());
         }
+        cardRepository.save(cardEntity);
+        return true;
     }
 
 //    @Override
-//    public boolean updateCard(String cardId) {
-//        cardRepository.findById(cardId);
+//    public List<ICard> getCards() {
+//        return cardRepository.findAll();
+//    }
 //
-//        return cardRepository.updateCard();
+//    @Override
+//    public ICard getCard(String cardId) {
+//        Optional<ICard> card = cardRepository.findById(cardId);
+//        if (card.isPresent()) {
+//            return card.get();
+//        } else {
+//            return null;
+//        }
 //    }
 
-    @Override
-    public boolean deleteCard(String cardId) {
-        cardRepository.deleteById(cardId);
-        return true;
-    }
+//    public boolean chooseCardForUpdate(String cardId) {
+//        Optional<ICard> card = cardRepository.findById(cardId);
+//        if (card.isPresent()) {
+//            ICard newCard = card.get();
+//            cardRepository.updateCard(cardId, newCard.setBalance(), isBlocked, documentId);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+
+//    @Override
+//    public boolean deleteCard(String cardId) {
+//        cardRepository.deleteById(cardId);
+//        return true;
+//    }
 }

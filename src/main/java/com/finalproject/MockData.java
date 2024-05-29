@@ -18,22 +18,26 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class MockData {
 
+    private final Random rnd = new Random();
     private CrudMethodsCard crudMethodsCard;
 
     public void generateMockData(long numberOfRecords) {
-        Random rnd = new Random();
-
         for (int i = 0; i < numberOfRecords; i++) {
-            int value = rnd.nextInt(2);
-            ICard card;
-            BigDecimal balance = new BigDecimal(rnd.nextInt(5000));
-            boolean blocked = rnd.nextBoolean();
-            if (value == 0) {
-                card = new CreditCard(balance, blocked,UUID.randomUUID().toString());
-            } else {
-                card = new DebitCard(balance, blocked);
-            }
+            ICard card = getRandomCard();
             crudMethodsCard.insertCard(card);
         }
+    }
+
+    public ICard getRandomCard() {
+        int value = rnd.nextInt(2);
+        ICard card;
+        BigDecimal balance = new BigDecimal(rnd.nextInt(5000));
+        boolean blocked = rnd.nextBoolean();
+        if (value == 0) {
+            card = new CreditCard(balance, blocked,UUID.randomUUID().toString());
+        } else {
+            card = new DebitCard(balance, blocked);
+        }
+        return card;
     }
 }

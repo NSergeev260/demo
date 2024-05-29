@@ -17,8 +17,8 @@ import java.util.List;
 @Component
 public class CrudMethodsHistory {
 
-    private static final String GET_HISTORY = "SELECT * FROM cardHistory WHERE cardId = ?";
-    private static final String INSERT_HISTORY = "INSERT INTO cardHistory(cardId, operation, result, amount, dateOfOperation, balanceAfterOperation, terminalId) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String GET_HISTORY = "SELECT * FROM card_history WHERE card_id = ?";
+    private static final String INSERT_HISTORY = "INSERT INTO card_history(card_id, operation, result, amount, date_of_operation, balance_after_operation, terminal_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final Connection connection = ConnectionToDB.getConnection();
 
     public void insertHistory(ICard card, String operation, boolean result, BigDecimal amount, String terminalId) {
@@ -39,18 +39,18 @@ public class CrudMethodsHistory {
 
     public List<CardHistory> getHistory() {
         List<CardHistory> history = new ArrayList<>();
-        try (PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM cardHistory")) {
+        try (PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM card_history")) {
             ResultSet resultSet = shownStatement.executeQuery();
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                String cardId = resultSet.getString("cardId");
+                String cardId = resultSet.getString("card_id");
                 String operation = resultSet.getString("operation");
                 boolean result = resultSet.getBoolean("result");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
-                String dateOfOperation = resultSet.getString("dateOfOperation");
-                BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balanceAfterOperation");
-                String terminalId = resultSet.getString("terminalId");
+                String dateOfOperation = resultSet.getString("date_of_operation");
+                BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balance_after_operation");
+                String terminalId = resultSet.getString("terminal_id");
                 history.add(new CardHistory(cardId, operation,
                     result, amount, dateOfOperation, balanceAfterOperation, terminalId));
             }
@@ -68,13 +68,13 @@ public class CrudMethodsHistory {
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                String cardId = resultSet.getString("cardId");
+                String cardId = resultSet.getString("card_id");
                 String operation = resultSet.getString("operation");
                 boolean result = resultSet.getBoolean("result");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
-                String dateOfOperation = resultSet.getString("dateOfOperation");
-                BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balanceAfterOperation");
-                String terminalId = resultSet.getString("terminalId");
+                String dateOfOperation = resultSet.getString("date_of_operation");
+                BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balance_after_operation");
+                String terminalId = resultSet.getString("terminal_id");
                 return new CardHistory(id, cardId, operation, result, amount, dateOfOperation, balanceAfterOperation, terminalId);
             }
         } catch (SQLException e) {
