@@ -12,7 +12,6 @@ import java.util.UUID;
 public class CardEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column(name="cardId")
     private UUID cardId;
