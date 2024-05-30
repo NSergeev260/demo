@@ -13,7 +13,7 @@ import java.util.Optional;
 public class CrudMethodsHistoryHibernate implements IHistoryCrud {
 
     @Autowired
-    HistoryRepository historyRepository;
+    private HistoryRepository historyRepository;
 
     @Override
     public void insertHistory(ICard card, String operation, boolean result,

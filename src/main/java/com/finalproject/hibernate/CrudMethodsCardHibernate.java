@@ -16,7 +16,7 @@ import java.util.UUID;
 public class CrudMethodsCardHibernate implements ICardCrud {
 
     @Autowired
-    CardRepository cardRepository;
+    private CardRepository cardRepository;
 
     @Override
     public boolean insertCard(ICard card) {
