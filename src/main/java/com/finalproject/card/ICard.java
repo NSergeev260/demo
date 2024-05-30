@@ -1,6 +1,7 @@
 package com.finalproject.card;
 
 import java.math.BigDecimal;
+
 public interface ICard {
 
     String getCardId();
