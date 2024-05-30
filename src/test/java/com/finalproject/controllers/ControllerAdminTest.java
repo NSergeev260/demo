@@ -23,6 +23,7 @@ class ControllerAdminTest {
     @Test
     void methodShouldBlockCardTest() {
         Mockito.when(cardService.block("1", "Rabbit")).thenReturn("true");
+
         String blocked = controllerAdmin.block("1", "Rabbit");
         Assertions.assertEquals("true", blocked);
         Mockito.verify(cardService).block("1", "Rabbit");
@@ -31,6 +32,7 @@ class ControllerAdminTest {
     @Test
     void methodShouldUnBlockCardTest() {
         Mockito.when(cardService.unblock("2", "Rabbit")).thenReturn("true");
+
         String unBlocked = controllerAdmin.unblock("2", "Rabbit");
         Assertions.assertEquals("true", unBlocked);
         Mockito.verify(cardService).unblock("2", "Rabbit");
@@ -39,6 +41,7 @@ class ControllerAdminTest {
     @Test
     void getStatusIsBlockedTest() {
         Mockito.when(cardService.isBlocked("2")).thenReturn("true");
+
         String isBlocked = controllerAdmin.isBlocked("2");
         Assertions.assertEquals("true", isBlocked);
         Mockito.verify(cardService).isBlocked("2");

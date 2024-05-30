@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 import com.finalproject.card.ICard;
+import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCardJDBC;
 import org.junit.jupiter.api.AfterAll;
@@ -23,7 +24,7 @@ class MockDataTest {
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @Mock
-    private CrudMethodsCardJDBC crudMethodsCard;
+    private ICardCrud crudMethodsCard;
 
     @InjectMocks
     private MockData mockData;
@@ -46,7 +47,8 @@ class MockDataTest {
         int n = 100;
         ArgumentCaptor<ICard> cardCaptor = ArgumentCaptor.forClass(ICard.class);
         mockData.generateMockData(n);
-        Mockito.verify(crudMethodsCard, times(n)).insertCard(cardCaptor.capture());
+        Mockito.verify(crudMethodsCard, times(n))
+            .insertCard(cardCaptor.capture());
 
         cardCaptor.getAllValues().forEach(card -> {
             Assertions.assertNotNull(card);

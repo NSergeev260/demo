@@ -21,7 +21,8 @@ public class CrudMethodsHistoryJDBC {
     private static final String INSERT_HISTORY = "INSERT INTO card_history(card_id, operation, result, amount, date_of_operation, balance_after_operation, terminal_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final Connection connection = ConnectionToDB.getConnection();
 
-    public void insertHistory(ICard card, String operation, boolean result, BigDecimal amount, String terminalId) {
+    public void insertHistory(ICard card, String operation, boolean result,
+                              BigDecimal amount, String terminalId) {
         try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_HISTORY)) {
             insertedStatement.setString(1, card.getCardId());
             insertedStatement.setString(2, operation);
@@ -76,7 +77,8 @@ public class CrudMethodsHistoryJDBC {
                 String dateOfOperation = resultSet.getString("date_of_operation");
                 BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balance_after_operation");
                 String terminalId = resultSet.getString("terminal_id");
-                return new CardHistory(id, cardId, operation, result, amount, dateOfOperation, balanceAfterOperation, terminalId);
+                return new CardHistory(id, cardId, operation, result,
+                    amount, dateOfOperation, balanceAfterOperation, terminalId);
             }
 
         } catch (SQLException e) {

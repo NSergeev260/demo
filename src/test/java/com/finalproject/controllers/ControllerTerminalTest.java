@@ -22,23 +22,30 @@ class ControllerTerminalTest {
 
     @Test
     void methodShouldPayTest() {
-        Mockito.when(payingService.payMoney("1", Transport.SUBWAY, "Rabbit")).thenReturn("51");
+        Mockito.when(payingService
+            .payMoney("1", Transport.SUBWAY, "Rabbit")).thenReturn("51");
+
         String balance = controllerTerminal.pay("1", Transport.SUBWAY, "Rabbit");
         Assertions.assertEquals("51", balance);
-        Mockito.verify(payingService).payMoney("1", Transport.SUBWAY, "Rabbit");
+        Mockito.verify(payingService)
+            .payMoney("1", Transport.SUBWAY, "Rabbit");
     }
 
     @Test
     void methodShouldPutMoneyTest() {
-        Mockito.when(payingService.putMoney("1", BigDecimal.valueOf(100), "Rabbit")).thenReturn("200");
+        Mockito.when(payingService
+            .putMoney("1", BigDecimal.valueOf(100), "Rabbit")).thenReturn("200");
+
         String balance = controllerTerminal.put("1", BigDecimal.valueOf(100), "Rabbit");
         Assertions.assertEquals("200", balance);
-        Mockito.verify(payingService).putMoney("1", BigDecimal.valueOf(100), "Rabbit");
+        Mockito.verify(payingService)
+            .putMoney("1", BigDecimal.valueOf(100), "Rabbit");
     }
 
     @Test
     void methodShouldGetBalanceTest() {
         Mockito.when(payingService.getBalance("1", "Rabbit")).thenReturn("100");
+
         String balance = controllerTerminal.balanceOfMoney("1", "Rabbit");
         Assertions.assertEquals("100", balance);
         Mockito.verify(payingService).getBalance("1", "Rabbit");
@@ -48,6 +55,7 @@ class ControllerTerminalTest {
     void methodShouldGetCardInfoTest() {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(payingService.getCardInfo("1")).thenReturn(creditCard);
+
         ICard card = controllerTerminal.getInfo("1");
         Assertions.assertEquals(creditCard, card);
         Mockito.verify(payingService).getCardInfo("1");
