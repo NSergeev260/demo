@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface IHistoryCrud {
 
-    void insertHistory(ICard card, String operation, boolean result, BigDecimal amount, String terminalId);
+    void insertHistory(ICard card, String operation, boolean result,
+                       BigDecimal amount, String terminalId);
 
     List<CardHistory> getHistory();
 

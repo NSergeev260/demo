@@ -15,7 +15,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class CrudMethodsHistory {
+public class CrudMethodsHistoryJDBC {
 
     private static final String GET_HISTORY = "SELECT * FROM card_history WHERE card_id = ?";
     private static final String INSERT_HISTORY = "INSERT INTO card_history(card_id, operation, result, amount, date_of_operation, balance_after_operation, terminal_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -54,6 +54,7 @@ public class CrudMethodsHistory {
                 history.add(new CardHistory(cardId, operation,
                     result, amount, dateOfOperation, balanceAfterOperation, terminalId));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,6 +78,7 @@ public class CrudMethodsHistory {
                 String terminalId = resultSet.getString("terminal_id");
                 return new CardHistory(id, cardId, operation, result, amount, dateOfOperation, balanceAfterOperation, terminalId);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

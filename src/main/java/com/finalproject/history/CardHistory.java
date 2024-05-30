@@ -17,8 +17,9 @@ public class CardHistory {
     private BigDecimal balanceAfterOperation;
     private String terminalId;
 
-    public CardHistory(String cardId, Operation operation, boolean result, BigDecimal amount,
-                       String dateOfOperation, BigDecimal balanceAfterOperation, String terminalId) {
+    public CardHistory(String cardId, Operation operation, boolean result,
+                       BigDecimal amount, String dateOfOperation,
+                       BigDecimal balanceAfterOperation, String terminalId) {
         this.cardId = cardId;
         this.operation = operation;
         this.result = result;
@@ -28,8 +29,9 @@ public class CardHistory {
         this.terminalId = terminalId;
     }
 
-    public CardHistory(String cardId, String operation, boolean result, BigDecimal amount,
-                       String dateOfOperation, BigDecimal balanceAfterOperation, String terminalId) {
+    public CardHistory(String cardId, String operation, boolean result,
+                       BigDecimal amount, String dateOfOperation,
+                       BigDecimal balanceAfterOperation, String terminalId) {
         this.cardId = cardId;
         this.operation = Operation.valueOf(operation);
         this.result = result;
@@ -39,8 +41,9 @@ public class CardHistory {
         this.terminalId = terminalId;
     }
 
-    public CardHistory(int id, String cardId, String operation, boolean result, BigDecimal amount,
-                       String dateOfOperation, BigDecimal balanceAfterOperation, String terminalId) {
+    public CardHistory(int id, String cardId, String operation, boolean result,
+                       BigDecimal amount, String dateOfOperation,
+                       BigDecimal balanceAfterOperation, String terminalId) {
         this.id = id;
         this.cardId = cardId;
         this.operation = Operation.valueOf(operation);

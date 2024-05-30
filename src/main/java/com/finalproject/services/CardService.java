@@ -4,9 +4,10 @@ import com.finalproject.card.ICard;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import com.finalproject.hibernate.ICardCrud;
+import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.Operation;
-import com.finalproject.jdbc.CrudMethodsCard;
-import com.finalproject.jdbc.CrudMethodsHistory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class CardService {
 
-    private CrudMethodsCard crudMethodsCard;
-    private CrudMethodsHistory crudMethodsHistory;
+    private ICardCrud crudMethodsCard;
+    private IHistoryCrud crudMethodsHistory;
     private static final String MESSAGE = "Check cardId, please";
 
     public Optional<ICard> findCardById(String cardId) {
@@ -26,42 +27,54 @@ public class CardService {
 
     public String block(String cardId, String terminalId) {
         Optional<ICard> cardById = findCardById(cardId);
+
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             card.block();
             log.info("CardId: {}", cardId);
             log.info("Card is blocked! Time: {}", LocalDateTime.now());
-            boolean result = crudMethodsCard.updateCard(card);
-            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.BLOCK), result, null, terminalId);
+            int resultOfUpdate = crudMethodsCard.updateCard(card);
+            boolean result = resultOfUpdate > 0;
+            crudMethodsHistory.insertHistory(card,
+                String.valueOf(Operation.BLOCK), result,
+                null, terminalId);
             return "true";
         }
+
         log.info(MESSAGE);
         return MESSAGE;
     }
 
     public String unblock(String cardId, String terminalId) {
         Optional<ICard> cardById = findCardById(cardId);
+
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             card.unblock();
             log.info("CardId: {}", cardId);
             log.info("Card is unblocked! Time: {}", LocalDateTime.now());
-            boolean result = crudMethodsCard.updateCard(card);
-            crudMethodsHistory.insertHistory(card, String.valueOf(Operation.UNBLOCK), result, null, terminalId);
+            int resultOfUpdate = crudMethodsCard.updateCard(card);
+            boolean result = resultOfUpdate > 0;
+            crudMethodsHistory.insertHistory(card,
+                String.valueOf(Operation.UNBLOCK), result,
+                null, terminalId);
             return "true";
         }
+
         log.info(MESSAGE);
         return MESSAGE;
     }
 
     public String isBlocked(String cardId) {
         Optional<ICard> cardById = findCardById(cardId);
+
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             log.info("CardId: {}", cardId);
             log.info("Card is blocked: {}, Time: {}", card.isBlocked(), LocalDateTime.now());
             return String.valueOf(card.isBlocked());
         }
+
         log.info(MESSAGE);
         return MESSAGE;
     }

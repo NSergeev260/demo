@@ -19,8 +19,8 @@ public class InitDB {
             List<String> lines = Files.lines(Path.of(String.valueOf(path)))
                 .filter(x -> !x.isBlank())
                 .toList();
-
             String temp = "";
+
             for (String str : lines) {
                 if ((str.contains("SELECT")) || (str.contains("DESCRIBE"))) {
                     continue;
@@ -36,6 +36,7 @@ public class InitDB {
                     temp = temp + str;
                 }
             }
+
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }

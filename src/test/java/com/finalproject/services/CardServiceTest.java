@@ -5,8 +5,8 @@ import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import com.finalproject.history.Operation;
 import com.finalproject.jdbc.ConnectionToDB;
-import com.finalproject.jdbc.CrudMethodsCard;
-import com.finalproject.jdbc.CrudMethodsHistory;
+import com.finalproject.jdbc.CrudMethodsCardJDBC;
+import com.finalproject.jdbc.CrudMethodsHistoryJDBC;
 import java.math.BigDecimal;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterAll;
@@ -26,9 +26,9 @@ class CardServiceTest {
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @Mock
-    private CrudMethodsCard crudMethodsCard;
+    private CrudMethodsCardJDBC crudMethodsCard;
     @Mock
-    private CrudMethodsHistory crudMethodsHistory;
+    private CrudMethodsHistoryJDBC crudMethodsHistory;
     @InjectMocks
     private CardService cardService;
 

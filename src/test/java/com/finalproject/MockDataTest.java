@@ -5,7 +5,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 import com.finalproject.card.ICard;
 import com.finalproject.jdbc.ConnectionToDB;
-import com.finalproject.jdbc.CrudMethodsCard;
+import com.finalproject.jdbc.CrudMethodsCardJDBC;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class MockDataTest {
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @Mock
-    private CrudMethodsCard crudMethodsCard;
+    private CrudMethodsCardJDBC crudMethodsCard;
 
     @InjectMocks
     private MockData mockData;

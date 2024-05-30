@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class CrudMethodCardHibernate implements ICardCrud {
+public class CrudMethodsCardHibernate implements ICardCrud {
 
     @Autowired
     CardRepository cardRepository;
@@ -26,6 +26,7 @@ public class CrudMethodCardHibernate implements ICardCrud {
         if (card.getType().equals(CardType.CREDIT)) {
             cardEntity.setDocumentId(((CreditCard) card).getDocumentId());
         }
+
         cardRepository.save(cardEntity);
         return true;
     }
@@ -33,7 +34,9 @@ public class CrudMethodCardHibernate implements ICardCrud {
     @Override
     public List<ICard> getCards() {
         List<CardEntity> cardsList = cardRepository.findAll();
-        List<ICard> cards = cardsList.stream().map(x -> toICard(x)).toList();
+        List<ICard> cards = cardsList.stream()
+            .map(this::toICard)
+            .toList();
         return cards;
     }
 
@@ -42,10 +45,12 @@ public class CrudMethodCardHibernate implements ICardCrud {
         CardEntity cardEntity;
         ICard card = null;
         Optional<CardEntity> cardById = cardRepository.findById(UUID.fromString(cardId));
+
         if (cardById.isPresent()) {
             cardEntity = cardById.get();
             card = toICard(cardEntity);
         }
+
         return card;
     }
 
@@ -55,10 +60,13 @@ public class CrudMethodCardHibernate implements ICardCrud {
         BigDecimal balance = card.getBalance();
         boolean isBlocked = card.isBlocked();
         String documentId = null;
+
         if (card.getType().equals(CardType.CREDIT)) {
             documentId = ((CreditCard) card).getDocumentId();
         }
-        return cardRepository.updateCard(UUID.fromString(cardId), balance, isBlocked, documentId);
+
+        return cardRepository.updateCard(UUID.fromString(cardId),
+            balance, isBlocked, documentId);
     }
 
     @Override
@@ -69,6 +77,7 @@ public class CrudMethodCardHibernate implements ICardCrud {
 
     private ICard toICard(CardEntity cardEntity) {
         ICard card;
+
         if (cardEntity.getCardType().equals(CardType.CREDIT)) {
             card = new CreditCard(cardEntity.getCardId(), cardEntity.getBalance(),
                 cardEntity.isBlocked(), cardEntity.getDocumentId());
@@ -76,6 +85,7 @@ public class CrudMethodCardHibernate implements ICardCrud {
             card = new DebitCard(cardEntity.getCardId(), cardEntity.getBalance(),
                 cardEntity.isBlocked());
         }
+
         return card;
     }
 }

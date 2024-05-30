@@ -14,7 +14,8 @@ public class CreditCard extends AbstractCard {
     public static final BigDecimal CUT_OFF_BANK_DEPT = new BigDecimal(100);
     private String documentId;
 
-    public CreditCard(String cardId, BigDecimal balance, boolean isBlocked, String documentId) {
+    public CreditCard(String cardId, BigDecimal balance, boolean isBlocked,
+                      String documentId) {
         super(cardId, balance, CardType.CREDIT, isBlocked);
         this.documentId = documentId;
     }

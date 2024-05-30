@@ -8,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Slf4j
-//@Component
 public class ConnectionToDB {
 
     private static final String URL = "jdbc:mysql://localhost:3306";
@@ -33,6 +32,7 @@ public class ConnectionToDB {
     }
 
     private static synchronized void initDB() {
+
         if (initPerformed) {
             log.info("DB was already initialized");
             return;

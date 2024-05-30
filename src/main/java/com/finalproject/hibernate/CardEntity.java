@@ -2,33 +2,38 @@ package com.finalproject.hibernate;
 
 import com.finalproject.card.CardType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
-@Table(name="transportCard")
+@Table(name = "transportCard")
 public class CardEntity {
 
     @Id
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    @Column(name="cardId")
+    @Column(name = "cardId")
     private UUID cardId;
-    @Column(name="balance")
+    @Column(name = "balance")
     private BigDecimal balance;
-    @Column(name="typeOfCard")
+    @Column(name = "typeOfCard")
     @Enumerated(EnumType.STRING)
     private CardType cardType;
-    @Column(name="isBlocked")
+    @Column(name = "isBlocked")
     private boolean isBlocked;
-    @Column(name="documentId")
+    @Column(name = "documentId")
     private String documentId;
 
     public CardEntity() {
     }
 
-    public CardEntity(String cardId, BigDecimal balance, CardType cardType, boolean isBlocked, String documentId) {
+    public CardEntity(String cardId, BigDecimal balance, CardType cardType,
+                      boolean isBlocked, String documentId) {
         this.cardId = UUID.fromString(cardId);
         this.balance = balance;
         this.cardType = cardType;
@@ -42,38 +47,6 @@ public class CardEntity {
 
     public void setCardId(String cardId) {
         this.cardId = UUID.fromString(cardId);
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public CardType getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
-    }
-
-    public boolean isBlocked() {
-        return isBlocked;
-    }
-
-    public void setBlocked(boolean isBlocked) {
-        this.isBlocked = isBlocked;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
     }
 
     @Override

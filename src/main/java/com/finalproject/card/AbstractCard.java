@@ -3,6 +3,7 @@ package com.finalproject.card;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 public abstract class AbstractCard implements ICard {
 

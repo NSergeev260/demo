@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class CrudMethodsCard {
+public class CrudMethodsCardJDBC {
 
     private static final String GET_CARD = "SELECT * FROM transport_card WHERE card_id = ?";
     private static final String INSERT_CARD = "INSERT INTO transport_card(card_id, balance, type_of_card, is_blocked , document_id) VALUES (?, ?, ?, ?, ?)";
@@ -30,11 +30,13 @@ public class CrudMethodsCard {
             insertedStatement.setBigDecimal(2, card.getBalance());
             insertedStatement.setString(3, String.valueOf(card.getType()));
             insertedStatement.setBoolean(4, card.isBlocked());
+
             if (card.getType().equals(CardType.CREDIT)) {
                 insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
             } else {
                 insertedStatement.setString(5, null);
             }
+
             insertedStatement.executeUpdate();
             log.info("{} with id {} is added successfully", card.getType(), card.getCardId());
             return true;
@@ -45,27 +47,28 @@ public class CrudMethodsCard {
     }
 
     public List<ICard> getCards() {
-        List<ICard> transport_cards = new ArrayList<>();
+        List<ICard> transportCards = new ArrayList<>();
         try (PreparedStatement shownStatement = CONNECTION.prepareStatement("SELECT * FROM transport_card")) {
             ResultSet resultSet = shownStatement.executeQuery();
 
             while (resultSet.next()) {
                 String cardId = resultSet.getString("card_id");
                 BigDecimal balance = resultSet.getBigDecimal("balance");
-                CardType type_of_card = CardType.valueOf(resultSet.getString(("type_of_card")));
+                CardType typeOfCard = CardType.valueOf(resultSet.getString(("type_of_card")));
                 boolean isBlocked = resultSet.getBoolean("is_blocked");
                 String documentId = resultSet.getString("document_id");
 
-                if (type_of_card.equals(CardType.CREDIT)) {
-                    transport_cards.add(new CreditCard(cardId, balance, isBlocked, documentId));
-                } else if (type_of_card.equals(CardType.DEBIT)) {
-                    transport_cards.add(new DebitCard(cardId, balance, isBlocked));
+                if (typeOfCard.equals(CardType.CREDIT)) {
+                    transportCards.add(new CreditCard(cardId, balance, isBlocked, documentId));
+                } else if (typeOfCard.equals(CardType.DEBIT)) {
+                    transportCards.add(new DebitCard(cardId, balance, isBlocked));
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return transport_cards;
+        return transportCards;
     }
 
     public ICard getCard(String id) {
@@ -77,15 +80,17 @@ public class CrudMethodsCard {
             if (resultSet.next()) {
                 String cardId = resultSet.getString("card_id");
                 BigDecimal balance = resultSet.getBigDecimal("balance");
-                CardType type_of_card = CardType.valueOf(resultSet.getString("type_of_card"));
+                CardType typeOfCard = CardType.valueOf(resultSet.getString("type_of_card"));
                 boolean isBlocked = resultSet.getBoolean("is_blocked");
                 String documentId = resultSet.getString("document_id");
-                if (type_of_card.equals(CardType.CREDIT)) {
+
+                if (typeOfCard.equals(CardType.CREDIT)) {
                     return new CreditCard(cardId, balance, isBlocked, documentId);
                 } else {
                     return new DebitCard(cardId, balance, isBlocked);
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,11 +101,13 @@ public class CrudMethodsCard {
         try (PreparedStatement updatedStatement = CONNECTION.prepareStatement(UPDATE_CARD)) {
             updatedStatement.setBigDecimal(1, card.getBalance());
             updatedStatement.setBoolean(2, card.isBlocked());
+
             if (card.getType().equals(CardType.CREDIT)) {
                 updatedStatement.setString(3, ((CreditCard) card).getDocumentId());
             } else {
                 updatedStatement.setString(3, null);
             }
+
             updatedStatement.setString(4, card.getCardId());
             updatedStatement.executeUpdate();
             log.info("{} with id {} is updated successfully", card.getType(), card.getCardId());
