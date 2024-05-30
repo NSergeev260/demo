@@ -1,6 +1,9 @@
 package com.finalproject.controllers;
 
 import com.finalproject.MockData;
+import com.finalproject.card.CardType;
+import com.finalproject.card.CreditCard;
+import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import com.finalproject.hibernate.CrudMethodCardHibernate;
 import lombok.AllArgsConstructor;
@@ -42,10 +45,17 @@ public class ControllerHibernate {
     }
 
     @PostMapping("/update")
-    public String updateCard(BigDecimal balance, boolean isBlocked, String documentId, String cardId) {
-        crudMethodCardHibernate.updateCard(balance, isBlocked, documentId, cardId);
-        log.info("Card with id {} was updated", cardId);
-        return "Card was updated: " + cardId;
+    public String updateCard(String cardId, BigDecimal balance, CardType cardType,
+                             boolean isBlocked, String documentId) {
+        ICard card;
+        if (cardType == CardType.CREDIT) {
+            card = new CreditCard(cardId, balance, isBlocked, documentId);
+        } else {
+            card = new DebitCard(cardId, balance, isBlocked);
+        }
+        crudMethodCardHibernate.updateCard(card);
+        log.info("Card was updated {}", card);
+        return "Card was updated: " + card;
     }
 
     @PostMapping("/delete")
