@@ -1,10 +1,8 @@
 package com.finalproject.services;
 
 import com.finalproject.card.ICard;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.Operation;

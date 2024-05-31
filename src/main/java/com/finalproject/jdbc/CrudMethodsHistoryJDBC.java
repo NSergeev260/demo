@@ -19,7 +19,11 @@ public class CrudMethodsHistoryJDBC {
 
     private static final String GET_HISTORY = "SELECT * FROM card_history WHERE card_id = ?";
     private static final String INSERT_HISTORY = "INSERT INTO card_history(card_id, operation, result, amount, date_of_operation, balance_after_operation, terminal_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final Connection connection = ConnectionToDB.getConnection();
+    private final Connection connection;
+
+    public CrudMethodsHistoryJDBC(ConnectionToDB connectionToDB) {
+        connection = connectionToDB.getConnection();
+    }
 
     public void insertHistory(ICard card, String operation, boolean result,
                               BigDecimal amount, String terminalId) {

@@ -7,7 +7,6 @@ import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import com.finalproject.hibernate.ICardCrud;
-import com.finalproject.jdbc.CrudMethodsCardJDBC;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -22,10 +22,14 @@ public class CrudMethodsCardJDBC {
     private static final String INSERT_CARD = "INSERT INTO transport_card(card_id, balance, type_of_card, is_blocked , document_id) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE_CARD = "UPDATE transport_card SET balance = ?, is_blocked = ?, document_id = ? WHERE card_id = ?";
     private static final String DELETE_CARD = "DELETE FROM transport_card WHERE card_id = ?";
-    private static final Connection CONNECTION = ConnectionToDB.getConnection();
+    private final Connection connection;
+
+    public CrudMethodsCardJDBC(ConnectionToDB connectionToDB) {
+        connection = connectionToDB.getConnection();
+    }
 
     public boolean insertCard(ICard card) {
-        try (PreparedStatement insertedStatement = CONNECTION.prepareStatement(INSERT_CARD)) {
+        try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD)) {
             insertedStatement.setString(1, card.getCardId());
             insertedStatement.setBigDecimal(2, card.getBalance());
             insertedStatement.setString(3, String.valueOf(card.getType()));
@@ -48,7 +52,7 @@ public class CrudMethodsCardJDBC {
 
     public List<ICard> getCards() {
         List<ICard> transportCards = new ArrayList<>();
-        try (PreparedStatement shownStatement = CONNECTION.prepareStatement("SELECT * FROM transport_card")) {
+        try (PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transport_card")) {
             ResultSet resultSet = shownStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -73,7 +77,7 @@ public class CrudMethodsCardJDBC {
 
     public ICard getCard(String id) {
         ICard card = null;
-        try (PreparedStatement selectStatement = CONNECTION.prepareStatement(GET_CARD)) {
+        try (PreparedStatement selectStatement = connection.prepareStatement(GET_CARD)) {
             selectStatement.setString(1, id);
             ResultSet resultSet = selectStatement.executeQuery();
 
@@ -98,7 +102,7 @@ public class CrudMethodsCardJDBC {
     }
 
     public boolean updateCard(ICard card) {
-        try (PreparedStatement updatedStatement = CONNECTION.prepareStatement(UPDATE_CARD)) {
+        try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
             updatedStatement.setBigDecimal(1, card.getBalance());
             updatedStatement.setBoolean(2, card.isBlocked());
 
@@ -119,7 +123,7 @@ public class CrudMethodsCardJDBC {
     }
 
     public boolean deleteCard(String id) {
-        try (PreparedStatement deletedStatement = CONNECTION.prepareStatement(DELETE_CARD)) {
+        try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD)) {
             deletedStatement.setString(1, id);
             deletedStatement.executeUpdate();
             log.info("Card with id {} is deleted successfully", id);

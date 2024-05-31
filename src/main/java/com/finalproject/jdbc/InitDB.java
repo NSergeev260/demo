@@ -1,5 +1,6 @@
 package com.finalproject.jdbc;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,10 +13,14 @@ import java.util.List;
 
 @Component
 public class InitDB {
+
+    @Value("${jdbc.initScript}")
+    public String initScript;
+
     public String initializationDB(Connection connection) {
 
         try (Statement statement = connection.createStatement()) {
-            Path path = Paths.get("src\\main\\resources\\DBTransportCard.sql").toAbsolutePath();
+            Path path = Paths.get(initScript).toAbsolutePath();
             List<String> lines = Files.lines(Path.of(String.valueOf(path)))
                 .filter(x -> !x.isBlank())
                 .toList();
