@@ -12,10 +12,13 @@ import com.finalproject.history.Operation;
 import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCardJDBC;
 import com.finalproject.jdbc.CrudMethodsHistoryJDBC;
+
 import java.math.BigDecimal;
 import java.util.Optional;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +26,9 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CardServiceTest {
@@ -31,11 +36,20 @@ class CardServiceTest {
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @Mock
+    private ICardCrudFactory iCardCrudFactory;
+    @Mock
     private ICardCrud crudMethodsCard;
     @Mock
     private IHistoryCrud crudMethodsHistory;
-    @InjectMocks
+
     private CardService cardService;
+
+    @BeforeEach
+    void setUp() {
+        Mockito.when(iCardCrudFactory.getICardCrud()).thenReturn(crudMethodsCard);
+        Mockito.when(iCardCrudFactory.getIHistoryCrud()).thenReturn(crudMethodsHistory);
+        cardService = new CardService(iCardCrudFactory, crudMethodsHistory);
+    }
 
     @AfterAll
     static void tearDown() {

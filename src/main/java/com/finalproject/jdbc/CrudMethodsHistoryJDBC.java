@@ -1,5 +1,6 @@
 package com.finalproject.jdbc;
 
+import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.CardHistory;
 import com.finalproject.card.ICard;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class CrudMethodsHistoryJDBC {
+public class CrudMethodsHistoryJDBC implements IHistoryCrud {
 
     private static final String GET_HISTORY = "SELECT * FROM card_history WHERE card_id = ?";
     private static final String INSERT_HISTORY = "INSERT INTO card_history(card_id, operation, result, amount, date_of_operation, balance_after_operation, terminal_id) VALUES (?, ?, ?, ?, ?, ?, ?)";

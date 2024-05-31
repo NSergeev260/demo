@@ -20,7 +20,7 @@ public class CardService {
 
     public CardService(ICardCrudFactory ICardCrudFactory, IHistoryCrud crudMethodsHistory) {
         this.crudMethodsCard = ICardCrudFactory.getICardCrud();
-        this.crudMethodsHistory = crudMethodsHistory;
+        this.crudMethodsHistory = ICardCrudFactory.getIHistoryCrud();
     }
 
     public Optional<ICard> findCardById(String cardId) {

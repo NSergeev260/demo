@@ -4,17 +4,15 @@ import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
-import com.finalproject.hibernate.CrudMethodsCardHibernate;
-import com.finalproject.hibernate.CrudMethodsHistoryHibernate;
+import com.finalproject.config.ICardCrudFactory;
 import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.Operation;
 import com.finalproject.jdbc.ConnectionToDB;
-import com.finalproject.jdbc.CrudMethodsCardJDBC;
-import com.finalproject.jdbc.CrudMethodsHistoryJDBC;
 import com.finalproject.transport.Transport;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -29,13 +27,22 @@ class PayingServiceTest {
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @Mock
+    private ICardCrudFactory iCardCrudFactory;
+    @Mock
     private CardService cardService;
     @Mock
     private ICardCrud crudMethodsCard;
     @Mock
     private IHistoryCrud crudMethodsHistory;
-    @InjectMocks
+
     private PayingService payingService;
+
+    @BeforeEach
+    void setUp() {
+        Mockito.when(iCardCrudFactory.getICardCrud()).thenReturn(crudMethodsCard);
+        Mockito.when(iCardCrudFactory.getIHistoryCrud()).thenReturn(crudMethodsHistory);
+        payingService = new PayingService(cardService, iCardCrudFactory, crudMethodsHistory);
+    }
 
     @AfterAll
     static void tearDown() {

@@ -3,13 +3,13 @@ package com.finalproject.hibernate;
 import com.finalproject.card.ICard;
 import com.finalproject.history.CardHistory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 public class CrudMethodsHistoryHibernate implements IHistoryCrud {
 
     @Autowired
