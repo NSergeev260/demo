@@ -4,6 +4,7 @@ import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
+import com.finalproject.hibernate.ICardCrud;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class CrudMethodsCardJDBC {
+public class CrudMethodsCardJDBC implements ICardCrud {
 
     private static final String GET_CARD = "SELECT * FROM transport_card WHERE card_id = ?";
     private static final String INSERT_CARD = "INSERT INTO transport_card(card_id, balance, type_of_card, is_blocked , document_id) VALUES (?, ?, ?, ?, ?)";
@@ -101,7 +102,7 @@ public class CrudMethodsCardJDBC {
         return card;
     }
 
-    public boolean updateCard(ICard card) {
+    public int updateCard(ICard card) {
         try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
             updatedStatement.setBigDecimal(1, card.getBalance());
             updatedStatement.setBoolean(2, card.isBlocked());
@@ -115,11 +116,11 @@ public class CrudMethodsCardJDBC {
             updatedStatement.setString(4, card.getCardId());
             updatedStatement.executeUpdate();
             log.info("{} with id {} is updated successfully", card.getType(), card.getCardId());
-            return true;
+            return 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return 0;
     }
 
     public boolean deleteCard(String id) {

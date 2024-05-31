@@ -3,6 +3,7 @@ package com.finalproject.services;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
+import com.finalproject.config.ICardCrudFactory;
 import com.finalproject.hibernate.CrudMethodsCardHibernate;
 import com.finalproject.hibernate.CrudMethodsHistoryHibernate;
 import com.finalproject.hibernate.ICardCrud;

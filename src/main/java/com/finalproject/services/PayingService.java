@@ -8,24 +8,30 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.finalproject.config.ICardCrudFactory;
 import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.Operation;
 import com.finalproject.transport.Transport;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-@AllArgsConstructor
 public class PayingService {
 
-    private CardService cardService;
-    private ICardCrud crudMethodsCard;
-    private IHistoryCrud crudMethodsHistory;
+    private final CardService cardService;
+    private final ICardCrud crudMethodsCard;
+    private final IHistoryCrud crudMethodsHistory;
     public static final String CHECK_CARD_ID_PLEASE = "Check cardId, please";
     public static final String DETAIL_INFO = "Terminal ID: {}, Time: {}, Card ID: {}";
+
+    public PayingService(ICardCrudFactory ICardCrudFactory, CardService cardService, IHistoryCrud crudMethodsHistory) {
+        this.cardService = cardService;
+        this.crudMethodsCard = ICardCrudFactory.getICardCrud();
+        this.crudMethodsHistory = crudMethodsHistory;
+    }
 
     public String payMoney(String cardId, Transport typeOfTransport, String terminalId) {
         log.info(DETAIL_INFO, terminalId, LocalDateTime.now(), cardId);

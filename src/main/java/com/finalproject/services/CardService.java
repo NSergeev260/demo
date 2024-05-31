@@ -3,21 +3,25 @@ package com.finalproject.services;
 import com.finalproject.card.ICard;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import com.finalproject.config.ICardCrudFactory;
 import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.Operation;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-@AllArgsConstructor
 public class CardService {
 
-    private ICardCrud crudMethodsCard;
-    private IHistoryCrud crudMethodsHistory;
+    private final ICardCrud crudMethodsCard;
+    private final IHistoryCrud crudMethodsHistory;
     private static final String MESSAGE = "Check cardId, please";
+
+    public CardService(ICardCrudFactory ICardCrudFactory, IHistoryCrud crudMethodsHistory) {
+        this.crudMethodsCard = ICardCrudFactory.getICardCrud();
+        this.crudMethodsHistory = crudMethodsHistory;
+    }
 
     public Optional<ICard> findCardById(String cardId) {
         return Optional.ofNullable(crudMethodsCard.getCard(cardId));
