@@ -18,9 +18,9 @@ public class CardService {
     private final IHistoryCrud crudMethodsHistory;
     private static final String MESSAGE = "Check cardId, please";
 
-    public CardService(ICardCrudFactory ICardCrudFactory, IHistoryCrud crudMethodsHistory) {
-        this.crudMethodsCard = ICardCrudFactory.getICardCrud();
-        this.crudMethodsHistory = ICardCrudFactory.getIHistoryCrud();
+    public CardService(ICardCrudFactory iCardCrudFactory) {
+        this.crudMethodsCard = iCardCrudFactory.getICardCrud();
+        this.crudMethodsHistory = iCardCrudFactory.getIHistoryCrud();
     }
 
     public Optional<ICard> findCardById(String cardId) {

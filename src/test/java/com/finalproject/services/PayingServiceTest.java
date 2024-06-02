@@ -41,7 +41,7 @@ class PayingServiceTest {
     void setUp() {
         Mockito.when(iCardCrudFactory.getICardCrud()).thenReturn(crudMethodsCard);
         Mockito.when(iCardCrudFactory.getIHistoryCrud()).thenReturn(crudMethodsHistory);
-        payingService = new PayingService(cardService, iCardCrudFactory, crudMethodsHistory);
+        payingService = new PayingService(cardService, iCardCrudFactory);
     }
 
     @AfterAll

@@ -26,7 +26,7 @@ public class PayingService {
     public static final String CHECK_CARD_ID_PLEASE = "Check cardId, please";
     public static final String DETAIL_INFO = "Terminal ID: {}, Time: {}, Card ID: {}";
 
-    public PayingService(CardService cardService, ICardCrudFactory iCardCrudFactory, IHistoryCrud crudMethodsHistory) {
+    public PayingService(CardService cardService, ICardCrudFactory iCardCrudFactory) {
         this.cardService = cardService;
         this.crudMethodsCard = iCardCrudFactory.getICardCrud();
         this.crudMethodsHistory = iCardCrudFactory.getIHistoryCrud();

@@ -48,7 +48,7 @@ class CardServiceTest {
     void setUp() {
         Mockito.when(iCardCrudFactory.getICardCrud()).thenReturn(crudMethodsCard);
         Mockito.when(iCardCrudFactory.getIHistoryCrud()).thenReturn(crudMethodsHistory);
-        cardService = new CardService(iCardCrudFactory, crudMethodsHistory);
+        cardService = new CardService(iCardCrudFactory);
     }
 
     @AfterAll
