@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Repository
-interface CardRepository extends JpaRepository<CardEntity, UUID> {
+public interface CardRepository extends JpaRepository<CardEntity, UUID> {
 
     @Transactional
     @Modifying

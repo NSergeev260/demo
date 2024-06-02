@@ -1,9 +1,6 @@
 package com.finalproject.config;
 
-import com.finalproject.hibernate.CrudMethodsCardHibernate;
-import com.finalproject.hibernate.CrudMethodsHistoryHibernate;
-import com.finalproject.hibernate.ICardCrud;
-import com.finalproject.hibernate.IHistoryCrud;
+import com.finalproject.hibernate.*;
 import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCardJDBC;
 import com.finalproject.jdbc.CrudMethodsHistoryJDBC;
@@ -20,6 +17,10 @@ public class ICardCrudFactory {
     private String crudImplementation;
     @Autowired
     private ConnectionToDB connectionToDB;
+    @Autowired
+    private CardRepository cardRepository;
+    @Autowired
+    private HistoryRepository historyRepository;
 
     public ICardCrud getICardCrud() {
         switch (crudImplementation.toLowerCase()) {
@@ -29,7 +30,7 @@ public class ICardCrudFactory {
             }
             case "hibernate" -> {
                 log.info("Chosen Hibernate");
-                return new CrudMethodsCardHibernate();
+                return new CrudMethodsCardHibernate(cardRepository);
             }
             default -> throw new IllegalArgumentException("supported crudImplementations are jdbc, hibernate");
         }
@@ -43,7 +44,7 @@ public class ICardCrudFactory {
             }
             case "hibernate" -> {
                 log.info("Chosen Hibernate");
-                return new CrudMethodsHistoryHibernate();
+                return new CrudMethodsHistoryHibernate(historyRepository);
             }
             default -> throw new IllegalArgumentException("supported crudImplementations are jdbc, hibernate");
         }

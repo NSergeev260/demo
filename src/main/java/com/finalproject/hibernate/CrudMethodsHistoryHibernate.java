@@ -2,7 +2,6 @@ package com.finalproject.hibernate;
 
 import com.finalproject.card.ICard;
 import com.finalproject.history.CardHistory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @Component
 public class CrudMethodsHistoryHibernate implements IHistoryCrud {
 
-    @Autowired
-    private HistoryRepository historyRepository;
+    private final HistoryRepository historyRepository;
+
+    public CrudMethodsHistoryHibernate(HistoryRepository historyRepository) {
+        this.historyRepository = historyRepository;
+    }
 
     @Override
     public void insertHistory(ICard card, String operation, boolean result,
