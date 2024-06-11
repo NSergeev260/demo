@@ -6,7 +6,7 @@ import java.util.UUID;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
-import com.finalproject.config.ICardCrudFactory;
+import com.finalproject.config.CrudFactory;
 import com.finalproject.hibernate.ICardCrud;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,8 @@ public class MockData {
     private final Random rnd = new Random();
     private final ICardCrud crudMethodsCard;
 
-    public MockData(ICardCrudFactory ICardCrudFactory) {
-        this.crudMethodsCard = ICardCrudFactory.getICardCrud();
+    public MockData(CrudFactory CrudFactory) {
+        this.crudMethodsCard = CrudFactory.getICardCrud();
     }
 
     public void generateMockData(long numberOfRecords) {

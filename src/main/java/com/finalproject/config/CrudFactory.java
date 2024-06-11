@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ICardCrudFactory {
+public class CrudFactory {
 
     @Value("${crudImplementation}")
     private String crudImplementation;

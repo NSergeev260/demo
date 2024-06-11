@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
-import com.finalproject.config.ICardCrudFactory;
+import com.finalproject.config.CrudFactory;
 import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.Operation;
@@ -26,10 +26,10 @@ public class PayingService {
     public static final String CHECK_CARD_ID_PLEASE = "Check cardId, please";
     public static final String DETAIL_INFO = "Terminal ID: {}, Time: {}, Card ID: {}";
 
-    public PayingService(CardService cardService, ICardCrudFactory iCardCrudFactory) {
+    public PayingService(CardService cardService, CrudFactory crudFactory) {
         this.cardService = cardService;
-        this.crudMethodsCard = iCardCrudFactory.getICardCrud();
-        this.crudMethodsHistory = iCardCrudFactory.getIHistoryCrud();
+        this.crudMethodsCard = crudFactory.getICardCrud();
+        this.crudMethodsHistory = crudFactory.getIHistoryCrud();
     }
 
     public String payMoney(String cardId, Transport typeOfTransport, String terminalId) {

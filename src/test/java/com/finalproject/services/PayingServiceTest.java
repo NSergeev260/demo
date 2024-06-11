@@ -4,7 +4,7 @@ import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
-import com.finalproject.config.ICardCrudFactory;
+import com.finalproject.config.CrudFactory;
 import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.Operation;
@@ -27,7 +27,7 @@ class PayingServiceTest {
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @Mock
-    private ICardCrudFactory iCardCrudFactory;
+    private CrudFactory crudFactory;
     @Mock
     private CardService cardService;
     @Mock
@@ -39,9 +39,9 @@ class PayingServiceTest {
 
     @BeforeEach
     void setUp() {
-        Mockito.when(iCardCrudFactory.getICardCrud()).thenReturn(crudMethodsCard);
-        Mockito.when(iCardCrudFactory.getIHistoryCrud()).thenReturn(crudMethodsHistory);
-        payingService = new PayingService(cardService, iCardCrudFactory);
+        Mockito.when(crudFactory.getICardCrud()).thenReturn(crudMethodsCard);
+        Mockito.when(crudFactory.getIHistoryCrud()).thenReturn(crudMethodsHistory);
+        payingService = new PayingService(cardService, crudFactory);
     }
 
     @AfterAll

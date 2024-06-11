@@ -1,7 +1,7 @@
 package com.finalproject;
 
 import com.finalproject.card.ICard;
-import com.finalproject.config.ICardCrudFactory;
+import com.finalproject.config.CrudFactory;
 import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.jdbc.ConnectionToDB;
 import org.junit.jupiter.api.AfterAll;
@@ -23,7 +23,7 @@ class MockDataTest {
     static MockedStatic<ConnectionToDB> mockedStatic = mockStatic(ConnectionToDB.class);
 
     @Mock
-    private ICardCrudFactory iCardCrudFactory;
+    private CrudFactory crudFactory;
 
     @Mock
     private ICardCrud crudMethodsCard;
@@ -32,8 +32,8 @@ class MockDataTest {
 
     @BeforeEach
     void setUp() {
-        Mockito.when(iCardCrudFactory.getICardCrud()).thenReturn(crudMethodsCard);
-        mockData = new MockData(iCardCrudFactory);
+        Mockito.when(crudFactory.getICardCrud()).thenReturn(crudMethodsCard);
+        mockData = new MockData(crudFactory);
     }
 
     @AfterAll

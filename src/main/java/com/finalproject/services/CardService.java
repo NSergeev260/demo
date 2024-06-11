@@ -3,7 +3,7 @@ package com.finalproject.services;
 import com.finalproject.card.ICard;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import com.finalproject.config.ICardCrudFactory;
+import com.finalproject.config.CrudFactory;
 import com.finalproject.hibernate.ICardCrud;
 import com.finalproject.hibernate.IHistoryCrud;
 import com.finalproject.history.Operation;
@@ -18,9 +18,9 @@ public class CardService {
     private final IHistoryCrud crudMethodsHistory;
     private static final String MESSAGE = "Check cardId, please";
 
-    public CardService(ICardCrudFactory iCardCrudFactory) {
-        this.crudMethodsCard = iCardCrudFactory.getICardCrud();
-        this.crudMethodsHistory = iCardCrudFactory.getIHistoryCrud();
+    public CardService(CrudFactory crudFactory) {
+        this.crudMethodsCard = crudFactory.getICardCrud();
+        this.crudMethodsHistory = crudFactory.getIHistoryCrud();
     }
 
     public Optional<ICard> findCardById(String cardId) {
