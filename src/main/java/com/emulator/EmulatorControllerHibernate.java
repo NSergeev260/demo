@@ -23,27 +23,27 @@ public class EmulatorControllerHibernate {
     private Requests requests = new Requests();
 
     public void getCardRequest() throws URISyntaxException {
-        System.out.println("=======GET CARD======");
+        log.info("=======GET CARD======");
         requests.getRequest(URL_GET_CARD);
     }
 
     public void insertCardRequest() throws URISyntaxException {
-        System.out.println("=======INSERT CARD======");
+        log.info("=======INSERT CARD======");
         requests.postRequest(URL_INSERT_CARD);
     }
 
     public void getAllCardsRequest() throws URISyntaxException {
-        System.out.println("=======GET ALL CARDs======");
+        log.info("=======GET ALL CARDs======");
         requests.getRequest(URL_GET_ALL_CARDS);
     }
 
     public void deleteCardRequest() throws URISyntaxException {
-        System.out.println("=======DELETE ONE CARD======");
+        log.info("=======DELETE ONE CARD======");
         requests.postRequest(URL_DELETE_CARD);
     }
 
     public void updateCardRequest() throws URISyntaxException {
-        System.out.println("=======UPDATE CARD======");
+        log.info("=======UPDATE CARD======");
         requests.postRequest(URL_UPDATE_CARD);
     }
 }

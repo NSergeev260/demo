@@ -6,21 +6,22 @@ import lombok.extern.slf4j.Slf4j;
 public class EmulatorControllerRunner {
 
     public static void main(String[] args) throws Exception {
-        EmulatorControllerHibernate emulatorControllerHibernate = new EmulatorControllerHibernate();
-
-        System.out.println("=======GET CARD======");
-//        emulatorControllerHibernate.getCardRequest();
-
-        System.out.println("=======INSERT CARD======");
-//        emulatorControllerHibernate.insertCardRequest();
-
-        System.out.println("=======GET ALL CARDs======");
-        emulatorControllerHibernate.getAllCardsRequest();
-
-        System.out.println("=======DELETE ONE CARD======");
-//        emulatorControllerHibernate.deleteCardRequest();
-
-        System.out.println("=======UPDATE CARD======");
-//        emulatorControllerHibernate.updateCardRequest();
+        EmulatorControllerHibernate hibernate = new EmulatorControllerHibernate();
+        EmulatorControllerAdmin admin = new EmulatorControllerAdmin();
+        EmulatorControllerTerminal terminal = new EmulatorControllerTerminal();
+//        hibernate.getCardRequest();
+//        hibernate.insertCardRequest();
+//        hibernate.getAllCardsRequest();
+//        hibernate.deleteCardRequest();
+//        hibernate.updateCardRequest();
+//        admin.getBlock();
+//        admin.getUnblock();
+//        admin.getStatusBlocked();
+//        admin.getMockData();
+        terminal.getPay();
+        terminal.getPut();
+        terminal.getBalance();
+        terminal.getInfo();
+        terminal.activateCard();
     }
 }
