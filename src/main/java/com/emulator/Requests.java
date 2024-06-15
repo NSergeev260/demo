@@ -12,7 +12,7 @@ import java.net.http.HttpResponse;
 @Slf4j
 public class Requests {
 
-    public void setGetRequest(String URL) throws URISyntaxException {
+    public void getRequest(String URL) throws URISyntaxException {
 
         HttpRequest request = HttpRequest.newBuilder(new URI(URL))
             .GET()
@@ -21,7 +21,7 @@ public class Requests {
         getResponse(request);
     }
 
-    public void setPostRequest(String URL) throws URISyntaxException {
+    public void postRequest(String URL) throws URISyntaxException {
 
         HttpRequest request = HttpRequest.newBuilder(new URI(URL))
             .POST(HttpRequest.BodyPublishers.noBody())
