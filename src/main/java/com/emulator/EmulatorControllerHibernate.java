@@ -8,17 +8,23 @@ import java.net.URISyntaxException;
 public class EmulatorControllerHibernate {
 
     private static final String CARD_ID = "106fbd78-1f37-11ef-bd2a-0cd292f91adb";
+    private static final String UPDATE_BALANCE = "2000";
+    private static final String UPDATE_BLOCKED_STATUS = "false";
+    private static final String UPDATE_DOCUMENT_ID = "NULL";
 
-    private static final String UPDATE_BALANCE = "&balance=" + "2000";
-    private static final String UPDATE_BLOCKED_STATUS = "&isBlocked=" + "false";
-    private static final String UPDATE_DOCUMENT_ID = "&documentId=" + "NULL";
-
-    private static final String URL_GET_CARD = "http://localhost:80/getCard?cardId=" + CARD_ID;
     private static final String URL_INSERT_CARD = "http://localhost:80/insertTest";
+
     private static final String URL_GET_ALL_CARDS = "http://localhost:80/getCards";
-    private static final String URL_DELETE_CARD = "http://localhost:80/delete?cardId=" + CARD_ID;
-    private static final String URL_UPDATE_CARD = "http://localhost:80/update?cardId=" + CARD_ID +
-        UPDATE_BALANCE + UPDATE_BLOCKED_STATUS + UPDATE_DOCUMENT_ID;
+
+    private static final String URL_GET_CARD = "http://localhost:80/getCard" +
+        "?cardId=" + CARD_ID;
+
+    private static final String URL_UPDATE_CARD = "http://localhost:80/update" +
+        "?cardId=" + CARD_ID + "&balance=" + UPDATE_BALANCE + "&isBlocked=" +
+        UPDATE_BLOCKED_STATUS + "&documentId=" + UPDATE_DOCUMENT_ID;
+
+    private static final String URL_DELETE_CARD = "http://localhost:80/delete" +
+        "?cardId=" + CARD_ID;
 
     private Requests requests = new Requests();
 

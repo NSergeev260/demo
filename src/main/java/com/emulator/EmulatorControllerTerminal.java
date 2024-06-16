@@ -7,15 +7,27 @@ import java.net.URISyntaxException;
 @Slf4j
 public class EmulatorControllerTerminal {
     private static final String CARD_ID = "9d06e46d-2b38-11ef-88c3-0cd292f91adb";
+    private static final String TYPE_OF_TRANSPORT = "SUBWAY";
+    private static final String TERMINAL_ID = "SPATULA";
+    private static final String MONEY = "10000";
+    private static final String CARD_TYPE = "CREDIT";
 
-    private static final String TERMINAL_ID = "&terminalId=" + "SPATULA";
-    private static final String NUMBER_OF_RECORDS = "2";
+    private static final String URL_PAY = "http://localhost:80/pay" +
+        "?cardId=" + CARD_ID + "&typeOfTransport=" + TYPE_OF_TRANSPORT +
+        "&terminalId=" + TERMINAL_ID;
 
-    private static final String URL_PAY = "http://localhost:80/block?cardId=" + CARD_ID + TERMINAL_ID;
-    private static final String URL_PUT = "http://localhost:80/unblock?cardId=" + CARD_ID + TERMINAL_ID;
-    private static final String URL_GET_BALANCE = "http://localhost:80/isBlocked?cardId=" + CARD_ID;
-    private static final String URL_GET_INFO = "http://localhost:80/generateMockData?numberOfRecords=" + NUMBER_OF_RECORDS;
-    private static final String URL_ACTIVATE = "http://localhost:80/generateMockData?numberOfRecords=" + NUMBER_OF_RECORDS;
+    private static final String URL_PUT = "http://localhost:80/put" +
+        "?cardId=" + CARD_ID + "&money=" + MONEY + "&terminalId=" +
+        TERMINAL_ID;
+
+    private static final String URL_GET_BALANCE = "http://localhost:80/balance" +
+        "/" + CARD_ID + "?" + "terminalId=" + TERMINAL_ID;
+
+    private static final String URL_GET_INFO = "http://localhost:80/getInfo" +
+        "?cardId=" + CARD_ID;
+
+    private static final String URL_ACTIVATE = "http://localhost:80/activate" +
+        "?cardType=" + CARD_TYPE + "&terminalId=" + TERMINAL_ID;
 
     private Requests requests = new Requests();
 
