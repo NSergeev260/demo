@@ -7,49 +7,39 @@ import java.net.URISyntaxException;
 @Slf4j
 public class EmulatorControllerHibernate {
 
-    private static final String CARD_ID = "106fbd78-1f37-11ef-bd2a-0cd292f91adb";
-    private static final String UPDATE_BALANCE = "2000";
-    private static final String UPDATE_BLOCKED_STATUS = "false";
-    private static final String UPDATE_DOCUMENT_ID = "NULL";
-
-    private static final String URL_INSERT_CARD = "http://localhost:80/insertTest";
-
-    private static final String URL_GET_ALL_CARDS = "http://localhost:80/getCards";
-
-    private static final String URL_GET_CARD = "http://localhost:80/getCard" +
-        "?cardId=" + CARD_ID;
-
-    private static final String URL_UPDATE_CARD = "http://localhost:80/update" +
-        "?cardId=" + CARD_ID + "&balance=" + UPDATE_BALANCE + "&isBlocked=" +
-        UPDATE_BLOCKED_STATUS + "&documentId=" + UPDATE_DOCUMENT_ID;
-
-    private static final String URL_DELETE_CARD = "http://localhost:80/delete" +
-        "?cardId=" + CARD_ID;
+    private final String URL_PATH = "http://localhost:80";
+    private final String URL_CARD = "?cardId=";
+    private final String URL_BALANCE = "&balance=";
+    private final String URL_BLOCKED = "&isBlocked=";
+    private final String URL_DOCUMENT = "&documentId=";
 
     private Requests requests = new Requests();
 
-    public void getCardRequest() throws URISyntaxException {
-        log.info("=======GET CARD======");
-        requests.getRequest(URL_GET_CARD);
-    }
-
-    public void insertCardRequest() throws URISyntaxException {
+    public void insertCard() throws URISyntaxException {
         log.info("=======INSERT CARD======");
-        requests.postRequest(URL_INSERT_CARD);
+        requests.postRequest(URL_PATH + "/insertTest");
     }
 
-    public void getAllCardsRequest() throws URISyntaxException {
+    public void getCard(String cardId) throws URISyntaxException {
+        log.info("=======GET CARD======");
+        requests.getRequest(URL_PATH + "/getCard" + URL_CARD + cardId);
+    }
+
+    public void getAllCards() throws URISyntaxException {
         log.info("=======GET ALL CARDs======");
-        requests.getRequest(URL_GET_ALL_CARDS);
+        requests.getRequest(URL_PATH + "/getCards");
     }
 
-    public void deleteCardRequest() throws URISyntaxException {
-        log.info("=======DELETE ONE CARD======");
-        requests.postRequest(URL_DELETE_CARD);
-    }
-
-    public void updateCardRequest() throws URISyntaxException {
+    public void updateCard(String cardId, String balance, String isBlocked,
+                           String document) throws URISyntaxException {
         log.info("=======UPDATE CARD======");
-        requests.postRequest(URL_UPDATE_CARD);
+        requests.postRequest(URL_PATH + "/update" + URL_CARD + cardId +
+            URL_BALANCE + balance + URL_BLOCKED + isBlocked + URL_DOCUMENT +
+            document);
+    }
+
+    public void deleteCard(String cardId) throws URISyntaxException {
+        log.info("=======DELETE ONE CARD======");
+        requests.postRequest(URL_PATH + "/delete" + URL_CARD + cardId);
     }
 }

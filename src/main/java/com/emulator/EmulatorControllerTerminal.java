@@ -6,53 +6,43 @@ import java.net.URISyntaxException;
 
 @Slf4j
 public class EmulatorControllerTerminal {
-    private static final String CARD_ID = "9d06e46d-2b38-11ef-88c3-0cd292f91adb";
-    private static final String TYPE_OF_TRANSPORT = "SUBWAY";
-    private static final String TERMINAL_ID = "SPATULA";
-    private static final String MONEY = "10000";
-    private static final String CARD_TYPE = "CREDIT";
-
-    private static final String URL_PAY = "http://localhost:80/pay" +
-        "?cardId=" + CARD_ID + "&typeOfTransport=" + TYPE_OF_TRANSPORT +
-        "&terminalId=" + TERMINAL_ID;
-
-    private static final String URL_PUT = "http://localhost:80/put" +
-        "?cardId=" + CARD_ID + "&money=" + MONEY + "&terminalId=" +
-        TERMINAL_ID;
-
-    private static final String URL_GET_BALANCE = "http://localhost:80/balance" +
-        "/" + CARD_ID + "?" + "terminalId=" + TERMINAL_ID;
-
-    private static final String URL_GET_INFO = "http://localhost:80/getInfo" +
-        "?cardId=" + CARD_ID;
-
-    private static final String URL_ACTIVATE = "http://localhost:80/activate" +
-        "?cardType=" + CARD_TYPE + "&terminalId=" + TERMINAL_ID;
+    private final String URL_PATH = "http://localhost:80";
+    private final String URL_CARD = "?cardId=";
+    private final String URL_TRANSPORT = "&typeOfTransport=";
+    private final String URL_MONEY = "&money=";
+    private final String URL_TERMINAL = "&terminalId=";
+    private final String URL_CARD_TYPE= "?cardType=";
 
     private Requests requests = new Requests();
 
-    public void getPay() throws URISyntaxException {
+    public void getPay(String cardId, String typeOfTransport,
+                       String terminal) throws URISyntaxException {
         log.info("=======PAY MONEY======");
-        requests.postRequest(URL_PAY);
+        requests.postRequest(URL_PATH + "/pay" + URL_CARD + cardId +
+            URL_TRANSPORT + typeOfTransport + URL_TERMINAL + terminal);
     }
 
-    public void getPut() throws URISyntaxException {
+    public void getPut(String cardId, String money,
+                       String terminal) throws URISyntaxException {
         log.info("=======PUT MONEY======");
-        requests.postRequest(URL_PUT);
+        requests.postRequest(URL_PATH + "/put" + URL_CARD + cardId +
+            URL_MONEY + money + URL_TERMINAL + terminal);
     }
 
-    public void getBalance() throws URISyntaxException {
+    public void getBalance(String cardId, String terminal) throws URISyntaxException {
         log.info("=======GET BALANCE======");
-        requests.getRequest(URL_GET_BALANCE);
+        requests.getRequest(URL_PATH + "/balance" + "/" + cardId + "?" +
+            URL_TERMINAL + terminal);
     }
 
-    public void getInfo() throws URISyntaxException {
+    public void getInfo(String cardId) throws URISyntaxException {
         log.info("=======GET INFO======");
-        requests.getRequest(URL_GET_INFO);
+        requests.getRequest(URL_PATH + "/getInfo" + URL_CARD + cardId);
     }
 
-    public void activateCard() throws URISyntaxException {
+    public void activateCard(String cardType, String terminal) throws URISyntaxException {
         log.info("=======ACTIVATE(INSERT) CARD======");
-        requests.postRequest(URL_ACTIVATE);
+        requests.postRequest(URL_PATH + "/activate" + URL_CARD_TYPE + cardType +
+            URL_TERMINAL + terminal);
     }
 }
