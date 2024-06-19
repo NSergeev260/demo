@@ -1,12 +1,17 @@
 package com.emulator;
 
+import com.finalproject.MockData;
+import com.finalproject.card.ICard;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Slf4j
 public class EmulatorControllerRunner {
-    private static String cardId = "106fbd78-1f37-11ef-bd2a-0cd292f91adb";
+    private static String cardId = "179ac9cd-e542-4538-9720-15c0007d63a0";
     private static String balance = "2000";
     private static String isBlocked = "false";
     private static String documentId = "NULL";
@@ -16,38 +21,36 @@ public class EmulatorControllerRunner {
     private static String money = "10000";
     private static String cardType = "CREDIT";
 
+
     private static final int NUMBER_OF_REQUESTS = 10;
 
     public static void main(String[] args) throws Exception {
-        EmulatorControllerHibernate hibernate = new EmulatorControllerHibernate();
         EmulatorControllerAdmin admin = new EmulatorControllerAdmin();
+        EmulatorControllerHibernate hibernate = new EmulatorControllerHibernate();
         EmulatorControllerTerminal terminal = new EmulatorControllerTerminal();
+        Operation operation = new Operation();
 
-        admin.getMockData(numberOfRecords);
+//        terminal.activateCard(cardType, terminalId);
+        StringBuilder str = new StringBuilder();
+        String st = terminal.activateCard("CREDIT", "Yellow");
+        str.append(terminal.activateCard("CREDIT", "Yellow"));
+        System.out.println("==================================================");
+        System.out.println(st);
+        List<String> cards = new ArrayList<>();
 
-        Random rnd = new Random();
-        int probability = rnd.nextInt(100);
 
-        if (probability < 90) {
-            terminal.getPay(cardId, typeOfTransport, terminalId);    // 90%
-        } else if (probability < 94) {
-            terminal.getPut(cardId, money, terminalId);    // 4%
-        } else if (probability < 97) {
-            terminal.getBalance(cardId, terminalId);   // 3%
-        } else if (probability < 98) {
-            admin.getBlock(cardId, terminalId); // 2%
-            admin.getUnblock(cardId, terminalId);
-        } else if (probability < 99) {
-            terminal.activateCard(cardType, terminalId);   // 1%
-        } else {
-            terminal.activateCard(cardType, terminalId);    // 1%
-        }
+//        for (int i = 0; i < NUMBER_OF_REQUESTS; i++) {
+//            cards.add(terminal.activateCard("Credit", "Yellow"));
+//        }
+//        System.out.println(cards);
 //        hibernate.getCard(cardId);
+        hibernate.getAllCards();
+//            operation.getOperationProbability(100, cardId, money, cardType, typeOfTransport, terminalId);
+
+//        admin.getBlock(cardId, terminalId);
 //        hibernate.insertCard();
-//        hibernate.getAllCards();
 //        hibernate.deleteCard(cardId);
 //        hibernate.updateCard(cardId, balance, isBlocked, documentId);
-//        admin.getBlock(cardId, terminalId);
 //        admin.getUnblock(cardId, terminalId);
 //        admin.getStatusBlocked(cardId);
 //        admin.getMockData(numberOfRecords);

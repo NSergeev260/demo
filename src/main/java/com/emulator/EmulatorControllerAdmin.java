@@ -19,15 +19,15 @@ public class EmulatorControllerAdmin {
             URL_TERMINAL + terminal);
     }
 
-    public void getUnblock(String cardId, String terminal) throws URISyntaxException {
+    public void getUnblock(String cardId, String terminalId) throws URISyntaxException {
         log.info("=======UNBLOCK A CARD======");
         requests.postRequest(URL_PATH + "/unblock" + URL_CARD + cardId +
-            URL_TERMINAL + terminal);
+            URL_TERMINAL + terminalId);
     }
 
-    public void getStatusBlocked(String cardId) throws URISyntaxException {
+    public String getStatusBlocked(String cardId) throws URISyntaxException {
         log.info("=======IS BLOCKED======");
-        requests.getRequest(URL_PATH + "/isBlocked" + URL_CARD + cardId);
+        return requests.getRequest(URL_PATH + "/isBlocked" + URL_CARD + cardId);
     }
 
     public void getMockData(String numberOfRecords) throws URISyntaxException {

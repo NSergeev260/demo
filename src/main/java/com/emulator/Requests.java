@@ -8,33 +8,39 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
+
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Slf4j
 public class Requests {
 
-    public void getRequest(String URL) throws URISyntaxException {
+    public String getRequest(String URL) throws URISyntaxException {
 
         HttpRequest request = HttpRequest.newBuilder(new URI(URL))
             .GET()
+            .timeout(Duration.of(300, SECONDS))
             .build();
 
-        getResponse(request);
+        return getResponse(request);
     }
 
-    public void postRequest(String URL) throws URISyntaxException {
+    public String postRequest(String URL) throws URISyntaxException {
 
         HttpRequest request = HttpRequest.newBuilder(new URI(URL))
             .POST(HttpRequest.BodyPublishers.noBody())
+            .timeout(Duration.of(300, SECONDS))
             .build();
 
-        getResponse(request);
+        return getResponse(request);
     }
 
-    private static void getResponse(HttpRequest request) {
+    private static String getResponse(HttpRequest request) {
 
         HttpClient client = HttpClient.newHttpClient();
+        HttpResponse<String> response = null;
         try {
-            HttpResponse<String> response = client.send(request,
+            response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
@@ -51,5 +57,6 @@ public class Requests {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        return String.valueOf(response);
     }
 }
