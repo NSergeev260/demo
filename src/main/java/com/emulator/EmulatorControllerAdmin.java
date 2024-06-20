@@ -6,10 +6,10 @@ import java.net.URISyntaxException;
 
 @Slf4j
 public class EmulatorControllerAdmin {
-    private final String URL_PATH = "http://localhost:80";
-    private final String URL_CARD = "?cardId=";
-    private final String URL_TERMINAL = "&terminalId=";
-    private final String URL_RECORDS = "?numberOfRecords=";
+    private static final String URL_PATH = "http://localhost:80";
+    private static final String URL_CARD = "?cardId=";
+    private static final String URL_TERMINAL = "&terminalId=";
+    private static final String URL_RECORDS = "?numberOfRecords=";
 
     private ParallelRequestsHttp parallelRequestsHttp = new ParallelRequestsHttp();
 

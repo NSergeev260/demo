@@ -6,11 +6,11 @@ import java.net.URISyntaxException;
 @Slf4j
 public class EmulatorControllerHibernate {
 
-    private final String URL_PATH = "http://localhost:80";
-    private final String URL_CARD = "?cardId=";
-    private final String URL_BALANCE = "&balance=";
-    private final String URL_BLOCKED = "&isBlocked=";
-    private final String URL_DOCUMENT = "&documentId=";
+    private static final String URL_PATH = "http://localhost:80";
+    private static final String URL_CARD = "?cardId=";
+    private static final String URL_BALANCE = "&balance=";
+    private static final String URL_BLOCKED = "&isBlocked=";
+    private static final String URL_DOCUMENT = "&documentId=";
 
     private ParallelRequestsHttp parallelRequestsHttp = new ParallelRequestsHttp();
 

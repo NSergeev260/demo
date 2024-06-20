@@ -17,14 +17,11 @@ public class EmulatorControllerRunner {
     private static String money = "10000";
     private static String cardType = "CREDIT";
 
-
     private static final int NUMBER_OF_CARD_ID = 10;
-    private static final int NUMBER_OF_REQUESTS = 10;
+    private static final int NUMBER_OF_REQUESTS = 100;
 
     public static void main(String[] args) throws Exception {
-        EmulatorControllerAdmin admin = new EmulatorControllerAdmin();
-        EmulatorControllerHibernate hibernate = new EmulatorControllerHibernate();
-        EmulatorControllerTerminal terminal = new EmulatorControllerTerminal();
+
         Operations operations = new Operations();
         Random rnd = new Random();
 

@@ -7,12 +7,12 @@ import java.net.URISyntaxException;
 
 @Slf4j
 public class EmulatorControllerTerminal {
-    private final String URL_PATH = "http://localhost:80";
-    private final String URL_CARD = "?cardId=";
-    private final String URL_TRANSPORT = "&typeOfTransport=";
-    private final String URL_MONEY = "&money=";
-    private final String URL_TERMINAL = "&terminalId=";
-    private final String URL_CARD_TYPE = "?cardType=";
+    private static final String URL_PATH = "http://localhost:80";
+    private static final String URL_CARD = "?cardId=";
+    private static final String URL_TRANSPORT = "&typeOfTransport=";
+    private static final String URL_MONEY = "&money=";
+    private static final String URL_TERMINAL = "&terminalId=";
+    private static final String URL_CARD_TYPE = "?cardType=";
 
     private ParallelRequestsHttp parallelRequestsHttp = new ParallelRequestsHttp();
 
