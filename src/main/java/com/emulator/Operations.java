@@ -47,7 +47,6 @@ public class Operations {
         throws URISyntaxException {
 
         terminal = new EmulatorControllerTerminal();
-        Random rnd = new Random();
         StringBuilder stringBuilder = new StringBuilder();
         List<String> cards = new ArrayList<>();
         String card;
@@ -70,5 +69,22 @@ public class Operations {
             stringBuilder.delete(0, stringBuilder.length());
         }
         return cards;
+    }
+
+    public void getCardOperation(List<String> cards, String terminalId)
+        throws URISyntaxException {
+
+            int rndCard = rnd.nextInt(cards.size());
+            int rndMoney = rnd.nextInt(1001);
+            int rndTypeOfTransport = rnd.nextInt(Transport.values().length);
+            int rndCardType = rnd.nextInt(2);
+
+            if (rndCardType == 1) {
+                getOperationProbability(cards.get(rndCard), String.valueOf(rndMoney),
+                    "CREDIT", Transport.values()[rndTypeOfTransport], terminalId);
+            } else {
+                getOperationProbability(cards.get(rndCard), String.valueOf(rndMoney),
+                    "DEBIT", Transport.values()[rndTypeOfTransport], terminalId);
+            }
     }
 }

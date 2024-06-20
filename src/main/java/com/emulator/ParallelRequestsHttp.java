@@ -49,8 +49,7 @@ public class ParallelRequestsHttp {
                 log.warn("Something wrong. StatusCode NOT 200!");
             }
 
-        } catch (
-            IOException e) {
+        } catch (IOException e) {
             log.warn("Something wrong! CATCH block.");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

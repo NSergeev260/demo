@@ -17,32 +17,24 @@ public class EmulatorControllerRunner {
     private static String money = "10000";
     private static String cardType = "CREDIT";
 
-    private static final int NUMBER_OF_CARD_ID = 10;
-    private static final int NUMBER_OF_REQUESTS = 100;
+    private static final int NUMBER_OF_CARD = 10;
+    private static final int NUMBER_OF_REQUESTS = 40;
 
     public static void main(String[] args) throws Exception {
 
         Operations operations = new Operations();
-        Random rnd = new Random();
 
         List<String> listCardId = new ArrayList<>(operations.
-            getStartCollectionOfCard(NUMBER_OF_CARD_ID, terminalId));
+            getStartCollectionOfCard(NUMBER_OF_CARD, terminalId));
         log.info("Collection of cardId: {}", listCardId);
 
         System.out.println("=======EMULATION ++++ OPERATIONS UNDER COLLECTION OF CARDs=======");
         for (int i = 0; i < NUMBER_OF_REQUESTS; i++) {
-            int rndCard = rnd.nextInt(listCardId.size());
-            int rndMoney = rnd.nextInt(1001);
-            int rndTypeOfTransport = rnd.nextInt(Transport.values().length);
-            int rndCardType = rnd.nextInt(2);
+            operations.getCardOperation(listCardId, terminalId);
 
-            if (rndCardType == 1) {
-                operations.getOperationProbability(listCardId.get(rndCard), String.valueOf(rndMoney),
-                    "CREDIT", Transport.values()[rndTypeOfTransport], terminalId);
-            } else {
-                operations.getOperationProbability(listCardId.get(rndCard), String.valueOf(rndMoney),
-                    "DEBIT", Transport.values()[rndTypeOfTransport], terminalId);
-            }
+//            Runnable parallelRequest = new ParallelRequestHttp(URL, client);
+//            Thread parallelThread = new Thread(parallelRequest);
+//            parallelThread.start();
         }
     }
 }
