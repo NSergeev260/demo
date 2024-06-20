@@ -13,7 +13,7 @@ import java.time.Duration;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Slf4j
-public class Requests {
+public class ParallelRequestsHttp {
 
     public String getRequest(String URL) throws URISyntaxException {
 

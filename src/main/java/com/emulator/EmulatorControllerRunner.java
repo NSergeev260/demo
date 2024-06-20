@@ -35,9 +35,9 @@ public class EmulatorControllerRunner {
         System.out.println("=======EMULATION ++++ OPERATIONS UNDER COLLECTION OF CARDs=======");
         for (int i = 0; i < NUMBER_OF_REQUESTS; i++) {
             int rndCard = rnd.nextInt(listCardId.size());
-            int rndMoney = rnd.nextInt(1000);
+            int rndMoney = rnd.nextInt(1001);
             int rndTypeOfTransport = rnd.nextInt(Transport.values().length);
-            int rndCardType = rnd.nextInt(3);
+            int rndCardType = rnd.nextInt(2);
 
             if (rndCardType == 1) {
                 operations.getOperationProbability(listCardId.get(rndCard), String.valueOf(rndMoney),
@@ -47,23 +47,5 @@ public class EmulatorControllerRunner {
                     "DEBIT", Transport.values()[rndTypeOfTransport], terminalId);
             }
         }
-
-
-//        terminal.activateCard(cardType, terminalId);
-//        hibernate.getCard(cardId);
-//        hibernate.getAllCards();
-
-//        admin.getBlock(cardId, terminalId);
-//        hibernate.insertCard();
-//        hibernate.deleteCard(cardId);
-//        hibernate.updateCard(cardId, balance, isBlocked, documentId);
-//        admin.getUnblock(cardId, terminalId);
-//        admin.getStatusBlocked(cardId);
-//        admin.getMockData(numberOfRecords);
-//        terminal.getPay(cardId, typeOfTransport, terminalId);
-//        terminal.getPut(cardId, money, terminalId);
-//        terminal.getBalance(cardId, terminalId);
-//        terminal.getInfo(cardId);
-//        terminal.activateCard(cardType, terminalId);
     }
 }
