@@ -1,6 +1,7 @@
 package com.emulator;
 
 import com.finalproject.card.ICard;
+import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URISyntaxException;
@@ -16,7 +17,7 @@ public class EmulatorControllerTerminal {
 
     private Requests requests = new Requests();
 
-    public void getPay(String cardId, String typeOfTransport,
+    public void getPay(String cardId, Transport typeOfTransport,
                        String terminalId) throws URISyntaxException {
         log.info("=======PAY MONEY======");
         requests.postRequest(URL_PATH + "/pay" + URL_CARD + cardId +

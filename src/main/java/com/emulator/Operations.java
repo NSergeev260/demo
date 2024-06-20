@@ -1,5 +1,6 @@
 package com.emulator;
 
+import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -12,16 +13,17 @@ public class Operations {
     private EmulatorControllerAdmin admin;
     private EmulatorControllerTerminal terminal;
     private Random rnd = new Random();
+    private static final int RANDOM_BOUND = 101;
 
-    public void getOperationProbability(int bound, String cardId, String money,
-                                        String cardType, String typeOfTransport,
+    public void getOperationProbability(String cardId, String money,
+                                        String cardType, Transport typeOfTransport,
                                         String terminalId) throws URISyntaxException {
 
         hibernate = new EmulatorControllerHibernate();
         admin = new EmulatorControllerAdmin();
         terminal = new EmulatorControllerTerminal();
 
-        int probability = rnd.nextInt(bound);
+        int probability = rnd.nextInt(RANDOM_BOUND);
         if (probability < 90) {
             terminal.getPay(cardId, typeOfTransport, terminalId);    // 90%
         } else if (probability < 94) {
@@ -41,7 +43,7 @@ public class Operations {
         }
     }
 
-    public List<String> getStartCollectionOfCard(int numberOfRequests, String terminalId)
+    public List<String> getStartCollectionOfCard(int numberOfCardId, String terminalId)
         throws URISyntaxException {
 
         terminal = new EmulatorControllerTerminal();
@@ -51,7 +53,7 @@ public class Operations {
         String card;
         String[] cardFields;
 
-        for (int i = 0; i < numberOfRequests; i++) {
+        for (int i = 0; i < numberOfCardId; i++) {
             int rndCardType = rnd.nextInt(2);
 
             if (rndCardType == 0) {

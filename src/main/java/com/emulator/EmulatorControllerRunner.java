@@ -1,11 +1,9 @@
 package com.emulator;
 
+import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 public class EmulatorControllerRunner {
@@ -15,31 +13,40 @@ public class EmulatorControllerRunner {
     private static String documentId = "NULL";
     private static String terminalId = "SPATULA";
     private static String numberOfRecords = "10";
-    private static String typeOfTransport = "SUBWAY";
+    private static Transport typeOfTransport = Transport.SUBWAY;
     private static String money = "10000";
     private static String cardType = "CREDIT";
 
 
-    private static final int NUMBER_OF_REQUESTS = 2;
+    private static final int NUMBER_OF_CARD_ID = 10;
+    private static final int NUMBER_OF_REQUESTS = 10;
 
     public static void main(String[] args) throws Exception {
         EmulatorControllerAdmin admin = new EmulatorControllerAdmin();
         EmulatorControllerHibernate hibernate = new EmulatorControllerHibernate();
         EmulatorControllerTerminal terminal = new EmulatorControllerTerminal();
         Operations operations = new Operations();
-
-        List<String> listCardId = new ArrayList<>(operations.getStartCollectionOfCard(NUMBER_OF_REQUESTS, terminalId));
-
-        log.info("Collection of cardId: {}", listCardId);
-        System.out.println("=======EMULATION ++++ GET COLLECTION OF CARD=======");
-        System.out.println(listCardId);
         Random rnd = new Random();
-        int rndMoney = rnd.nextInt(1000);
 
-        int rndCard = rnd.nextInt(listCardId.size() + 1);
-//        operations.getOperationProbability(100, cardId, money, cardType, typeOfTransport, terminalId);
+        List<String> listCardId = new ArrayList<>(operations.
+            getStartCollectionOfCard(NUMBER_OF_CARD_ID, terminalId));
+        log.info("Collection of cardId: {}", listCardId);
 
-        System.out.println("========");
+        System.out.println("=======EMULATION ++++ OPERATIONS UNDER COLLECTION OF CARDs=======");
+        for (int i = 0; i < NUMBER_OF_REQUESTS; i++) {
+            int rndCard = rnd.nextInt(listCardId.size());
+            int rndMoney = rnd.nextInt(1000);
+            int rndTypeOfTransport = rnd.nextInt(Transport.values().length);
+            int rndCardType = rnd.nextInt(3);
+
+            if (rndCardType == 1) {
+                operations.getOperationProbability(listCardId.get(rndCard), String.valueOf(rndMoney),
+                    "CREDIT", Transport.values()[rndTypeOfTransport], terminalId);
+            } else {
+                operations.getOperationProbability(listCardId.get(rndCard), String.valueOf(rndMoney),
+                    "DEBIT", Transport.values()[rndTypeOfTransport], terminalId);
+            }
+        }
 
 
 //        terminal.activateCard(cardType, terminalId);
