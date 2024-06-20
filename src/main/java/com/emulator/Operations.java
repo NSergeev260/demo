@@ -1,9 +1,13 @@
 package com.emulator;
 
+import lombok.extern.slf4j.Slf4j;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class Operation {
+@Slf4j
+public class Operations {
     private EmulatorControllerHibernate hibernate;
     private EmulatorControllerAdmin admin;
     private EmulatorControllerTerminal terminal;
@@ -35,5 +39,34 @@ public class Operation {
         } else {
             terminal.activateCard(cardType, terminalId);    // 1%
         }
+    }
+
+    public List<String> getStartCollectionOfCard(int numberOfRequests, String terminalId)
+        throws URISyntaxException {
+
+        terminal = new EmulatorControllerTerminal();
+        Random rnd = new Random();
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> cards = new ArrayList<>();
+        String card;
+        String[] cardFields;
+
+        for (int i = 0; i < numberOfRequests; i++) {
+            int rndCardType = rnd.nextInt(2);
+
+            if (rndCardType == 0) {
+                card = terminal.activateCard("CREDIT", terminalId);
+            } else {
+                card = terminal.activateCard("DEBIT", terminalId);
+            }
+
+            cardFields = card.split(":");
+            stringBuilder.append(cardFields[1]);
+            stringBuilder.deleteCharAt(0);
+            stringBuilder.delete(36, 47);
+            cards.add(String.valueOf(stringBuilder));
+            stringBuilder.delete(0, stringBuilder.length());
+        }
+        return cards;
     }
 }

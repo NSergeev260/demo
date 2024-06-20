@@ -44,19 +44,19 @@ public class Requests {
                 HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                log.info("Request method: " + request.method());
-                log.info("Status Code: " + response.statusCode());
-                log.info("Body: " + response.body());
+                log.info("Request method: {}", request.method());
+                log.info("Status Code: {}", response.statusCode());
+                log.info("Body: {}", response.body());
             } else {
-                log.info("Something wrong. StatusCode NOT 200!");
+                log.warn("Something wrong. StatusCode NOT 200!");
             }
 
         } catch (
             IOException e) {
-            log.info("Something wrong! CATCH block.");
+            log.warn("Something wrong! CATCH block.");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return String.valueOf(response);
+        return response.body();
     }
 }

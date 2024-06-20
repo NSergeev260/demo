@@ -1,11 +1,9 @@
 package com.emulator;
 
-import com.finalproject.MockData;
-import com.finalproject.card.ICard;
 import lombok.extern.slf4j.Slf4j;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -22,30 +20,31 @@ public class EmulatorControllerRunner {
     private static String cardType = "CREDIT";
 
 
-    private static final int NUMBER_OF_REQUESTS = 10;
+    private static final int NUMBER_OF_REQUESTS = 2;
 
     public static void main(String[] args) throws Exception {
         EmulatorControllerAdmin admin = new EmulatorControllerAdmin();
         EmulatorControllerHibernate hibernate = new EmulatorControllerHibernate();
         EmulatorControllerTerminal terminal = new EmulatorControllerTerminal();
-        Operation operation = new Operation();
+        Operations operations = new Operations();
+
+        List<String> listCardId = new ArrayList<>(operations.getStartCollectionOfCard(NUMBER_OF_REQUESTS, terminalId));
+
+        log.info("Collection of cardId: {}", listCardId);
+        System.out.println("=======EMULATION ++++ GET COLLECTION OF CARD=======");
+        System.out.println(listCardId);
+        Random rnd = new Random();
+        int rndMoney = rnd.nextInt(1000);
+
+        int rndCard = rnd.nextInt(listCardId.size() + 1);
+//        operations.getOperationProbability(100, cardId, money, cardType, typeOfTransport, terminalId);
+
+        System.out.println("========");
+
 
 //        terminal.activateCard(cardType, terminalId);
-        StringBuilder str = new StringBuilder();
-        String st = terminal.activateCard("CREDIT", "Yellow");
-        str.append(terminal.activateCard("CREDIT", "Yellow"));
-        System.out.println("==================================================");
-        System.out.println(st);
-        List<String> cards = new ArrayList<>();
-
-
-//        for (int i = 0; i < NUMBER_OF_REQUESTS; i++) {
-//            cards.add(terminal.activateCard("Credit", "Yellow"));
-//        }
-//        System.out.println(cards);
 //        hibernate.getCard(cardId);
-        hibernate.getAllCards();
-//            operation.getOperationProbability(100, cardId, money, cardType, typeOfTransport, terminalId);
+//        hibernate.getAllCards();
 
 //        admin.getBlock(cardId, terminalId);
 //        hibernate.insertCard();
