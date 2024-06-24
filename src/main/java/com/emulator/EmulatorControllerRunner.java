@@ -2,7 +2,7 @@ package com.emulator;
 
 import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
-
+import java.net.URISyntaxException;
 import java.util.*;
 
 @Slf4j
@@ -23,6 +23,7 @@ public class EmulatorControllerRunner {
     public static void main(String[] args) throws Exception {
 
         Operations operations = new Operations();
+        EmulatorControllerAdmin admin = new EmulatorControllerAdmin();
 
         List<String> listCardId = new ArrayList<>(operations.
             getStartCollectionOfCard(NUMBER_OF_CARD, terminalId));
@@ -30,11 +31,18 @@ public class EmulatorControllerRunner {
 
         System.out.println("=======EMULATION ++++ OPERATIONS UNDER COLLECTION OF CARDs=======");
         for (int i = 0; i < NUMBER_OF_REQUESTS; i++) {
-            operations.getCardOperation(listCardId, terminalId);
 
-//            Runnable parallelRequest = new ParallelRequestHttp(URL, client);
-//            Thread parallelThread = new Thread(parallelRequest);
-//            parallelThread.start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        operations.getCardOperation(listCardId, terminalId);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();
+            System.out.println("Request # " + (i + 1) + " has been sent");
         }
     }
 }

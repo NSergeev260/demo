@@ -42,8 +42,6 @@ public class ParallelRequestsHttp {
                 HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-//                log.info("Request method: {}", request.method());
-//                log.info("Status Code: {}", response.statusCode());
                 log.info("Body: {}", response.body());
             } else {
                 log.warn("Something wrong. StatusCode NOT 200!");
