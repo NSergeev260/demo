@@ -18,7 +18,6 @@ public class EmulatorControllerRunner {
     private static String cardType = "CREDIT";
 
     private static final int NUMBER_OF_CARD = 10;
-    private static final int NUMBER_OF_REQUESTS = 40;
 
     public static void main(String[] args) throws Exception {
 
@@ -30,7 +29,7 @@ public class EmulatorControllerRunner {
         log.info("Collection of cardId: {}", listCardId);
 
         System.out.println("=======EMULATION ++++ OPERATIONS UNDER COLLECTION OF CARDs=======");
-        for (int i = 0; i < NUMBER_OF_REQUESTS; i++) {
+        for (int i = 0; i < Integer.parseInt(args[0]); i++) {
 
             new Thread(new Runnable() {
                 @Override
