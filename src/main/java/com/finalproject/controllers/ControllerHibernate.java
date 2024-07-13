@@ -11,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -30,11 +33,14 @@ public class ControllerHibernate {
     }
 
     @GetMapping("/getCards")
-    public String getCards() {
-        crudMethodsCardHibernate.getCards();
-        log.info("Сards have been received: {}",
-            crudMethodsCardHibernate.getCards().toString());
-        return "Сards have been received";
+    public List<String> getCards() {
+        List<String> cardsId = new ArrayList<>();
+
+        for (int i = 0; i < crudMethodsCardHibernate.getCards().size(); i++) {
+            cardsId.add(crudMethodsCardHibernate.getCards().get(i).getCardId());
+        }
+        log.info("Сards ID have been received: {}", cardsId);
+        return cardsId;
     }
 
     @GetMapping("/getCard")

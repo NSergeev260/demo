@@ -75,7 +75,7 @@ public class PayingService {
         log.info("Your balance is {}", card.getBalance());
         crudMethodsCard.updateCard(card);
         crudMethodsHistory.insertHistory(card,
-            String.valueOf(Operation.PAY), result,
+            Operation.PAY.toString(), result,
             cost, terminalId);
         return card.getBalance().toString();
     }
@@ -96,7 +96,7 @@ public class PayingService {
             int resultOfUpdate = crudMethodsCard.updateCard(card);
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card, 
-                String.valueOf(Operation.PUT), result,
+                Operation.PUT.toString(), result,
                 money, terminalId);
             return card.getBalance().toString();
         }
@@ -149,7 +149,7 @@ public class PayingService {
 
         boolean result = crudMethodsCard.insertCard(card);
         crudMethodsHistory.insertHistory(card,
-            String.valueOf(Operation.INSERT), result,
+            Operation.INSERT.toString(), result,
             amount, terminalId);
         log.info("New card with id {} was created", card.getCardId());
         return card;

@@ -38,7 +38,7 @@ public class CardService {
             int resultOfUpdate = crudMethodsCard.updateCard(card);
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,
-                String.valueOf(Operation.BLOCK), result,
+                Operation.BLOCK.toString(), result,
                 null, terminalId);
             return "true";
         }
@@ -58,7 +58,7 @@ public class CardService {
             int resultOfUpdate = crudMethodsCard.updateCard(card);
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,
-                String.valueOf(Operation.UNBLOCK), result,
+                Operation.UNBLOCK.toString(), result,
                 null, terminalId);
             return "true";
         }
