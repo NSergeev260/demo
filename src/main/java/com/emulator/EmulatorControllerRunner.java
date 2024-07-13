@@ -1,7 +1,9 @@
 package com.emulator;
 
 import com.finalproject.card.ICard;
+import com.finalproject.config.CrudFactory;
 import com.finalproject.crudmethods.ICardCrud;
+import com.finalproject.services.CardService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URISyntaxException;
@@ -16,12 +18,15 @@ public class EmulatorControllerRunner {
     private static LocalTime finish;
     private static ICardCrud crudMethodsCard;
 
+
     public static void main(String[] args) throws Exception {
 
         Operations operations = new Operations();
+
+        CardService cardService = new CardService(new CrudFactory());
         List<String> listCardId = new ArrayList<>();
-        for (int i = 0; i < crudMethodsCard.getCards().size(); i++) {
-            listCardId.add(crudMethodsCard.getCards().get(i).getCardId());
+        for (int i = 0; i < cardService.getAllCards().size(); i++) {
+            listCardId.add(cardService.getAllCards().get(i).getCardId());
         }
 
         log.info("Collection of cardId: {}", listCardId);
