@@ -2,7 +2,7 @@ package com.finalproject;
 
 import com.finalproject.card.ICard;
 import com.finalproject.config.CrudFactory;
-import com.finalproject.hibernate.ICardCrud;
+import com.finalproject.crudmethods.ICardCrud;
 import com.finalproject.jdbc.ConnectionToDB;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;

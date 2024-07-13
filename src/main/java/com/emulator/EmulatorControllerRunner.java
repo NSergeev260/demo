@@ -1,6 +1,9 @@
 package com.emulator;
 
+import com.finalproject.card.ICard;
+import com.finalproject.crudmethods.ICardCrud;
 import lombok.extern.slf4j.Slf4j;
+
 import java.net.URISyntaxException;
 import java.time.LocalTime;
 import java.util.*;
@@ -11,11 +14,16 @@ public class EmulatorControllerRunner {
     private static String terminalId = "SPATULA";
     private static final LocalTime START = LocalTime.now();
     private static LocalTime finish;
+    private static ICardCrud crudMethodsCard;
 
     public static void main(String[] args) throws Exception {
 
         Operations operations = new Operations();
         List<String> listCardId = new ArrayList<>();
+        for (int i = 0; i < crudMethodsCard.getCards().size(); i++) {
+            listCardId.add(crudMethodsCard.getCards().get(i).getCardId());
+        }
+
         log.info("Collection of cardId: {}", listCardId);
 
         System.out.println("=======EMULATION ++++ OPERATIONS UNDER COLLECTION OF CARDs=======");

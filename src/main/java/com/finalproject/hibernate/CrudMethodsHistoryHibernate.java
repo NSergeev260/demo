@@ -1,6 +1,7 @@
 package com.finalproject.hibernate;
 
 import com.finalproject.card.ICard;
+import com.finalproject.crudmethods.IHistoryCrud;
 import com.finalproject.history.CardHistory;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;

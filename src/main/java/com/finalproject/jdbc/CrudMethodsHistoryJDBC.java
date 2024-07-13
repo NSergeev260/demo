@@ -1,6 +1,6 @@
 package com.finalproject.jdbc;
 
-import com.finalproject.hibernate.IHistoryCrud;
+import com.finalproject.crudmethods.IHistoryCrud;
 import com.finalproject.history.CardHistory;
 import com.finalproject.card.ICard;
 import lombok.extern.slf4j.Slf4j;

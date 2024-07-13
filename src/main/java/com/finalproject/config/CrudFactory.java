@@ -1,5 +1,7 @@
 package com.finalproject.config;
 
+import com.finalproject.crudmethods.ICardCrud;
+import com.finalproject.crudmethods.IHistoryCrud;
 import com.finalproject.hibernate.*;
 import com.finalproject.jdbc.ConnectionToDB;
 import com.finalproject.jdbc.CrudMethodsCardJDBC;

@@ -1,4 +1,4 @@
-package com.finalproject.hibernate;
+package com.finalproject.crudmethods;
 
 import com.finalproject.card.ICard;
 import com.finalproject.history.CardHistory;
