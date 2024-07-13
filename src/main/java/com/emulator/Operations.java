@@ -3,13 +3,12 @@ package com.emulator;
 import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @Slf4j
 public class Operations {
-    private EmulatorControllerHibernate hibernate;
+
     private EmulatorControllerAdmin admin;
     private EmulatorControllerTerminal terminal;
     private Random rnd = new Random();
@@ -19,7 +18,6 @@ public class Operations {
                                         String cardType, Transport typeOfTransport,
                                         String terminalId) throws URISyntaxException {
 
-        hibernate = new EmulatorControllerHibernate();
         admin = new EmulatorControllerAdmin();
         terminal = new EmulatorControllerTerminal();
 
@@ -41,34 +39,6 @@ public class Operations {
         } else {
             terminal.activateCard(cardType, terminalId);    // 1%
         }
-    }
-
-    public List<String> getStartCollectionOfCard(int numberOfCardId, String terminalId)
-        throws URISyntaxException {
-
-        terminal = new EmulatorControllerTerminal();
-        StringBuilder stringBuilder = new StringBuilder();
-        List<String> cards = new ArrayList<>();
-        String card;
-        String[] cardFields;
-
-        for (int i = 0; i < numberOfCardId; i++) {
-            int rndCardType = rnd.nextInt(2);
-
-            if (rndCardType == 0) {
-                card = terminal.activateCard("CREDIT", terminalId);
-            } else {
-                card = terminal.activateCard("DEBIT", terminalId);
-            }
-
-            cardFields = card.split(":");
-            stringBuilder.append(cardFields[1]);
-            stringBuilder.deleteCharAt(0);
-            stringBuilder.delete(36, 47);
-            cards.add(String.valueOf(stringBuilder));
-            stringBuilder.delete(0, stringBuilder.length());
-        }
-        return cards;
     }
 
     public void getCardOperation(List<String> cards, String terminalId)
