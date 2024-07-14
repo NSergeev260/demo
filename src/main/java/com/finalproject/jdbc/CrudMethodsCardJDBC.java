@@ -43,7 +43,6 @@ public class CrudMethodsCardJDBC implements ICardCrud {
             }
 
             insertedStatement.executeUpdate();
-            log.info("{} with id {} is added successfully", card.getType(), card.getCardId());
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,7 +114,6 @@ public class CrudMethodsCardJDBC implements ICardCrud {
 
             updatedStatement.setString(4, card.getCardId());
             updatedStatement.executeUpdate();
-            log.info("{} with id {} is updated successfully", card.getType(), card.getCardId());
             return 1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,7 +125,6 @@ public class CrudMethodsCardJDBC implements ICardCrud {
         try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD)) {
             deletedStatement.setString(1, id);
             deletedStatement.executeUpdate();
-            log.info("Card with id {} is deleted successfully", id);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

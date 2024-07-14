@@ -20,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ControllerAdmin {
 
-    private CrudMethodsCardHibernate crudMethodsCardHibernate;
     private CardService cardService;
     private MockData mockData;
 
@@ -42,55 +41,29 @@ public class ControllerAdmin {
     @PostMapping("/generateMockData")
     public String generate(long numberOfRecords) {
         mockData.generateMockData(numberOfRecords);
-        return "Data was generated";
-    }
-
-    @PostMapping("/insertTest")
-    public String insert() {
-        ICard card = mockData.getRandomCard();
-        crudMethodsCardHibernate.insertCard(card);
-        log.info("Card was created: {}", card);
-        return "Card was created" + card;
+        return "Cards was generated: " + numberOfRecords;
     }
 
     @GetMapping("/getCard")
     public String getCard(String cardId) {
-        crudMethodsCardHibernate.getCard(cardId);
-        log.info("The card with id {} has been received", cardId);
-        return "The card has been received: " + cardId;
+        return String.valueOf(cardService.findCardById(cardId));
     }
 
     @GetMapping("/getCards")
     public List<String> getCards() {
-        List<String> cardsId = new ArrayList<>();
-
-        for (int i = 0; i < crudMethodsCardHibernate.getCards().size(); i++) {
-            cardsId.add(crudMethodsCardHibernate.getCards().get(i).getCardId());
-        }
-        log.info("Сards ID have been received: {}", cardsId);
-        return cardsId;
+        return cardService.getAllCards();
     }
 
     @PostMapping("/update")
-    public String updateCard(String cardId, BigDecimal balance, CardType cardType,
-                             boolean isBlocked, String documentId) {
-        ICard card;
+    public String updateCard(String cardId, BigDecimal balance,
+                             boolean isBlocked, String documentId, String terminalId) {
 
-        if (cardType == CardType.CREDIT) {
-            card = new CreditCard(cardId, balance, isBlocked, documentId);
-        } else {
-            card = new DebitCard(cardId, balance, isBlocked);
-        }
-
-        crudMethodsCardHibernate.updateCard(card);
-        log.info("Card was updated {}", card);
-        return "Card was updated: " + card;
+        return String.valueOf(cardService.updateCard(cardId, balance,
+            isBlocked, documentId, terminalId));
     }
 
     @PostMapping("/delete")
     public String deleteCard(String cardId) {
-        crudMethodsCardHibernate.deleteCard(cardId);
-        log.info("Card with id {} was deleted", cardId);
-        return "Card was deleted: " + cardId;
+        return String.valueOf(cardService.deleteCard(cardId));
     }
 }

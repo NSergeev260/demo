@@ -2,12 +2,11 @@ package com.finalproject.services;
 
 import com.finalproject.MockData;
 import com.finalproject.card.ICard;
-
-import java.net.URISyntaxException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import com.finalproject.config.CrudFactory;
 import com.finalproject.crudmethods.ICardCrud;
 import com.finalproject.crudmethods.IHistoryCrud;
@@ -18,11 +17,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class CardService {
-//    private static CrudFactory crudFactory;
-//    private static MockData mockData = new MockData(crudFactory);
     private final ICardCrud crudMethodsCard;
     private final IHistoryCrud crudMethodsHistory;
     private static final String MESSAGE = "Check cardId, please";
+    private MockData mockData;
 
     public CardService(CrudFactory crudFactory) {
         this.crudMethodsCard = crudFactory.getICardCrud();
@@ -87,30 +85,47 @@ public class CardService {
         return MESSAGE;
     }
 
-//    public void getMockData(long numberOfRecords) {
-//        crudMethodsCard.insertCard(card);
-//        mockData.generateMockData(numberOfRecords);
-//        log.info("{} cards was generated, Time: {}", numberOfRecords, LocalDateTime.now());
-//    }
-//
-//    public ICard insertCard(ICard card) {
-//        crudMethodsCard.insertCard(card);
-//        log.info("Card was generated {}, Time: {}", card, LocalDateTime.now());
-//        return card;
-//    }
+    public List<String> getAllCards() {
+        List<String> cardsId = new ArrayList<>();
 
-    public List<ICard> getAllCards() {
-        log.info("List of cards was received, Time: {}", LocalDateTime.now());
-        return crudMethodsCard.getCards();
+        for (int i = 0; i < crudMethodsCard.getCards().size(); i++) {
+            cardsId.add(crudMethodsCard.getCards().get(i).getCardId());
+        }
+
+        log.info("List of cards ID have been received: {}", cardsId);
+        return cardsId;
     }
 
+    public int updateCard(String cardId, BigDecimal balance, boolean isBlocked,
+                          String documentId, String terminalId) {
+        Optional<ICard> cardById = findCardById(cardId);
 
-//    public void updateCard(ICard card) {
-//        crudMethodsCard.updateCard(card);
-//    }
-//
-//    public boolean deleteCard(String cardId) {
-//        crudMethodsCard.deleteCard(cardId);
-//        return true;
-//    }
+        if (cardById.isPresent()) {
+            ICard card = cardById.get();
+            crudMethodsCard.updateCard(card);
+            log.info("Card is updated {}, Time: {}", card, LocalDateTime.now());
+
+            int resultOfUpdate = crudMethodsCard.updateCard(card);
+            boolean result = resultOfUpdate > 0;
+            crudMethodsHistory.insertHistory(card,
+                Operation.UPDATE.toString(), result,
+                null, terminalId);
+            return 1;
+        }
+        log.info("Card with Id {} isn`t updated, Time: {}", cardId, LocalDateTime.now());
+        return 0;
+    }
+
+    public boolean deleteCard(String cardId) {
+        Optional<ICard> cardById = findCardById(cardId);
+
+        if (cardById.isPresent()) {
+            crudMethodsCard.deleteCard(cardId);
+            log.info("Card {} is deleted, Time: {}", cardId, LocalDateTime.now());
+            return true;
+        } else {
+            log.info("Wrong cardId {}. Can`t delete. Time: {}", cardId, LocalDateTime.now());
+            return false;
+        }
+    }
 }
