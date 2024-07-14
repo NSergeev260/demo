@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -56,10 +57,10 @@ public class ControllerAdmin {
 
     @PostMapping("/update")
     public String updateCard(String cardId, BigDecimal balance,
-                             boolean isBlocked, String documentId, String terminalId) {
+                             boolean isBlocked, String documentId) {
 
         return String.valueOf(cardService.updateCard(cardId, balance,
-            isBlocked, documentId, terminalId));
+            isBlocked, documentId));
     }
 
     @PostMapping("/delete")

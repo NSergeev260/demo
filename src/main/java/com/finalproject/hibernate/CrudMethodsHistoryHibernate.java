@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class CrudMethodsHistoryHibernate implements IHistoryCrud {
@@ -38,10 +39,10 @@ public class CrudMethodsHistoryHibernate implements IHistoryCrud {
     }
 
     @Override
-    public CardHistory getHistory(String cardID) {
+    public CardHistory getHistory(String cardId) {
         HistoryEntity historyEntity;
         CardHistory cardHistory = null;
-        Optional<HistoryEntity> cardById = historyRepository.findById(Integer.valueOf(cardID));
+        Optional<HistoryEntity> cardById = historyRepository.findById(UUID.fromString(cardId));
 
         if (cardById.isPresent()) {
             historyEntity = cardById.get();
@@ -51,8 +52,14 @@ public class CrudMethodsHistoryHibernate implements IHistoryCrud {
         return cardHistory;
     }
 
+    @Override
+    public boolean deleteHistory(String cardId) {
+        historyRepository.deleteById(UUID.fromString(cardId));
+        return true;
+    }
+
     private CardHistory toCardHistory(HistoryEntity historyEntity) {
-        CardHistory cardHistory = new CardHistory(historyEntity.getCardId(),
+        CardHistory cardHistory = new CardHistory(String.valueOf(historyEntity.getCardId()),
             historyEntity.getOperation(),
             historyEntity.isResult(),
             historyEntity.getAmount(),

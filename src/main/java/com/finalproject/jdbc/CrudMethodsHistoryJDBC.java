@@ -20,6 +20,7 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
 
     private static final String GET_HISTORY = "SELECT * FROM card_history WHERE card_id = ?";
     private static final String INSERT_HISTORY = "INSERT INTO card_history(card_id, operation, result, amount, date_of_operation, balance_after_operation, terminal_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String DELETE_HISTORY = "DELETE FROM card_history WHERE card_id = ?";
     private final Connection connection;
 
     public CrudMethodsHistoryJDBC(ConnectionToDB connectionToDB) {
@@ -90,5 +91,16 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
             e.printStackTrace();
         }
         return history;
+    }
+
+    public boolean deleteHistory(String id) {
+        try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_HISTORY)) {
+            deletedStatement.setString(1, id);
+            deletedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

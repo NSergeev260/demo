@@ -4,7 +4,10 @@ import com.finalproject.history.Operation;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,11 +16,12 @@ import java.math.BigDecimal;
 public class HistoryEntity {
 
     @Id
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
     @Column(name="cardId")
-    private String cardId;
+    private UUID cardId;
     @Column(name="operation")
     private Operation operation;
     @Column(name="result")
@@ -38,7 +42,7 @@ public class HistoryEntity {
                          BigDecimal amount, String dateOfOperation,
                          BigDecimal balanceAfterOperation, String terminalId) {
         this.id = id;
-        this.cardId = cardId;
+        this.cardId = UUID.fromString(cardId);
         this.operation = operation;
         this.result = result;
         this.amount = amount;
@@ -51,7 +55,7 @@ public class HistoryEntity {
                          BigDecimal amount, String dateOfOperation,
                          BigDecimal balanceAfterOperation,
                          String terminalId) {
-        this.cardId = cardId;
+        this.cardId = UUID.fromString(cardId);
         this.operation = Operation.valueOf(operation);
         this.result = result;
         this.amount = amount;
@@ -64,13 +68,12 @@ public class HistoryEntity {
     public String toString() {
         return "History{" +
             "id=" + id +
-            ", cardId='" + cardId + '\'' +
+            ", cardId='" + cardId  +
             ", operation=" + operation +
             ", result=" + result +
             ", amount=" + amount +
-            ", dateOfOperation='" + dateOfOperation + '\'' +
+            ", dateOfOperation='" + dateOfOperation +
             ", balanceAfterOperation=" + balanceAfterOperation +
-            ", terminalId='" + terminalId + '\'' +
-            '}';
+            ", terminalId='" + terminalId + '}';
     }
 }

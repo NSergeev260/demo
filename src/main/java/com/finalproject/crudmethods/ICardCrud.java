@@ -15,5 +15,4 @@ public interface ICardCrud {
 
     boolean deleteCard(String cardId);
 
-
 }

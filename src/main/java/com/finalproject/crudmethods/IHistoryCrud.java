@@ -4,6 +4,7 @@ import com.finalproject.card.ICard;
 import com.finalproject.history.CardHistory;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 public interface IHistoryCrud {
 
@@ -13,4 +14,6 @@ public interface IHistoryCrud {
     List<CardHistory> getHistory();
 
     CardHistory getHistory(String cardID);
+
+    boolean deleteHistory(String cardId);
 }

@@ -97,19 +97,20 @@ public class CardService {
     }
 
     public int updateCard(String cardId, BigDecimal balance, boolean isBlocked,
-                          String documentId, String terminalId) {
+                          String documentId) {
         Optional<ICard> cardById = findCardById(cardId);
 
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             crudMethodsCard.updateCard(card);
-            log.info("Card is updated {}, Time: {}", card, LocalDateTime.now());
+            log.info("Card is updated {}, Time: {}", crudMethodsCard.getCard(cardId), LocalDateTime.now());
 
+            documentId = "ControllerAdmin";
             int resultOfUpdate = crudMethodsCard.updateCard(card);
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,
-                Operation.UPDATE.toString(), result,
-                null, terminalId);
+                String.valueOf(Operation.UPDATE), result,
+                null, documentId);
             return 1;
         }
         log.info("Card with Id {} isn`t updated, Time: {}", cardId, LocalDateTime.now());
@@ -120,7 +121,9 @@ public class CardService {
         Optional<ICard> cardById = findCardById(cardId);
 
         if (cardById.isPresent()) {
-            crudMethodsCard.deleteCard(cardId);
+            ICard card = cardById.get();
+            crudMethodsHistory.deleteHistory(card.getCardId());
+            crudMethodsCard.deleteCard(card.getCardId());
             log.info("Card {} is deleted, Time: {}", cardId, LocalDateTime.now());
             return true;
         } else {

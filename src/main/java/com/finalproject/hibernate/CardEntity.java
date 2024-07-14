@@ -52,11 +52,10 @@ public class CardEntity {
     @Override
     public String toString() {
         return "Card{" +
-            "cardId='" + cardId + '\'' +
+            "cardId='" + cardId +
             ", balance=" + balance +
             ", cardType=" + cardType +
             ", blocked=" + isBlocked +
-            ", documentId='" + documentId + '\'' +
-            '}';
+            ", documentId='" + documentId + '}';
     }
 }
