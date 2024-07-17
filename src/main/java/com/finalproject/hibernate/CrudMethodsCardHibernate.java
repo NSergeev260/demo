@@ -69,7 +69,7 @@ public class CrudMethodsCardHibernate implements ICardCrud {
             documentId = ((CreditCard) card).getDocumentId();
         }
 
-        return cardRepository.updateCard(UUID.fromString(cardId),
+        return cardRepository.updateCard(cardId,
             balance, isBlocked, documentId);
     }
 

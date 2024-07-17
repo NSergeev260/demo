@@ -14,5 +14,5 @@ public interface CardRepository extends JpaRepository<CardEntity, UUID> {
     @Transactional
     @Modifying
     @Query("update CardEntity c set c.balance = ?2, c.isBlocked = ?3, c.documentId = ?4 where c.cardId = ?1")
-    int updateCard(UUID cardId, BigDecimal balance, boolean isBlocked, String documentId);
+    int updateCard(String cardId, BigDecimal balance, boolean isBlocked, String documentId);
 }

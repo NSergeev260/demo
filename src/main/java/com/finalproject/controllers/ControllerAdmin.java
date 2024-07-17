@@ -58,7 +58,6 @@ public class ControllerAdmin {
     @PostMapping("/update")
     public String updateCard(String cardId, BigDecimal balance,
                              boolean isBlocked, String documentId) {
-
         return String.valueOf(cardService.updateCard(cardId, balance,
             isBlocked, documentId));
     }
