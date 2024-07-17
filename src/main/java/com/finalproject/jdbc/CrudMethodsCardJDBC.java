@@ -101,13 +101,13 @@ public class CrudMethodsCardJDBC implements ICardCrud {
         return card;
     }
 
-    public int updateCard(ICard card) {
+    public int updateCard(ICard card, BigDecimal balance, boolean isBlocked, String documentId) {
         try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
-            updatedStatement.setBigDecimal(1, card.getBalance());
-            updatedStatement.setBoolean(2, card.isBlocked());
+            updatedStatement.setBigDecimal(1, balance);
+            updatedStatement.setBoolean(2, isBlocked);
 
             if (card.getType().equals(CardType.CREDIT)) {
-                updatedStatement.setString(3, ((CreditCard) card).getDocumentId());
+                updatedStatement.setString(3, documentId);
             } else {
                 updatedStatement.setString(3, null);
             }

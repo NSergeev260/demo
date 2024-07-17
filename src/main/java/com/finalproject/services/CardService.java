@@ -1,6 +1,9 @@
 package com.finalproject.services;
 
 import com.finalproject.MockData;
+import com.finalproject.card.CardType;
+import com.finalproject.card.CreditCard;
+import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -39,7 +42,14 @@ public class CardService {
             card.block();
             log.info("CardId: {}", cardId);
             log.info("Card is blocked! Time: {}", LocalDateTime.now());
-            int resultOfUpdate = crudMethodsCard.updateCard(card);
+            int resultOfUpdate = 0;
+            String documentId = null;
+
+            if (card.getType().equals(CardType.CREDIT)) {
+                resultOfUpdate = crudMethodsCard.updateCard(new CreditCard(cardId, card.getBalance(), card.isBlocked(), ((CreditCard)card).getDocumentId() );
+            } else {
+                resultOfUpdate = crudMethodsCard.updateCard(new DebitCard(cardId, card.getBalance(), card.isBlocked(), null));
+            }
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,
                 Operation.BLOCK.toString(), result,

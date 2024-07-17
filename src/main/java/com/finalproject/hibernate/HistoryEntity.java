@@ -16,7 +16,7 @@ import java.util.UUID;
 public class HistoryEntity {
 
     @Id
-    @JdbcTypeCode(SqlTypes.VARCHAR)
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;

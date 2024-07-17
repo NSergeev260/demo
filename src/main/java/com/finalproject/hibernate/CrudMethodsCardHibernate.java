@@ -7,6 +7,7 @@ import com.finalproject.card.ICard;
 import com.finalproject.crudmethods.ICardCrud;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -59,17 +60,14 @@ public class CrudMethodsCardHibernate implements ICardCrud {
     }
 
     @Override
-    public int updateCard(ICard card) {
-        String cardId = card.getCardId();
-        BigDecimal balance = card.getBalance();
-        boolean isBlocked = card.isBlocked();
-        String documentId = null;
+    public int updateCard(ICard card, BigDecimal balance, boolean isBlocked, String documentId) {
+        documentId = null;
 
         if (card.getType().equals(CardType.CREDIT)) {
             documentId = ((CreditCard) card).getDocumentId();
         }
 
-        return cardRepository.updateCard(cardId,
+        return cardRepository.updateCard(card.getCardId(),
             balance, isBlocked, documentId);
     }
 
