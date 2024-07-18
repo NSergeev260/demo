@@ -5,6 +5,7 @@ import com.finalproject.config.CrudFactory;
 import com.finalproject.crudmethods.ICardCrud;
 import com.finalproject.services.CardService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.net.URISyntaxException;
 import java.time.LocalTime;
@@ -13,6 +14,8 @@ import java.util.*;
 @Slf4j
 public class EmulatorControllerRunner {
 
+    @Value("${crudImplementation}")
+    private String crudImplementation = "Hibernate";
     private static String terminalId = "SPATULA";
     private static final LocalTime START = LocalTime.now();
     private static LocalTime finish;
@@ -22,8 +25,14 @@ public class EmulatorControllerRunner {
         Operations operations = new Operations();
 
         List<String> listCardId = new ArrayList<>();
+        CrudFactory crudFactory = new CrudFactory();            // ?пустой объект создается
+        crudFactory.getICardCrud();
 
-        CardService cardService = new CardService(new CrudFactory());
+        System.out.println("Hello");
+//        iCardCrud.getCards();
+        CardService cardService = new CardService(crudFactory);
+//        cardService.getAllCards();
+
         for (int i = 0; i < cardService.getAllCards().size(); i++) {
             listCardId.add(cardService.getAllCards().get(i));
         }

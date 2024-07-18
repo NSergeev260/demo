@@ -1,13 +1,21 @@
 package com.emulator;
 
+import com.finalproject.card.ICard;
+import com.finalproject.config.CrudFactory;
+import com.finalproject.crudmethods.ICardCrud;
+import com.finalproject.crudmethods.IHistoryCrud;
+import com.finalproject.services.CardService;
 import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
+
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @Slf4j
 public class Operations {
+
 
     private EmulatorControllerAdmin admin;
     private EmulatorControllerTerminal terminal;
@@ -44,17 +52,25 @@ public class Operations {
     public void getCardOperation(List<String> cards, String terminalId)
         throws URISyntaxException {
 
-            int rndCard = rnd.nextInt(cards.size());
-            int rndMoney = rnd.nextInt(1001);
-            int rndTypeOfTransport = rnd.nextInt(Transport.values().length);
-            int rndCardType = rnd.nextInt(2);
+        int rndCard = rnd.nextInt(cards.size());
+        int rndMoney = rnd.nextInt(1001);
+        int rndTypeOfTransport = rnd.nextInt(Transport.values().length);
+        int rndCardType = rnd.nextInt(2);
 
-            if (rndCardType == 1) {
-                getOperationProbability(cards.get(rndCard), String.valueOf(rndMoney),
-                    "CREDIT", Transport.values()[rndTypeOfTransport], terminalId);
-            } else {
-                getOperationProbability(cards.get(rndCard), String.valueOf(rndMoney),
-                    "DEBIT", Transport.values()[rndTypeOfTransport], terminalId);
-            }
+        if (rndCardType == 1) {
+            getOperationProbability(cards.get(rndCard), String.valueOf(rndMoney),
+                "CREDIT", Transport.values()[rndTypeOfTransport], terminalId);
+        } else {
+            getOperationProbability(cards.get(rndCard), String.valueOf(rndMoney),
+                "DEBIT", Transport.values()[rndTypeOfTransport], terminalId);
+        }
     }
+
+//    public List<String> getCards() {
+////        crudFactory.getICardCrud();
+//        CrudFactory crudFactory = new CrudFactory();
+//        ICardCrud iCardCrud = crudFactory.getICardCrud();
+//        CardService cardService = new CardService(crudFactory);
+//        return cardService.getAllCards();
+//    }
 }
