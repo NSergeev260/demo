@@ -93,9 +93,9 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
         return history;
     }
 
-    public boolean deleteHistory(String id) {
+    public boolean deleteHistory(String cardId) {
         try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_HISTORY)) {
-            deletedStatement.setString(1, id);
+            deletedStatement.setString(1, cardId);
             deletedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {

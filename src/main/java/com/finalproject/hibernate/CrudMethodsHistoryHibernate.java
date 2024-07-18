@@ -54,7 +54,7 @@ public class CrudMethodsHistoryHibernate implements IHistoryCrud {
 
     @Override
     public boolean deleteHistory(String cardId) {
-        historyRepository.deleteById(UUID.fromString(cardId));
+        historyRepository.deleteAllByCardId(UUID.fromString(cardId));
         return true;
     }
 

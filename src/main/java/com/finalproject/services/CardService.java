@@ -46,9 +46,9 @@ public class CardService {
             String documentId = null;
 
             if (card.getType().equals(CardType.CREDIT)) {
-                resultOfUpdate = crudMethodsCard.updateCard(new CreditCard(cardId, card.getBalance(), card.isBlocked(), ((CreditCard)card).getDocumentId() );
+                resultOfUpdate = crudMethodsCard.updateCard(new CreditCard(cardId, card.getBalance(), card.isBlocked(), ((CreditCard)card).getDocumentId()));
             } else {
-                resultOfUpdate = crudMethodsCard.updateCard(new DebitCard(cardId, card.getBalance(), card.isBlocked(), null));
+                resultOfUpdate = crudMethodsCard.updateCard(new DebitCard(cardId, card.getBalance(), card.isBlocked()));
             }
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,

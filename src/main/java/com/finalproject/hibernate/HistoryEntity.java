@@ -16,11 +16,11 @@ import java.util.UUID;
 public class HistoryEntity {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
     @Column(name="cardId")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID cardId;
     @Column(name="operation")
     private Operation operation;
