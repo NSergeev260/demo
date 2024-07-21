@@ -1,33 +1,25 @@
 package com.emulator;
 
-import com.finalproject.card.ICard;
 import com.finalproject.config.CrudFactory;
-import com.finalproject.crudmethods.ICardCrud;
-import com.finalproject.crudmethods.IHistoryCrud;
-import com.finalproject.services.CardService;
 import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
-
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Slf4j
-public class Operations {
+public class Operations extends CrudFactory {
 
-
-    private EmulatorControllerAdmin admin;
-    private EmulatorControllerTerminal terminal;
+    private static EmulatorControllerAdmin admin = new EmulatorControllerAdmin();
+    private static EmulatorControllerTerminal terminal = new EmulatorControllerTerminal();
     private Random rnd = new Random();
     private static final int RANDOM_BOUND = 101;
 
     public void getOperationProbability(String cardId, String money,
                                         String cardType, Transport typeOfTransport,
                                         String terminalId) throws URISyntaxException {
-
-        admin = new EmulatorControllerAdmin();
-        terminal = new EmulatorControllerTerminal();
 
         int probability = rnd.nextInt(RANDOM_BOUND);
         if (probability < 90) {
@@ -66,11 +58,10 @@ public class Operations {
         }
     }
 
-//    public List<String> getCards() {
-////        crudFactory.getICardCrud();
-//        CrudFactory crudFactory = new CrudFactory();
-//        ICardCrud iCardCrud = crudFactory.getICardCrud();
-//        CardService cardService = new CardService(crudFactory);
-//        return cardService.getAllCards();
-//    }
+    public List<String> getCards() throws URISyntaxException {
+        String cards = admin.getAllCards();
+        List<String> listCard = Arrays.stream(cards.split(","))
+            .collect(Collectors.toList());
+        return listCard;
+    }
 }

@@ -40,9 +40,9 @@ public class EmulatorControllerTerminal {
         parallelRequestsHttp.getRequest(URL_PATH + "/getInfo" + URL_CARD + cardId);
     }
 
-    public String activateCard(String cardType, String terminal) throws URISyntaxException {
+    public String activateCard(String cardType, String terminalId) throws URISyntaxException {
         log.info("=======ACTIVATE(INSERT) CARD======");
         return parallelRequestsHttp.postRequest(URL_PATH + "/activate" + URL_CARD_TYPE + cardType +
-            URL_TERMINAL + terminal);
+            URL_TERMINAL + terminalId);
     }
 }

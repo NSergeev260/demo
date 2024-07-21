@@ -15,10 +15,10 @@ public class EmulatorControllerAdmin {
 
     private ParallelRequestsHttp parallelRequestsHttp = new ParallelRequestsHttp();
 
-    public void getBlock(String cardId, String terminal) throws URISyntaxException {
+    public void getBlock(String cardId, String terminalId) throws URISyntaxException {
         log.info("=======BLOCK A CARD======");
         parallelRequestsHttp.postRequest(URL_PATH + "/block" + URL_CARD + cardId +
-            URL_TERMINAL + terminal);
+            URL_TERMINAL + terminalId);
     }
 
     public void getUnblock(String cardId, String terminalId) throws URISyntaxException {
@@ -48,9 +48,9 @@ public class EmulatorControllerAdmin {
         parallelRequestsHttp.getRequest(URL_PATH + "/getCard" + URL_CARD + cardId);
     }
 
-    public void getAllCards() throws URISyntaxException {
+    public String getAllCards() throws URISyntaxException {
         log.info("=======GET ALL CARDs======");
-        parallelRequestsHttp.getRequest(URL_PATH + "/getCards");
+        return parallelRequestsHttp.getRequest(URL_PATH + "/getCards");
     }
 
     public void updateCard(String cardId, String balance, String isBlocked,
