@@ -2,11 +2,7 @@ package com.emulator;
 
 import com.finalproject.transport.Transport;
 import lombok.extern.slf4j.Slf4j;
-
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 @Slf4j
 public class EmulatorControllerTerminal {
@@ -18,7 +14,6 @@ public class EmulatorControllerTerminal {
     private static final String URL_CARD_TYPE = "?cardType=";
 
     private ParallelRequestsHttp parallelRequestsHttp = new ParallelRequestsHttp();
-
     public void getPay(String cardId, Transport typeOfTransport,
                        String terminalId) throws URISyntaxException {
         log.info("=======PAY MONEY======");
