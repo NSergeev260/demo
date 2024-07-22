@@ -22,6 +22,7 @@ public class HistoryEntity {
     @Column(name="cardId")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID cardId;
+    @Enumerated(EnumType.STRING)
     @Column(name="operation")
     private Operation operation;
     @Column(name="result")
@@ -38,12 +39,12 @@ public class HistoryEntity {
     public HistoryEntity() {
     }
 
-    public HistoryEntity(int id, String cardId, Operation operation, boolean result,
+    public HistoryEntity(int id, String cardId, String operation, boolean result,
                          BigDecimal amount, String dateOfOperation,
                          BigDecimal balanceAfterOperation, String terminalId) {
         this.id = id;
         this.cardId = UUID.fromString(cardId);
-        this.operation = operation;
+        this.operation = Operation.valueOf(operation);
         this.result = result;
         this.amount = amount;
         this.dateOfOperation = dateOfOperation;
