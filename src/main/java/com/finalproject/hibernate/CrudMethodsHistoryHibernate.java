@@ -61,7 +61,7 @@ public class CrudMethodsHistoryHibernate implements IHistoryCrud {
     private CardHistory toCardHistory(HistoryEntity historyEntity) {
         CardHistory cardHistory = new CardHistory(String.valueOf(historyEntity.getCardId()),
             historyEntity.getOperation(),
-            historyEntity.isResult(),
+            Boolean.parseBoolean(historyEntity.getResult()),
             historyEntity.getAmount(),
             historyEntity.getDateOfOperation(),
             historyEntity.getBalanceAfterOperation(),

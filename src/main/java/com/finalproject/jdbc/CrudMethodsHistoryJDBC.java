@@ -32,7 +32,7 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
         try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_HISTORY)) {
             insertedStatement.setString(1, card.getCardId());
             insertedStatement.setString(2, operation);
-            insertedStatement.setBoolean(3, result);
+            insertedStatement.setString(3, String.valueOf(result));
             insertedStatement.setBigDecimal(4, amount);
             insertedStatement.setString(5, String.valueOf(LocalDateTime.now()));
             insertedStatement.setBigDecimal(6, card.getBalance());
@@ -53,7 +53,7 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
                 int id = resultSet.getInt("id");
                 String cardId = resultSet.getString("card_id");
                 String operation = resultSet.getString("operation");
-                boolean result = resultSet.getBoolean("result");
+                boolean result = Boolean.parseBoolean(resultSet.getString("result"));
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String dateOfOperation = resultSet.getString("date_of_operation");
                 BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balance_after_operation");
@@ -78,7 +78,7 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
                 int id = resultSet.getInt("id");
                 String cardId = resultSet.getString("card_id");
                 String operation = resultSet.getString("operation");
-                boolean result = resultSet.getBoolean("result");
+                boolean result = Boolean.parseBoolean(resultSet.getString("result"));
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String dateOfOperation = resultSet.getString("date_of_operation");
                 BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balance_after_operation");
