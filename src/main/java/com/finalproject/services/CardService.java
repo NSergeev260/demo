@@ -115,7 +115,6 @@ public class CardService {
             crudMethodsCard.updateCard(card);
             log.info("Card is updated {}, Time: {}", crudMethodsCard.getCard(cardId), LocalDateTime.now());
 
-            documentId = "ControllerAdmin";
             int resultOfUpdate = crudMethodsCard.updateCard(card);
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,
