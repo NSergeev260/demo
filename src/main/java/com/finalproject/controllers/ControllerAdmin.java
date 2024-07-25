@@ -1,20 +1,12 @@
 package com.finalproject.controllers;
 
 import com.finalproject.MockData;
-import com.finalproject.card.CardType;
-import com.finalproject.card.CreditCard;
-import com.finalproject.card.DebitCard;
-import com.finalproject.card.ICard;
-import com.finalproject.hibernate.CrudMethodsCardHibernate;
 import com.finalproject.services.CardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @RestController
