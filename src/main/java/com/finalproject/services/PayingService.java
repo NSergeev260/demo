@@ -4,10 +4,12 @@ import com.finalproject.card.CardType;
 import com.finalproject.card.CreditCard;
 import com.finalproject.card.DebitCard;
 import com.finalproject.card.ICard;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+
 import com.finalproject.config.CrudFactory;
 import com.finalproject.crudmethods.ICardCrud;
 import com.finalproject.crudmethods.IHistoryCrud;
@@ -44,39 +46,47 @@ public class PayingService {
                     .subtract(cost);
                 return returnBalance(terminalId, card, cost, payByCard);
             }
-            log.info("Card is blocked!");
+
+            crudMethodsHistory.insertHistory(card,
+                Operation.PAY.toString(), false,
+                cost, terminalId);
+            log.info("Card is blocked! Id: {}", card.getCardId());
         }
 
-        return "Not enough for traveling. Put money on card, please";
+        log.info(CHECK_CARD_ID_PLEASE);
+        return CHECK_CARD_ID_PLEASE;
     }
 
     private String returnBalance(String terminalId, ICard card, BigDecimal cost,
                                  BigDecimal payByCard) {
         boolean result = true;
         boolean isCreditCard = card.getType().equals(CardType.CREDIT);
+        boolean isPositiveCreditBalance = (card.getBalance().
+            add(CreditCard.CUT_OFF_BANK_DEPT)).
+            compareTo(cost) >= 0;
+        boolean isDebitCard = card.getType().equals(CardType.DEBIT);
+        boolean isPositiveDebitBalance = card.getBalance().compareTo(cost) >= 0;
 
-        if (isCreditCard && ((card.getBalance().add(CreditCard.CUT_OFF_BANK_DEPT)).compareTo(cost) >= 0)) {
+        if (isCreditCard && isPositiveCreditBalance) {
+            card.setBalance(payByCard);
+        } else if (isDebitCard && isPositiveDebitBalance) {
             card.setBalance(payByCard);
         } else {
-            boolean isDebitCard = card.getType().equals(CardType.DEBIT);
-            boolean isPositiveBalance = card.getBalance().compareTo(cost) >= 0;
-
-            if (isDebitCard && isPositiveBalance) {
-                card.setBalance(payByCard);
-            } else {
-                log.info("Not enough money for trip");
-                card.block();
-                result = false;
-                crudMethodsCard.updateCard(card);
-            }
+            card.block();
+            result = false;
+            log.info("Not enough money for trip");
         }
 
+        if (isCreditCard) {
+            crudMethodsCard.updateCard(card.getCardId(), card.getBalance(), card.isBlocked(), ((CreditCard) card).getDocumentId());
+        } else {
+            crudMethodsCard.updateCard(card.getCardId(), card.getBalance(), card.isBlocked(), null);
+        }
+
+        crudMethodsHistory.insertHistory(card,Operation.PAY.toString(),
+            result,cost, terminalId);
         log.info("Trip cost is: {}", cost);
         log.info("Your balance is {}", card.getBalance());
-        crudMethodsCard.updateCard(card);
-        crudMethodsHistory.insertHistory(card,
-            Operation.PAY.toString(), result,
-            cost, terminalId);
         return card.getBalance().toString();
     }
 
@@ -87,17 +97,24 @@ public class PayingService {
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
-            log.info("You put: {}", money);
-            log.info("Your balance is {}", card.getBalance());
             if (card.isBlocked()) {
                 card.unblock();
             }
 
-            int resultOfUpdate = crudMethodsCard.updateCard(card);
+            int resultOfUpdate = 0;
+
+            if (card.getType().equals(CardType.CREDIT)) {
+                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(), ((CreditCard)card).getDocumentId());
+            } else {
+                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(), null);
+            }
+
             boolean result = resultOfUpdate > 0;
-            crudMethodsHistory.insertHistory(card, 
+            crudMethodsHistory.insertHistory(card,
                 Operation.PUT.toString(), result,
                 money, terminalId);
+            log.info("You put: {}", money);
+            log.info("Your balance is {}", card.getBalance());
             return card.getBalance().toString();
         }
 
@@ -133,7 +150,6 @@ public class PayingService {
     }
 
     public ICard insertNewCard(CardType cardType, String terminalId) {
-        log.info("Insert new {} card, Time: {}", cardType, LocalDateTime.now());
         String cardId = UUID.randomUUID().toString();
         BigDecimal balance = new BigDecimal(200);
         boolean blocked = false;
@@ -151,7 +167,7 @@ public class PayingService {
         crudMethodsHistory.insertHistory(card,
             Operation.INSERT.toString(), result,
             amount, terminalId);
-        log.info("New card with id {} was created", card.getCardId());
+        log.info("New card with id {} was created, Time: {}", card.getCardId(), LocalDateTime.now());
         return card;
     }
 }

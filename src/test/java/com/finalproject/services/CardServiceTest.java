@@ -92,7 +92,7 @@ class CardServiceTest {
     void cardShouldBeBlockedTest() {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(crudMethodsCard.getCard("1")).thenReturn(creditCard);
-        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(1);
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(1);
 
         String blocked = cardService.block("1", "Rabbit");
         Assertions.assertEquals("true", blocked);
@@ -104,7 +104,7 @@ class CardServiceTest {
     void cardShouldBeUnBlockedTest() {
         DebitCard debitCard = getDebitCard(true);
         Mockito.when(crudMethodsCard.getCard("2")).thenReturn(debitCard);
-        Mockito.when(crudMethodsCard.updateCard(debitCard)).thenReturn(1);
+        Mockito.when(crudMethodsCard.updateCard(debitCard.getCardId(), debitCard.getBalance(), debitCard.isBlocked(), null)).thenReturn(1);
 
         String unblocked = cardService.unblock("2", "Rabbit");
         Assertions.assertEquals("true", unblocked);

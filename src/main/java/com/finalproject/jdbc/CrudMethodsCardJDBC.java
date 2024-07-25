@@ -101,18 +101,19 @@ public class CrudMethodsCardJDBC implements ICardCrud {
         return card;
     }
 
-    public int updateCard(ICard card) {
+    public int updateCard(String cardId, BigDecimal balance, boolean isBlocked,
+                          String documentId) {
         try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
-            updatedStatement.setBigDecimal(1, card.getBalance());
-            updatedStatement.setString(2, String.valueOf(card.isBlocked()));
+            updatedStatement.setBigDecimal(1, balance);
+            updatedStatement.setString(2, String.valueOf(isBlocked));
 
-            if (card.getType().equals(CardType.CREDIT)) {
-                updatedStatement.setString(3, ((CreditCard)card).getDocumentId());
+            if (getCard(cardId).getType().equals(CardType.CREDIT)) {
+                updatedStatement.setString(3, documentId);
             } else {
                 updatedStatement.setString(3, null);
             }
 
-            updatedStatement.setString(4, card.getCardId());
+            updatedStatement.setString(4, cardId);
             updatedStatement.executeUpdate();
             return 1;
         } catch (SQLException e) {

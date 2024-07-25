@@ -65,7 +65,7 @@ class PayingServiceTest {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(cardService.findCardById("1"))
             .thenReturn(Optional.of(creditCard));
-        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(0);
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(0);
 
         String balance = payingService.payMoney("1",
             Transport.SUBWAY, "Rabbit");
@@ -80,7 +80,7 @@ class PayingServiceTest {
         CreditCard creditCard = getPoorCreditCard(false);
         Mockito.when(cardService.findCardById("1"))
             .thenReturn(Optional.of(creditCard));
-        Mockito.when(crudMethodsCard.updateCard(creditCard))
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId()))
             .thenReturn(0);
 
         String balance = payingService.payMoney("1",
@@ -94,7 +94,7 @@ class PayingServiceTest {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(cardService.findCardById("1"))
             .thenReturn(Optional.of(creditCard));
-        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(1);
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(1);
 
         payingService.putMoney("1", new BigDecimal("500"), "Rabbit");
         String balance = String.valueOf(creditCard.getBalance());
@@ -109,7 +109,7 @@ class PayingServiceTest {
         CreditCard creditCard = getCreditCard(true);
         Mockito.when(cardService.findCardById("1"))
             .thenReturn(Optional.of(creditCard));
-        Mockito.when(crudMethodsCard.updateCard(creditCard)).thenReturn(1);
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(1);
 
         payingService.putMoney("1", new BigDecimal("500"), "Rabbit");
         String balance = String.valueOf(creditCard.getBalance());

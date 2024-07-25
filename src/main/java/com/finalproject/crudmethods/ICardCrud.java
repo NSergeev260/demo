@@ -13,7 +13,8 @@ public interface ICardCrud {
 
     ICard getCard(String cardId);
 
-    int updateCard(ICard card);
+    int updateCard(String cardId, BigDecimal balance, boolean isBlocked,
+                   String documentId);
 
     boolean deleteCard(String cardId);
 

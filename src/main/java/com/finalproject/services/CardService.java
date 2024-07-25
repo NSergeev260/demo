@@ -43,18 +43,17 @@ public class CardService {
             log.info("CardId: {}", cardId);
             log.info("Card is blocked! Time: {}", LocalDateTime.now());
             int resultOfUpdate = 0;
-            String documentId = null;
 
             if (card.getType().equals(CardType.CREDIT)) {
-                resultOfUpdate = crudMethodsCard.updateCard(new CreditCard(cardId, card.getBalance(), card.isBlocked(), ((CreditCard)card).getDocumentId()));
+                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(), ((CreditCard)card).getDocumentId());
             } else {
-                resultOfUpdate = crudMethodsCard.updateCard(new DebitCard(cardId, card.getBalance(), card.isBlocked()));
+                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(), null);
             }
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,
                 Operation.BLOCK.toString(), result,
                 null, terminalId);
-            return "true";
+            return "Card is blocked!";
         }
 
         log.info(MESSAGE);
@@ -69,12 +68,19 @@ public class CardService {
             card.unblock();
             log.info("CardId: {}", cardId);
             log.info("Card is unblocked! Time: {}", LocalDateTime.now());
-            int resultOfUpdate = crudMethodsCard.updateCard(card);
+            int resultOfUpdate = 0;
+
+            if (card.getType().equals(CardType.CREDIT)) {
+                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(), ((CreditCard)card).getDocumentId());
+            } else {
+                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(), null);
+            }
+
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,
                 Operation.UNBLOCK.toString(), result,
                 null, terminalId);
-            return "true";
+            return "Card is unblocked!";
         }
 
         log.info(MESSAGE);
@@ -87,7 +93,7 @@ public class CardService {
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             log.info("CardId: {}", cardId);
-            log.info("Card is blocked: {}, Time: {}", card.isBlocked(), LocalDateTime.now());
+            log.info("Is the card blocked: {}, Time: {}", card.isBlocked(), LocalDateTime.now());
             return String.valueOf(card.isBlocked());
         }
 
@@ -112,14 +118,13 @@ public class CardService {
 
         if (cardById.isPresent()) {
             ICard card = cardById.get();
-            crudMethodsCard.updateCard(card);
-            log.info("Card is updated {}, Time: {}", crudMethodsCard.getCard(cardId), LocalDateTime.now());
-
-            int resultOfUpdate = crudMethodsCard.updateCard(card);
+            crudMethodsCard.updateCard(cardId, balance, isBlocked, documentId);
+            int resultOfUpdate = crudMethodsCard.updateCard(cardId, balance, isBlocked, documentId);
             boolean result = resultOfUpdate > 0;
             crudMethodsHistory.insertHistory(card,
                 String.valueOf(Operation.UPDATE), result,
                 null, documentId);
+            log.info("Card is updated {}, Time: {}", crudMethodsCard.getCard(cardId), LocalDateTime.now());
             return 1;
         }
         log.info("Card with Id {} isn`t updated, Time: {}", cardId, LocalDateTime.now());
