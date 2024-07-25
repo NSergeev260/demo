@@ -26,7 +26,7 @@ public class HistoryEntity {
     @Column(name="operation")
     private Operation operation;
     @Column(name="result")
-    private String result;
+    private boolean result;
     @Column(name="amount")
     private BigDecimal amount;
     @Column(name="dateOfOperation")
@@ -45,7 +45,7 @@ public class HistoryEntity {
         this.id = id;
         this.cardId = UUID.fromString(cardId);
         this.operation = Operation.valueOf(operation);
-        this.result = String.valueOf(result);
+        this.result = result;
         this.amount = amount;
         this.dateOfOperation = dateOfOperation;
         this.balanceAfterOperation = balanceAfterOperation;
@@ -58,7 +58,7 @@ public class HistoryEntity {
                          String terminalId) {
         this.cardId = UUID.fromString(cardId);
         this.operation = Operation.valueOf(operation);
-        this.result = String.valueOf(result);
+        this.result = result;
         this.amount = amount;
         this.dateOfOperation = dateOfOperation;
         this.balanceAfterOperation = balanceAfterOperation;
