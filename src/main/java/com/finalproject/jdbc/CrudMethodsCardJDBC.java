@@ -34,7 +34,7 @@ public class CrudMethodsCardJDBC implements ICardCrud {
             insertedStatement.setString(1, card.getCardId());
             insertedStatement.setBigDecimal(2, card.getBalance());
             insertedStatement.setString(3, String.valueOf(card.getType()));
-            insertedStatement.setBoolean(4, card.isBlocked());
+            insertedStatement.setString(4, String.valueOf(card.isBlocked()));
 
             if (card.getType().equals(CardType.CREDIT)) {
                 insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
@@ -104,7 +104,7 @@ public class CrudMethodsCardJDBC implements ICardCrud {
     public int updateCard(ICard card) {
         try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
             updatedStatement.setBigDecimal(1, card.getBalance());
-            updatedStatement.setBoolean(2, card.isBlocked());
+            updatedStatement.setString(2, String.valueOf(card.isBlocked()));
 
             if (card.getType().equals(CardType.CREDIT)) {
                 updatedStatement.setString(3, ((CreditCard)card).getDocumentId());

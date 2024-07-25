@@ -25,7 +25,7 @@ public class CardEntity {
     @Enumerated(EnumType.STRING)
     private CardType cardType;
     @Column(name = "isBlocked")
-    private boolean isBlocked;
+    private String isBlocked;
     @Column(name = "documentId")
     private String documentId;
 
@@ -37,7 +37,7 @@ public class CardEntity {
         this.cardId = UUID.fromString(cardId);
         this.balance = balance;
         this.cardType = cardType;
-        this.isBlocked = isBlocked;
+        this.isBlocked = String.valueOf(isBlocked);
         this.documentId = documentId;
     }
 

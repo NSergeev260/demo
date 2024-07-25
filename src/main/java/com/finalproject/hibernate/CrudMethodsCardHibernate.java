@@ -82,10 +82,10 @@ public class CrudMethodsCardHibernate implements ICardCrud {
 
         if (cardEntity.getCardType().equals(CardType.CREDIT)) {
             card = new CreditCard(cardEntity.getCardId(), cardEntity.getBalance(),
-                cardEntity.isBlocked(), cardEntity.getDocumentId());
+                Boolean.parseBoolean(cardEntity.getIsBlocked()), cardEntity.getDocumentId());
         } else {
             card = new DebitCard(cardEntity.getCardId(), cardEntity.getBalance(),
-                cardEntity.isBlocked());
+                Boolean.parseBoolean(cardEntity.getIsBlocked()));
         }
 
         return card;
