@@ -57,7 +57,7 @@ class PayingServiceTest {
 
         String balance = payingService.payMoney("1",
             Transport.SUBWAY, "Rabbit");
-       Assertions.assertEquals("Not enough for traveling. Put money on card, please", balance);
+       Assertions.assertEquals("Check cardId, please", balance);
     }
 
     @Test
@@ -65,14 +65,16 @@ class PayingServiceTest {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(cardService.findCardById("1"))
             .thenReturn(Optional.of(creditCard));
-        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(0);
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(),
+            creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).
+            thenReturn(0);
 
         String balance = payingService.payMoney("1",
             Transport.SUBWAY, "Rabbit");
         Mockito.verify(crudMethodsHistory).insertHistory(creditCard,
             String.valueOf(Operation.PAY),
             true, new BigDecimal(49), "Rabbit");
-        Assertions.assertEquals("51",balance);
+        Assertions.assertEquals(new BigDecimal(51),balance);
     }
 
     @Test
@@ -80,7 +82,8 @@ class PayingServiceTest {
         CreditCard creditCard = getPoorCreditCard(false);
         Mockito.when(cardService.findCardById("1"))
             .thenReturn(Optional.of(creditCard));
-        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId()))
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(),
+                creditCard.getBalance(), true, creditCard.getDocumentId()))
             .thenReturn(0);
 
         String balance = payingService.payMoney("1",
@@ -94,14 +97,15 @@ class PayingServiceTest {
         CreditCard creditCard = getCreditCard(false);
         Mockito.when(cardService.findCardById("1"))
             .thenReturn(Optional.of(creditCard));
-        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(1);
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(),
+            creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(1);
 
-        payingService.putMoney("1", new BigDecimal("500"), "Rabbit");
-        String balance = String.valueOf(creditCard.getBalance());
-        Assertions.assertEquals("600", balance);
+        payingService.putMoney("1", new BigDecimal(500), "Rabbit");
+        BigDecimal balance = creditCard.getBalance();
+        Assertions.assertEquals(new BigDecimal(600), balance);
         Mockito.verify(crudMethodsHistory).insertHistory(creditCard,
             String.valueOf(Operation.PUT),
-            true, new BigDecimal(500), "Rabbit");
+            true, new BigDecimal(600), "Rabbit");
     }
 
     @Test
@@ -109,11 +113,12 @@ class PayingServiceTest {
         CreditCard creditCard = getCreditCard(true);
         Mockito.when(cardService.findCardById("1"))
             .thenReturn(Optional.of(creditCard));
-        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(), creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(1);
+        Mockito.when(crudMethodsCard.updateCard(creditCard.getCardId(),
+            creditCard.getBalance(), creditCard.isBlocked(), creditCard.getDocumentId())).thenReturn(1);
 
-        payingService.putMoney("1", new BigDecimal("500"), "Rabbit");
+        payingService.putMoney("1", new BigDecimal(500), "Rabbit");
         String balance = String.valueOf(creditCard.getBalance());
-        Assertions.assertEquals("600", balance);
+        Assertions.assertEquals(600, balance);
         Mockito.verify(crudMethodsHistory).insertHistory(creditCard,
             String.valueOf(Operation.PUT),
             true, new BigDecimal(500), "Rabbit");

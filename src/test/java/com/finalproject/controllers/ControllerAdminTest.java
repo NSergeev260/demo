@@ -51,7 +51,7 @@ class ControllerAdminTest {
     void methodShouldGenerateMockDataTest() {
         int n = 5;
         String generate = controllerAdmin.generate(n);
-        Assertions.assertEquals("Data was generated", generate);
+        Assertions.assertEquals("Cards was generated: " + n, generate);
         Mockito.verify(mockData).generateMockData(n);
     }
 }

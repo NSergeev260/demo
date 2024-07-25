@@ -94,7 +94,7 @@ public class PayingService {
 
         if (cardById.isPresent()) {
             ICard card = cardById.get();
-            card.setBalance(new BigDecimal(String.valueOf(card.getBalance())).add(money));
+            card.setBalance((card.getBalance()).add(money));
             if (card.isBlocked()) {
                 card.unblock();
             }
