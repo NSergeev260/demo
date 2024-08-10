@@ -51,16 +51,10 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String cardId = resultSet.getString("card_id");
-                String operation = resultSet.getString("operation");
-                boolean result = Boolean.parseBoolean(resultSet.getString("result"));
-                BigDecimal amount = resultSet.getBigDecimal("amount");
-                String dateOfOperation = resultSet.getString("date_of_operation");
-                BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balance_after_operation");
-                String terminalId = resultSet.getString("terminal_id");
-                history.add(new CardHistory(cardId, operation,
-                    result, amount, dateOfOperation, balanceAfterOperation, terminalId));
+                ResultSetRecords resultRec = getResultSetRecords(resultSet);
+                history.add(new CardHistory(resultRec.id(), resultRec.cardId(), resultRec.operation(),
+                    resultRec.result(), resultRec.amount(), resultRec.dateOfOperation(),
+                    resultRec.balanceAfterOperation(), resultRec.terminalId()));
             }
 
             return history;
@@ -77,16 +71,10 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String cardId = resultSet.getString("card_id");
-                String operation = resultSet.getString("operation");
-                boolean result = Boolean.parseBoolean(resultSet.getString("result"));
-                BigDecimal amount = resultSet.getBigDecimal("amount");
-                String dateOfOperation = resultSet.getString("date_of_operation");
-                BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balance_after_operation");
-                String terminalId = resultSet.getString("terminal_id");
-                return new CardHistory(id, cardId, operation, result,
-                    amount, dateOfOperation, balanceAfterOperation, terminalId);
+                ResultSetRecords resultRec = getResultSetRecords(resultSet);
+                return new CardHistory(resultRec.id(), resultRec.cardId(), resultRec.operation(),
+                    resultRec.result(), resultRec.amount(), resultRec.dateOfOperation(),
+                    resultRec.balanceAfterOperation(), resultRec.terminalId());
             }
 
             return history;
@@ -105,5 +93,23 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private static ResultSetRecords getResultSetRecords(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        String cardId = resultSet.getString("card_id");
+        String operation = resultSet.getString("operation");
+        boolean result = Boolean.parseBoolean(resultSet.getString("result"));
+        BigDecimal amount = resultSet.getBigDecimal("amount");
+        String dateOfOperation = resultSet.getString("date_of_operation");
+        BigDecimal balanceAfterOperation = resultSet.getBigDecimal("balance_after_operation");
+        String terminalId = resultSet.getString("terminal_id");
+        return new ResultSetRecords(id, cardId, operation, result, amount,
+            dateOfOperation, balanceAfterOperation, terminalId);
+    }
+
+    private record ResultSetRecords(int id, String cardId, String operation, boolean result,
+                                    BigDecimal amount, String dateOfOperation,
+                                    BigDecimal balanceAfterOperation, String terminalId) {
     }
 }

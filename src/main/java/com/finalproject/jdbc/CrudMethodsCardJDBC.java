@@ -57,16 +57,14 @@ public class CrudMethodsCardJDBC implements ICardCrud {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                String cardId = resultSet.getString("card_id");
-                BigDecimal balance = resultSet.getBigDecimal("balance");
-                CardType typeOfCard = CardType.valueOf(resultSet.getString(("type_of_card")));
-                boolean isBlocked = resultSet.getBoolean("is_blocked");
-                String documentId = resultSet.getString("document_id");
+                ResultSetRecords resultRecords = getResultSetRecords(resultSet);
 
-                if (typeOfCard.equals(CardType.CREDIT)) {
-                    cardList.add(new CreditCard(cardId, balance, isBlocked, documentId));
+                if (resultRecords.typeOfCard().equals(CardType.CREDIT)) {
+                    cardList.add(new CreditCard(resultRecords.cardId(), resultRecords.balance(),
+                        resultRecords.isBlocked(), resultRecords.documentId()));
                 } else {
-                    cardList.add(new DebitCard(cardId, balance, isBlocked));
+                    cardList.add(new DebitCard(resultRecords.cardId(), resultRecords.balance(),
+                        resultRecords.isBlocked()));
                 }
             }
 
@@ -84,16 +82,14 @@ public class CrudMethodsCardJDBC implements ICardCrud {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                String cardId = resultSet.getString("card_id");
-                BigDecimal balance = resultSet.getBigDecimal("balance");
-                CardType typeOfCard = CardType.valueOf(resultSet.getString("type_of_card"));
-                boolean isBlocked = resultSet.getBoolean("is_blocked");
-                String documentId = resultSet.getString("document_id");
+                ResultSetRecords resultRecords = getResultSetRecords(resultSet);
 
-                if (typeOfCard.equals(CardType.CREDIT)) {
-                    return new CreditCard(cardId, balance, isBlocked, documentId);
+                if (resultRecords.typeOfCard().equals(CardType.CREDIT)) {
+                    return new CreditCard(resultRecords.cardId(), resultRecords.balance(),
+                        resultRecords.isBlocked(), resultRecords.documentId());
                 } else {
-                    return new DebitCard(cardId, balance, isBlocked);
+                    return new DebitCard(resultRecords.cardId(), resultRecords.balance(),
+                        resultRecords.isBlocked());
                 }
             }
 
@@ -134,5 +130,19 @@ public class CrudMethodsCardJDBC implements ICardCrud {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private static ResultSetRecords getResultSetRecords(ResultSet resultSet) throws SQLException {
+        String cardId = resultSet.getString("card_id");
+        BigDecimal balance = resultSet.getBigDecimal("balance");
+        CardType typeOfCard = CardType.valueOf(resultSet.getString("type_of_card"));
+        boolean isBlocked = resultSet.getBoolean("is_blocked");
+        String documentId = resultSet.getString("document_id");
+        ResultSetRecords resultRecords = new ResultSetRecords(cardId, balance, typeOfCard, isBlocked, documentId);
+        return resultRecords;
+    }
+
+    private record ResultSetRecords(String cardId, BigDecimal balance, CardType typeOfCard,
+                                    boolean isBlocked, String documentId) {
     }
 }
