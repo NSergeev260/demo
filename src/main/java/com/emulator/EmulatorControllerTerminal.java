@@ -13,14 +13,15 @@ public class EmulatorControllerTerminal {
     private static final String URL_TERMINAL = "&terminalId=";
     private static final String URL_CARD_TYPE = "?cardType=";
 
-    private ParallelRequestsHttp parallelRequestsHttp = new ParallelRequestsHttp();
+    private ParallelRequestsHttp requestsHttp = new ParallelRequestsHttp();
+
     public void getPay(String cardId, Transport typeOfTransport,
                        String terminalId) throws URISyntaxException {
         log.info("=======PAY MONEY======");
         String request = URL_PATH + "/pay" + URL_CARD + cardId +
             URL_TRANSPORT + typeOfTransport + URL_TERMINAL + terminalId;
 
-        parallelRequestsHttp.postRequest(request);
+        requestsHttp.postRequest(request);
 
     }
 
@@ -30,7 +31,7 @@ public class EmulatorControllerTerminal {
         String request = URL_PATH + "/put" + URL_CARD + cardId +
             URL_MONEY + money + URL_TERMINAL + terminalId;
 
-        parallelRequestsHttp.postRequest(request);
+        requestsHttp.postRequest(request);
     }
 
     public void getBalance(String cardId, String terminalId) throws URISyntaxException {
@@ -38,14 +39,14 @@ public class EmulatorControllerTerminal {
         String request = URL_PATH + "/balance" + "/" + cardId + "?" +
             URL_TERMINAL + terminalId;
 
-        parallelRequestsHttp.getRequest(request);
+        requestsHttp.getRequest(request);
     }
 
     public void getInfo(String cardId) throws URISyntaxException {
         log.info("=======GET INFO======");
         String request = URL_PATH + "/getInfo" + URL_CARD + cardId;
 
-        parallelRequestsHttp.getRequest(request);
+        requestsHttp.getRequest(request);
     }
 
     public String activateCard(String cardType, String terminalId) throws URISyntaxException {
@@ -53,6 +54,6 @@ public class EmulatorControllerTerminal {
         String request = URL_PATH + "/activate" + URL_CARD_TYPE + cardType +
             URL_TERMINAL + terminalId;
 
-        return parallelRequestsHttp.postRequest(request);
+        return requestsHttp.postRequest(request);
     }
 }

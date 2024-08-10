@@ -60,11 +60,11 @@ public class Operations extends CrudFactory {
 
     public List<String> getCards() throws URISyntaxException {
         String cards = admin.getAllCards();
-        List<String> listCard = Arrays.stream(cards.split(","))
+        List<String> cardList = Arrays.stream(cards.split(","))
             .map(x -> x.replaceAll("\"", ""))
             .map(x -> x.replaceAll("\\[", ""))
             .map(x -> x.replaceAll("]", ""))
             .collect(Collectors.toList());
-        return listCard;
+        return cardList;
     }
 }

@@ -8,8 +8,8 @@ import java.util.*;
 @Slf4j
 public class EmulatorControllerRunner {
 
-    private static String terminalId = "EMULATOR";
     private static final LocalTime START = LocalTime.now();
+    private static String terminalId = "EMULATOR";
     private static LocalTime finish;
 
     public static void main(String[] args) throws Exception {
