@@ -7,6 +7,7 @@ import com.finalproject.card.ICard;
 import com.finalproject.crudmethods.ICardCrud;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,30 +31,30 @@ public class CrudMethodsCardJDBC implements ICardCrud {
     }
 
     public boolean insertCard(ICard card) {
-        try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_CARD)) {
-            insertedStatement.setString(1, card.getCardId());
-            insertedStatement.setBigDecimal(2, card.getBalance());
-            insertedStatement.setString(3, String.valueOf(card.getType()));
-            insertedStatement.setString(4, String.valueOf(card.isBlocked()));
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_CARD)) {
+            statement.setString(1, card.getCardId());
+            statement.setBigDecimal(2, card.getBalance());
+            statement.setString(3, String.valueOf(card.getType()));
+            statement.setString(4, String.valueOf(card.isBlocked()));
 
             if (card.getType().equals(CardType.CREDIT)) {
-                insertedStatement.setString(5, ((CreditCard) card).getDocumentId());
+                statement.setString(5, ((CreditCard) card).getDocumentId());
             } else {
-                insertedStatement.setString(5, null);
+                statement.setString(5, null);
             }
 
-            insertedStatement.executeUpdate();
+            statement.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public List<ICard> getCards() {
-        List<ICard> transportCards = new ArrayList<>();
-        try (PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM transport_card")) {
-            ResultSet resultSet = shownStatement.executeQuery();
+        List<ICard> cardList = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM transport_card")) {
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 String cardId = resultSet.getString("card_id");
@@ -63,23 +64,24 @@ public class CrudMethodsCardJDBC implements ICardCrud {
                 String documentId = resultSet.getString("document_id");
 
                 if (typeOfCard.equals(CardType.CREDIT)) {
-                    transportCards.add(new CreditCard(cardId, balance, isBlocked, documentId));
-                } else if (typeOfCard.equals(CardType.DEBIT)) {
-                    transportCards.add(new DebitCard(cardId, balance, isBlocked));
+                    cardList.add(new CreditCard(cardId, balance, isBlocked, documentId));
+                } else {
+                    cardList.add(new DebitCard(cardId, balance, isBlocked));
                 }
             }
 
+            return cardList;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return transportCards;
     }
 
     public ICard getCard(String id) {
         ICard card = null;
-        try (PreparedStatement selectStatement = connection.prepareStatement(GET_CARD)) {
-            selectStatement.setString(1, id);
-            ResultSet resultSet = selectStatement.executeQuery();
+        try (PreparedStatement statement = connection.prepareStatement(GET_CARD)) {
+            statement.setString(1, id);
+            ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 String cardId = resultSet.getString("card_id");
@@ -95,41 +97,42 @@ public class CrudMethodsCardJDBC implements ICardCrud {
                 }
             }
 
+            return card;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return card;
     }
 
     public int updateCard(String cardId, BigDecimal balance, boolean isBlocked,
                           String documentId) {
-        try (PreparedStatement updatedStatement = connection.prepareStatement(UPDATE_CARD)) {
-            updatedStatement.setBigDecimal(1, balance);
-            updatedStatement.setString(2, String.valueOf(isBlocked));
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_CARD)) {
+            statement.setBigDecimal(1, balance);
+            statement.setString(2, String.valueOf(isBlocked));
 
             if (getCard(cardId).getType().equals(CardType.CREDIT)) {
-                updatedStatement.setString(3, documentId);
+                statement.setString(3, documentId);
             } else {
-                updatedStatement.setString(3, null);
+                statement.setString(3, null);
             }
 
-            updatedStatement.setString(4, cardId);
-            updatedStatement.executeUpdate();
+            statement.setString(4, cardId);
+            statement.executeUpdate();
             return 1;
         } catch (SQLException e) {
             e.printStackTrace();
+            return 0;
         }
-        return 0;
     }
 
     public boolean deleteCard(String id) {
-        try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_CARD)) {
-            deletedStatement.setString(1, id);
-            deletedStatement.executeUpdate();
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_CARD)) {
+            statement.setString(1, id);
+            statement.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

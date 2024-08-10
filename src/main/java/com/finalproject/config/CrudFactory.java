@@ -24,31 +24,35 @@ public class CrudFactory {
     @Autowired
     private HistoryRepository historyRepository;
 
+    private static final String CHOSEN_HIBERNATE = "Chosen Hibernate";
+    private static final String MESSAGE_JDBC = "Chosen JDBC";
+    private static final String MESSAGE_EXCEPTION = "supported crudImplementations are jdbc, hibernate";
+
     public ICardCrud getICardCrud() {
         switch (crudImplementation.toLowerCase()) {
             case "jdbc" -> {
-                log.info("Chosen JDBC");
+                log.info(MESSAGE_JDBC);
                 return new CrudMethodsCardJDBC(connectionToDB);
             }
             case "hibernate" -> {
-                log.info("Chosen Hibernate");
+                log.info(CHOSEN_HIBERNATE);
                 return new CrudMethodsCardHibernate(cardRepository);
             }
-            default -> throw new IllegalArgumentException("supported crudImplementations are jdbc, hibernate");
+            default -> throw new IllegalArgumentException(MESSAGE_EXCEPTION);
         }
     }
 
     public IHistoryCrud getIHistoryCrud() {
         switch (crudImplementation.toLowerCase()) {
             case "jdbc" -> {
-                log.info("Chosen JDBC");
+                log.info(MESSAGE_JDBC);
                 return new CrudMethodsHistoryJDBC(connectionToDB);
             }
             case "hibernate" -> {
-                log.info("Chosen Hibernate");
+                log.info(CHOSEN_HIBERNATE);
                 return new CrudMethodsHistoryHibernate(historyRepository);
             }
-            default -> throw new IllegalArgumentException("supported crudImplementations are jdbc, hibernate");
+            default -> throw new IllegalArgumentException(MESSAGE_EXCEPTION);
         }
     }
 }

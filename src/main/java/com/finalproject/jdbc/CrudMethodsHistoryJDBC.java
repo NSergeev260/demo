@@ -5,6 +5,7 @@ import com.finalproject.history.CardHistory;
 import com.finalproject.card.ICard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,15 +30,15 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
 
     public void insertHistory(ICard card, String operation, boolean result,
                               BigDecimal amount, String terminalId) {
-        try (PreparedStatement insertedStatement = connection.prepareStatement(INSERT_HISTORY)) {
-            insertedStatement.setString(1, card.getCardId());
-            insertedStatement.setString(2, operation);
-            insertedStatement.setString(3, String.valueOf(result));
-            insertedStatement.setBigDecimal(4, amount);
-            insertedStatement.setString(5, String.valueOf(LocalDateTime.now()));
-            insertedStatement.setBigDecimal(6, card.getBalance());
-            insertedStatement.setString(7, terminalId);
-            insertedStatement.executeUpdate();
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_HISTORY)) {
+            statement.setString(1, card.getCardId());
+            statement.setString(2, operation);
+            statement.setString(3, String.valueOf(result));
+            statement.setBigDecimal(4, amount);
+            statement.setString(5, String.valueOf(LocalDateTime.now()));
+            statement.setBigDecimal(6, card.getBalance());
+            statement.setString(7, terminalId);
+            statement.executeUpdate();
             log.info("History record for card with id {} is added successfully", card.getCardId());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,8 +47,8 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
 
     public List<CardHistory> getHistory() {
         List<CardHistory> history = new ArrayList<>();
-        try (PreparedStatement shownStatement = connection.prepareStatement("SELECT * FROM card_history")) {
-            ResultSet resultSet = shownStatement.executeQuery();
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM card_history")) {
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -62,17 +63,18 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
                     result, amount, dateOfOperation, balanceAfterOperation, terminalId));
             }
 
+            return history;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return history;
     }
 
     public CardHistory getHistory(String cardID) {
         CardHistory history = null;
-        try (PreparedStatement selectStatement = connection.prepareStatement(GET_HISTORY)) {
-            selectStatement.setString(1, cardID);
-            ResultSet resultSet = selectStatement.executeQuery();
+        try (PreparedStatement statement = connection.prepareStatement(GET_HISTORY)) {
+            statement.setString(1, cardID);
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -87,20 +89,21 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
                     amount, dateOfOperation, balanceAfterOperation, terminalId);
             }
 
+            return history;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return history;
     }
 
     public boolean deleteHistory(String cardId) {
-        try (PreparedStatement deletedStatement = connection.prepareStatement(DELETE_HISTORY)) {
-            deletedStatement.setString(1, cardId);
-            deletedStatement.executeUpdate();
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_HISTORY)) {
+            statement.setString(1, cardId);
+            statement.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

@@ -4,6 +4,7 @@ import com.finalproject.card.ICard;
 import com.finalproject.crudmethods.IHistoryCrud;
 import com.finalproject.history.CardHistory;
 import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,9 +33,9 @@ public class CrudMethodsHistoryHibernate implements IHistoryCrud {
     @Override
     public List<CardHistory> getHistory() {
         List<HistoryEntity> historyEntityList = historyRepository.findAll();
-       List<CardHistory> cardHistoryList = historyEntityList.stream()
-           .map(this::toCardHistory)
-           .toList();
+        List<CardHistory> cardHistoryList = historyEntityList.stream()
+            .map(this::toCardHistory)
+            .toList();
         return cardHistoryList;
     }
 

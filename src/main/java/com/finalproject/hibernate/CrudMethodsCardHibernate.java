@@ -37,11 +37,11 @@ public class CrudMethodsCardHibernate implements ICardCrud {
 
     @Override
     public List<ICard> getCards() {
-        List<CardEntity> cardsList = cardRepository.findAll();
-        List<ICard> cards = cardsList.stream()
+        List<CardEntity> cardEntityList = cardRepository.findAll();
+        List<ICard> cardList = cardEntityList.stream()
             .map(this::toICard)
             .toList();
-        return cards;
+        return cardList;
     }
 
     @Override

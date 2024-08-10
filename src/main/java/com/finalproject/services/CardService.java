@@ -21,7 +21,8 @@ import org.springframework.stereotype.Component;
 public class CardService {
     private final ICardCrud crudMethodsCard;
     private final IHistoryCrud crudMethodsHistory;
-    private static final String MESSAGE = "Check cardId, please";
+    private static final String MESSAGE_CHECK = "Check cardId, please";
+    private static final String MESSAGE_CARD = "CardId: {}";
     private MockData mockData;
 
     public CardService(CrudFactory crudFactory) {
@@ -39,7 +40,7 @@ public class CardService {
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             card.block();
-            log.info("CardId: {}", cardId);
+            log.info(MESSAGE_CARD, cardId);
             log.info("Card is blocked! Time: {}", LocalDateTime.now());
             int resultOfUpdate = 0;
 
@@ -55,8 +56,8 @@ public class CardService {
             return "Card is blocked!";
         }
 
-        log.info(MESSAGE);
-        return MESSAGE;
+        log.info(MESSAGE_CHECK);
+        return MESSAGE_CHECK;
     }
 
     public String unblock(String cardId, String terminalId) {
@@ -65,7 +66,7 @@ public class CardService {
         if (cardById.isPresent()) {
             ICard card = cardById.get();
             card.unblock();
-            log.info("CardId: {}", cardId);
+            log.info(MESSAGE_CARD, cardId);
             log.info("Card is unblocked! Time: {}", LocalDateTime.now());
             int resultOfUpdate = 0;
 
@@ -82,8 +83,8 @@ public class CardService {
             return "Card is unblocked!";
         }
 
-        log.info(MESSAGE);
-        return MESSAGE;
+        log.info(MESSAGE_CHECK);
+        return MESSAGE_CHECK;
     }
 
     public String isBlocked(String cardId) {
@@ -91,13 +92,13 @@ public class CardService {
 
         if (cardById.isPresent()) {
             ICard card = cardById.get();
-            log.info("CardId: {}", cardId);
+            log.info(MESSAGE_CARD, cardId);
             log.info("Is the card blocked: {}, Time: {}", card.isBlocked(), LocalDateTime.now());
             return String.valueOf(card.isBlocked());
         }
 
-        log.info(MESSAGE);
-        return MESSAGE;
+        log.info(MESSAGE_CHECK);
+        return MESSAGE_CHECK;
     }
 
     public List<String> getAllCards() {

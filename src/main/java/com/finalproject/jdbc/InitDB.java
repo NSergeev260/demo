@@ -2,6 +2,7 @@ package com.finalproject.jdbc;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,13 +39,13 @@ public class InitDB {
                         statement.executeUpdate(str);
                     }
                 } else {
-                    temp = temp + str;
+                    temp += str;
                 }
             }
-
+            return "DB is created";
         } catch (SQLException | IOException e) {
             e.printStackTrace();
+            return "Exception";
         }
-        return "DB is created";
     }
 }
