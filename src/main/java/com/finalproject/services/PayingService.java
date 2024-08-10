@@ -76,9 +76,11 @@ public class PayingService {
         }
 
         if (isCreditCard) {
-            crudMethodsCard.updateCard(card.getCardId(), card.getBalance(), card.isBlocked(), ((CreditCard) card).getDocumentId());
+            crudMethodsCard.updateCard(card.getCardId(), card.getBalance(), card.isBlocked(),
+                ((CreditCard) card).getDocumentId());
         } else {
-            crudMethodsCard.updateCard(card.getCardId(), card.getBalance(), card.isBlocked(), null);
+            crudMethodsCard.updateCard(card.getCardId(), card.getBalance(), card.isBlocked(),
+                null);
         }
 
         crudMethodsHistory.insertHistory(card,Operation.PAY.toString(),
@@ -102,9 +104,11 @@ public class PayingService {
             int resultOfUpdate = 0;
 
             if (card.getType().equals(CardType.CREDIT)) {
-                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(), ((CreditCard)card).getDocumentId());
+                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(),
+                    ((CreditCard)card).getDocumentId());
             } else {
-                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(), null);
+                resultOfUpdate = crudMethodsCard.updateCard(cardId, card.getBalance(), card.isBlocked(),
+                    null);
             }
 
             boolean result = resultOfUpdate > 0;
