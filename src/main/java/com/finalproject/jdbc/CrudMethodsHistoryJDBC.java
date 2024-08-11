@@ -33,7 +33,7 @@ public class CrudMethodsHistoryJDBC implements IHistoryCrud {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_HISTORY)) {
             statement.setString(1, card.getCardId());
             statement.setString(2, operation);
-            statement.setString(3, String.valueOf(result));
+            statement.setBoolean(3, result);
             statement.setBigDecimal(4, amount);
             statement.setString(5, String.valueOf(LocalDateTime.now()));
             statement.setBigDecimal(6, card.getBalance());

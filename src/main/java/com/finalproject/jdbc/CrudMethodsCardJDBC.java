@@ -35,7 +35,7 @@ public class CrudMethodsCardJDBC implements ICardCrud {
             statement.setString(1, card.getCardId());
             statement.setBigDecimal(2, card.getBalance());
             statement.setString(3, String.valueOf(card.getType()));
-            statement.setString(4, String.valueOf(card.isBlocked()));
+            statement.setBoolean(4, card.isBlocked());
 
             if (card.getType().equals(CardType.CREDIT)) {
                 statement.setString(5, ((CreditCard) card).getDocumentId());
@@ -104,7 +104,7 @@ public class CrudMethodsCardJDBC implements ICardCrud {
                           String documentId) {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_CARD)) {
             statement.setBigDecimal(1, balance);
-            statement.setString(2, String.valueOf(isBlocked));
+            statement.setBoolean(2, isBlocked);
 
             if (getCard(cardId).getType().equals(CardType.CREDIT)) {
                 statement.setString(3, documentId);
@@ -138,8 +138,7 @@ public class CrudMethodsCardJDBC implements ICardCrud {
         CardType typeOfCard = CardType.valueOf(resultSet.getString("type_of_card"));
         boolean isBlocked = resultSet.getBoolean("is_blocked");
         String documentId = resultSet.getString("document_id");
-        ResultSetRecords resultRecords = new ResultSetRecords(cardId, balance, typeOfCard, isBlocked, documentId);
-        return resultRecords;
+        return new ResultSetRecords(cardId, balance, typeOfCard, isBlocked, documentId);
     }
 
     private record ResultSetRecords(String cardId, BigDecimal balance, CardType typeOfCard,
