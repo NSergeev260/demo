@@ -24,11 +24,12 @@ spring:
   jpa:
     database: mysql
     show-sql: true
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
   liquibase:
     user: root
-    enable: true
-    change-log: classpath:db.changelog-master.yaml
+    enabled: false
+    changelog: classpath:/db/changelog/db.changelog-master.yaml
     contexts: dev
