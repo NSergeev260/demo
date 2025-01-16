@@ -2,6 +2,8 @@
 
 --changeset nsergeev:1
 CREATE DATABASE card_db;
+
+--changeset nsergeev:2
 USE card_db;
 
 CREATE TABLE IF NOT EXISTS transport_card(
@@ -13,7 +15,9 @@ document_id VARCHAR(36),
 PRIMARY KEY(card_id)
 );
 
---changeset nsergeev:2
+--changeset nsergeev:3
+USE card_db;
+
 CREATE TABLE IF NOT EXISTS card_history(
 id int NOT NULL AUTO_INCREMENT,
 card_id VARCHAR(36) NOT NULL,
