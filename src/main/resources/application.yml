@@ -22,17 +22,15 @@ spring:
     username: root
     password: roottest
   jpa:
-#    database-platform: org.hibernate.dialect.MySQLDialect
-    database: mysql
     show-sql: true
     open-in-view: false
+    database: mysql
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
         ddl-auto: validate
   liquibase:
 #    user: root
-    enabled: true
+    enabled: false
     change-log: db/changelog/db.changelog-master.yaml
 #    contexts: dev
