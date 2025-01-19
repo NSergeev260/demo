@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset nsergeev:1
-CREATE DATABASE card_db;
+CREATE DATABASE IF NOT EXISTS card_db;
 
 --changeset nsergeev:2
 USE card_db;

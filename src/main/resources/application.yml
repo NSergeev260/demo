@@ -1,6 +1,6 @@
 logging:
   level:
-    root: WARN
+    root: INFO
   file:
     name: ${user.dir}/logs/java.log
 server:
@@ -18,7 +18,7 @@ jdbc:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/card_db
+    url: jdbc:mysql://localhost:3306/card_db?createDatabaseIfNotExist=true
     username: root
     password: roottest
   jpa:
@@ -31,6 +31,6 @@ spring:
         ddl-auto: validate
   liquibase:
 #    user: root
-    enabled: false
+    enabled: true
     change-log: db/changelog/db.changelog-master.yaml
 #    contexts: dev
