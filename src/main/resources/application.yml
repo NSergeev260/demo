@@ -9,28 +9,32 @@ server:
 crudImplementation: Hibernate
 
 jdbc:
-    url: jdbc:mysql://localhost:3306
-    username: root
+    url: jdbc:postgresql://localhost:5432
+#    url: jdbc:mysql://localhost:3306
+    username: postgres
+#    username: root
     password: roottest
-    driver: com.mysql.cj.jdbc.Driver
+    driver: org.postgresql.Driver
+#    driver: com.mysql.cj.jdbc.Driver
     dbname: card_db
     initScript: src/main/resources/DBTransportCard.sql
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/card_db?createDatabaseIfNotExist=true
-    username: root
+    url: jdbc:postgresql://localhost:5432/card_db
+#    url: jdbc:mysql://localhost:3306/card_db?createDatabaseIfNotExist=true
+    username: postgres
+#    username: root
     password: roottest
   jpa:
     show-sql: true
     open-in-view: false
-    database: mysql
+    database: postgresql
+#    database: mysql
     properties:
       hibernate:
         format_sql: true
         ddl-auto: validate
   liquibase:
-#    user: root
     enabled: true
     change-log: db/changelog/db.changelog-master.yaml
-#    contexts: dev

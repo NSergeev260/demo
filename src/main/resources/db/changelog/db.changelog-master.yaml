@@ -1,5 +1,5 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/v_1_0_0/13-12-2024_init_1-0.sql
+      file: db/changelog/v_1_0_0/postgres/13-12-2024_init_1-0.sql
   - include:
-      file: db/changelog/v_1_0_0/13-12-2024_data_1-0.sql
+      file: db/changelog/v_1_0_0/postgres/13-12-2024_data_1-0.sql
