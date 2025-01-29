@@ -1,8 +1,9 @@
 --liquibase formatted sql
 
 --changeset nsergeev:1
-SELECT 'CREATE DATABASE card_db'
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'card_db');
+CREATE DATABASE card_db;
+--SELECT 'CREATE DATABASE card_db'
+--WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'card_db');
 
 --changeset nsergeev:2
 CREATE TABLE IF NOT EXISTS transport_card(
